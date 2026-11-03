@@ -1,0 +1,6 @@
+{main};busyWork 101560000000
+{main} 42200000000
+Tracewick\Runtime\UnitOfWorkProfiler::shutdown 920000000
+Tracewick\Runtime\UnitOfWorkProfiler::shutdown;Tracewick\Runtime\UnitOfWorkProfiler::stop;Tracewick\Sampler\ExcimerSampler::stop 40000000
+Tracewick\Runtime\UnitOfWorkProfiler::shutdown;Tracewick\Runtime\UnitOfWorkProfiler::stop 40000000
+{main};Tracewick\Runtime\UnitOfWorkProfiler::registerShutdown;Tracewick\Runtime\UnitOfWorkProfiler::__construct{closure:130} 20000000
