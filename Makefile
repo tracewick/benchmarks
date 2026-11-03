@@ -17,7 +17,7 @@ APP_PORT ?= 8080
 GRAFANA_PORT ?= 3000
 PYROSCOPE_PORT ?= 4040
 
-.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke collect-report smoke-check
+.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -73,7 +73,7 @@ k6-version: ## Show pinned k6 Docker image and its version string
 	docker run --rm $(K6_IMAGE) version
 
 bench-smoke: ## Run the smoke k6 script (requires make up)
-	@mkdir -p "$(CURDIR)/$(REPORTS_DIR)"
+	@$(MAKE) --no-print-directory prepare-reports-dir
 	docker run --rm --network host \
 		-v "$(CURDIR)/generators/k6:/scripts:ro" \
 		-v "$(CURDIR)/$(REPORTS_DIR):/out" \
@@ -83,15 +83,20 @@ bench-smoke: ## Run the smoke k6 script (requires make up)
 		$(K6_IMAGE) run /scripts/smoke.js --summary-export=/out/smoke-summary.json
 	@$(MAKE) --no-print-directory smoke-check
 
-smoke-check: ## Confirm profiles landed in Pyroscope for benchmarks-workload
+# k6 image runs as a non-root uid; world-writable _local avoids "permission denied" on /out.
+prepare-reports-dir:
 	@mkdir -p "$(CURDIR)/$(REPORTS_DIR)"
+	@chmod a+rwx "$(CURDIR)/$(REPORTS_DIR)"
+
+smoke-check: ## Confirm profiles landed in Pyroscope for benchmarks-workload
+	@$(MAKE) --no-print-directory prepare-reports-dir
 	PYROSCOPE_URL="http://127.0.0.1:$(PYROSCOPE_PORT)" \
 		OUT="$(CURDIR)/$(REPORTS_DIR)/pyroscope-routes.json" \
 		TIMEOUT=60 \
 		"$(CURDIR)/scripts/check-profiles.sh"
 
 collect-report: ## Gather local host meta under reports/_local/
-	@mkdir -p "$(CURDIR)/$(REPORTS_DIR)"
+	@$(MAKE) --no-print-directory prepare-reports-dir
 	@uname -a > "$(CURDIR)/$(REPORTS_DIR)/uname.txt"
 	@date -u +"collected_at=%Y-%m-%dT%H:%M:%SZ" > "$(CURDIR)/$(REPORTS_DIR)/meta.txt"
 	@echo "K6_IMAGE=$(K6_IMAGE)" >> "$(CURDIR)/$(REPORTS_DIR)/meta.txt"
