@@ -14,6 +14,11 @@ DURATION=${DURATION:-2m}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE_ON:-0.1}
 STATS_INTERVAL=${STATS_INTERVAL:-2}
 
+# Docker bind mounts require absolute host paths (relative → treated as volume names).
+if [[ "$REPORTS_DIR" != /* ]]; then
+  REPORTS_DIR="$ROOT/$REPORTS_DIR"
+fi
+
 mkdir -p "$REPORTS_DIR"
 chmod a+rwx "$REPORTS_DIR" || true
 
