@@ -13,38 +13,48 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
+$enabledRaw = getenv('TRACEWICK_ENABLED');
+$profilingEnabled = $enabledRaw === false || $enabledRaw === ''
+    ? true
+    : !in_array(strtolower((string) $enabledRaw), ['0', 'false', 'off', 'no'], true);
+
 if ($path === '/health') {
     header('Content-Type: application/json');
     echo json_encode([
         'ok' => true,
         'excimer' => extension_loaded('excimer'),
         'tracewick' => class_exists(UnitOfWorkProfiler::class),
+        'profiling_enabled' => $profilingEnabled,
+        'sample_rate' => (float) (getenv('TRACEWICK_SAMPLE_RATE') ?: '0.1'),
     ], JSON_THROW_ON_ERROR);
     exit;
 }
 
 $spoolDir = getenv('TRACEWICK_SPOOL_DIR') ?: '/var/spool/tracewick';
-$sampleRate = (float) (getenv('TRACEWICK_SAMPLE_RATE') ?: '1.0');
+$sampleRate = (float) (getenv('TRACEWICK_SAMPLE_RATE') ?: '0.1');
 $service = getenv('TRACEWICK_SERVICE') ?: 'benchmarks-workload';
 $envLabel = getenv('TRACEWICK_ENV') ?: 'bench';
 $busyMs = max(0, (int) (getenv('WORK_BUSY_MS') ?: '25'));
 $sleepMs = max(0, (int) (getenv('WORK_SLEEP_MS') ?: '10'));
 
-$profiler = UnitOfWorkProfiler::create(
-    new SpoolSink($service, new SpoolConfig($spoolDir)),
-    new ProfilerConfig(
-        new Labels([
-            'service' => $service,
-            'env' => $envLabel,
-            'runtime' => 'fpm',
-        ]),
-        sampleRate: $sampleRate,
-    ),
-);
-
 $route = $path === '/' || $path === '/work' ? 'work' : 'other';
-$profiler->start(['route' => $route, 'method' => $method]);
-$profiler->registerShutdown();
+$profiler = null;
+
+if ($profilingEnabled) {
+    $profiler = UnitOfWorkProfiler::create(
+        new SpoolSink($service, new SpoolConfig($spoolDir)),
+        new ProfilerConfig(
+            new Labels([
+                'service' => $service,
+                'env' => $envLabel,
+                'runtime' => 'fpm',
+            ]),
+            sampleRate: $sampleRate,
+        ),
+    );
+    $profiler->start(['route' => $route, 'method' => $method]);
+    $profiler->registerShutdown();
+}
 
 if ($route !== 'work') {
     http_response_code(404);
@@ -67,6 +77,7 @@ echo json_encode([
     'busy_ms' => $busyMs,
     'sleep_ms' => $sleepMs,
     'elapsed_ms' => round($elapsedMs, 3),
+    'profiling_enabled' => $profilingEnabled,
     'sample_rate' => $sampleRate,
     'spool_dir' => $spoolDir,
 ], JSON_THROW_ON_ERROR);

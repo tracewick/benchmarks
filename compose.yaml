@@ -17,7 +17,9 @@ x-app-build: &app-build
 
 x-app-env: &app-env
   TRACEWICK_SPOOL_DIR: ${TRACEWICK_SPOOL_DIR:-/var/spool/tracewick}
-  TRACEWICK_SAMPLE_RATE: ${TRACEWICK_SAMPLE_RATE:-1.0}
+  TRACEWICK_ENABLED: ${TRACEWICK_ENABLED:-1}
+  # Smoke may set 1.0; overhead "on" uses 0.1 (METHOD.md default).
+  TRACEWICK_SAMPLE_RATE: ${TRACEWICK_SAMPLE_RATE:-0.1}
   TRACEWICK_SERVICE: ${TRACEWICK_SERVICE:-benchmarks-workload}
   TRACEWICK_ENV: ${TRACEWICK_ENV:-bench}
   WORK_BUSY_MS: ${WORK_BUSY_MS:-25}
@@ -63,6 +65,7 @@ services:
     environment:
       <<: *app-env
     volumes:
+      - ./stand/app/public:/srv/app/public:ro
       - app-spool:/var/spool/tracewick
     depends_on: [pyroscope]
     healthcheck:

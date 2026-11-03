@@ -15,9 +15,11 @@ git clone https://github.com/tracewick/benchmarks.git
 cd benchmarks
 cp .env.example .env   # optional
 make up                # build + Pyroscope + Grafana + PHP workload + drain
-make bench-smoke       # k6 → http://127.0.0.1:8080/work
+make bench-smoke       # wiring smoke (profiles → Pyroscope)
+make bench-overhead    # M2: baseline vs on @ fixed RPS (~2× duration)
 make down
 ```
+
 
 | URL | What |
 | --- | --- |
@@ -57,7 +59,10 @@ reports/         checked-in reports; local scratch under reports/_local/
 | `make down` | Stop and remove volumes |
 | `make k6-version` | Print / run pinned k6 image |
 | `make bench-smoke` | Short k6 smoke + Pyroscope app check |
+| `make bench-overhead` | M2 A/B at `RATE` req/s (default 20) for `DURATION` (default `2m`) |
 | `make collect-report` | Stash host meta under `reports/_local/` |
+
+Overhead artifacts land in `reports/_local/overhead-<timestamp>/` and `reports/_local/overhead-latest.md`. Copy a polished version into `reports/` when checking in a golden cloud run.
 
 ## Boundary with the library
 

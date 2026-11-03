@@ -14,7 +14,8 @@ Minimal PHP-FPM app for capacity smoke / benches. Depends on Packagist `tracewic
 | Variable | Default | Meaning |
 | --- | --- | --- |
 | `TRACEWICK_SPOOL_DIR` | `/var/spool/tracewick` | Spool directory (shared with drain) |
-| `TRACEWICK_SAMPLE_RATE` | `1.0` for smoke | Override to `0.1` for overhead A/B (M2) |
+| `TRACEWICK_ENABLED` | `1` | `0` = baseline (no profiler object); `1` = on |
+| `TRACEWICK_SAMPLE_RATE` | `0.1` | Smoke forces `1.0`; M2 on uses `0.1` |
 | `TRACEWICK_SERVICE` | `benchmarks-workload` | Pyroscope application / service label |
 | `TRACEWICK_ENV` | `bench` | `env` label |
 | `WORK_BUSY_MS` / `WORK_SLEEP_MS` | `25` / `10` | Synthetic CPU + wall wait |

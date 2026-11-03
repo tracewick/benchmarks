@@ -1,10 +1,8 @@
 # Tracewick benchmarks — capacity stand helpers.
 #
-#   make build           build workload images
-#   make up              observability + app + drain
-#   make down            stop and remove volumes
-#   make bench-smoke     short k6 smoke against :8080
-#   make collect-report  stash host meta under reports/_local/
+#   make up                 observability + app + drain
+#   make bench-smoke        short wiring smoke
+#   make bench-overhead     M2 baseline vs on @ fixed RPS + report
 
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
@@ -16,8 +14,10 @@ BASE_URL ?= http://127.0.0.1:8080
 APP_PORT ?= 8080
 GRAFANA_PORT ?= 3000
 PYROSCOPE_PORT ?= 4040
+RATE ?= 20
+DURATION ?= 2m
 
-.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke prepare-reports-dir collect-report smoke-check
+.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -74,6 +74,9 @@ k6-version: ## Show pinned k6 Docker image and its version string
 
 bench-smoke: ## Run the smoke k6 script (requires make up)
 	@$(MAKE) --no-print-directory prepare-reports-dir
+	# Ensure profiling on @ 1.0 so Pyroscope check is deterministic.
+	TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE=1.0 $(COMPOSE) up -d --force-recreate --no-deps app-fpm
+	@$(MAKE) --no-print-directory wait-app
 	docker run --rm --network host \
 		-v "$(CURDIR)/generators/k6:/scripts:ro" \
 		-v "$(CURDIR)/$(REPORTS_DIR):/out" \
@@ -82,6 +85,12 @@ bench-smoke: ## Run the smoke k6 script (requires make up)
 		-e DURATION="$${DURATION:-45s}" \
 		$(K6_IMAGE) run /scripts/smoke.js --summary-export=/out/smoke-summary.json
 	@$(MAKE) --no-print-directory smoke-check
+
+bench-overhead: ## M2: baseline vs on @ fixed RPS; writes reports/_local/overhead-* 
+	@chmod +x scripts/run-overhead.sh scripts/sample-container-stats.sh scripts/summarize-overhead.py
+	RATE="$(RATE)" DURATION="$(DURATION)" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
+		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" \
+		./scripts/run-overhead.sh
 
 # k6 image runs as a non-root uid; world-writable _local avoids "permission denied" on /out.
 prepare-reports-dir:
