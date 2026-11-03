@@ -17,7 +17,7 @@ PYROSCOPE_PORT ?= 4040
 RATE ?= 20
 DURATION ?= 2m
 
-.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos prepare-reports-dir collect-report smoke-check
+.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -104,6 +104,13 @@ bench-chaos: ## M3 optional: Toxiproxy latency toward Pyroscope
 	RATE="$(RATE)" DURATION="$${DURATION:-60s}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" LATENCY_MS="$${LATENCY_MS:-3000}" \
 		./scripts/run-chaos-pyroscope.sh
+
+bench-soak: ## Soak: fixed RPS + FPM/drain RSS·CPU series (default RATE=10 DURATION=72h)
+	@chmod +x scripts/run-soak.sh scripts/sample-container-stats.sh scripts/summarize-soak.py
+	RATE="$${RATE:-10}" DURATION="$${DURATION:-72h}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
+		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-60}" \
+		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
+		./scripts/run-soak.sh
 
 # k6 image runs as a non-root uid; world-writable _local avoids "permission denied" on /out.
 prepare-reports-dir:

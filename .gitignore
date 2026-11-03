@@ -3,7 +3,6 @@
 .env.local
 *.pem
 *.key
-
 # OS / editor
 .DS_Store
 Thumbs.db
@@ -11,7 +10,6 @@ Thumbs.db
 .vscode/
 *.swp
 *~
-
 # Local run artifacts (checked-in reports/ is intentional)
 /tmp/
 /artifacts/
@@ -19,10 +17,9 @@ Thumbs.db
 /stand/data/
 /stand/spool/
 /reports/_local/
-
 # Composer (when the workload app adds PHP deps)
 /stand/app/vendor/
 /stand/app/composer.lock
-
 # Cursor / agent scratch
 .cursor/
+scripts/__pycache__/

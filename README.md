@@ -17,6 +17,7 @@ cp .env.example .env   # optional
 make up                # build + Pyroscope + Grafana + PHP workload + drain
 make bench-smoke       # wiring smoke (profiles → Pyroscope)
 make bench-overhead    # M2: baseline vs on @ fixed RPS (~2× duration)
+make bench-soak        # soak: RSS/CPU series (default 10 RPS / 72h; use tmux)
 make down
 ```
 
@@ -62,7 +63,22 @@ reports/         checked-in reports; local scratch under reports/_local/
 | `make bench-overhead` | M2 A/B at `RATE` req/s (default 20) for `DURATION` (default `2m`) |
 | `make bench-spool-pressure` | M3: stop drain, fill spool, measure catch-up |
 | `make bench-chaos` | M3: Toxiproxy latency toward Pyroscope |
+| `make bench-soak` | Soak: fixed RPS + FPM/drain RSS·CPU (default `10` / `72h`) |
 | `make collect-report` | Stash host meta under `reports/_local/` |
+
+### Soak (manual / tmux)
+
+Run on the VPS outside an IDE terminal so logout does not kill k6:
+
+```bash
+cd /root/benchmarks && git pull --ff-only && make up
+tmux new -s soak
+# inside tmux:
+make bench-soak
+# Detach: Ctrl-b d   |   Reattach: tmux attach -t soak
+```
+
+Defaults: `RATE=10`, `DURATION=72h`, `STATS_INTERVAL=60`, `sampleRate=0.1`. Override as env vars. Artifacts: `reports/_local/soak-<utc>/` and `soak-latest.md`.
 
 Local run scratch: `reports/_local/`. Golden cloud reports:
 

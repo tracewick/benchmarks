@@ -50,8 +50,8 @@ Pinned image / binary versions live in `compose.yaml`, the Makefile (`K6_IMAGE`)
 ## How we run
 
 1. **Pin:** Tracewick tag/commit, PHP / Pyroscope / Grafana images, k6 version, CPU limits if any.
-2. **Warmup**, then a fixed window (smoke: 5–15 minutes; soak: longer, separate scenario).
-3. **One factor per run:** baseline vs on; separately spool pressure; separately chaos. Do not mix.
+2. **Warmup**, then a fixed window (smoke: 5–15 minutes; soak: `make bench-soak`, default 72h at moderate RPS — RSS/CPU series, not an overhead table).
+3. **One factor per run:** baseline vs on; separately spool pressure; separately chaos; separately soak. Do not mix.
 4. **Same load script** (URL, VUs, duration) across the A/B pair.
 5. **Report** = parameters + table + 1–2 screenshots + “what we proved / what we did not measure”.
 6. A stranger repeats with `make up` → `make bench-…` and compares against a sample report in git.
