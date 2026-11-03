@@ -1,0 +1,1 @@
+{"attributes":{"latency":3000,"jitter":0},"name":"pyroscope_latency","type":"latency","stream":"downstream","toxicity":1}

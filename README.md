@@ -64,7 +64,12 @@ reports/         checked-in reports; local scratch under reports/_local/
 | `make bench-chaos` | M3: Toxiproxy latency toward Pyroscope |
 | `make collect-report` | Stash host meta under `reports/_local/` |
 
-Overhead artifacts land in `reports/_local/overhead-<timestamp>/` and `reports/_local/overhead-latest.md`. Golden cloud A/B: [reports/2026-11-03-overhead-cloud.md](reports/2026-11-03-overhead-cloud.md).
+Local run scratch: `reports/_local/`. Golden cloud reports:
+
+- [overhead A/B](reports/2026-11-03-overhead-cloud.md)
+- [spool pressure](reports/2026-11-03-spool-pressure-cloud.md)
+- [chaos Pyroscope](reports/2026-11-03-chaos-pyroscope-cloud.md)
+
 
 ## Boundary with the library
 
