@@ -62,7 +62,7 @@ reports/         checked-in reports; local scratch under reports/_local/
 | `make bench-overhead` | M2 A/B at `RATE` req/s (default 20) for `DURATION` (default `2m`) |
 | `make collect-report` | Stash host meta under `reports/_local/` |
 
-Overhead artifacts land in `reports/_local/overhead-<timestamp>/` and `reports/_local/overhead-latest.md`. Copy a polished version into `reports/` when checking in a golden cloud run.
+Overhead artifacts land in `reports/_local/overhead-<timestamp>/` and `reports/_local/overhead-latest.md`. Golden cloud A/B: [reports/2026-11-03-overhead-cloud.md](reports/2026-11-03-overhead-cloud.md).
 
 ## Boundary with the library
 

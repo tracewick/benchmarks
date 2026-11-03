@@ -35,13 +35,15 @@ def k6_rps(summary: dict) -> float | None:
 
 def k6_fail_rate(summary: dict) -> float | None:
     failed = summary.get("metrics", {}).get("http_req_failed", {})
-    if "value" in failed and isinstance(failed["value"], (int, float)) and "passes" not in failed:
-        # rate metric often has "value" as the rate
-        return failed.get("value")
+    # k6 summary-export: Rate metrics expose the rate as "value" (0..1).
+    if isinstance(failed.get("value"), (int, float)):
+        return float(failed["value"])
     if "rate" in failed:
-        return failed["rate"]
+        return float(failed["rate"])
     values = failed.get("values") or {}
-    return values.get("rate")
+    if "rate" in values:
+        return float(values["rate"])
+    return None
 
 
 def stats_agg(path: Path) -> dict[str, float | None]:
