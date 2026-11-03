@@ -47,7 +47,10 @@ echo
 
 TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" \
   $COMPOSE up -d --force-recreate --no-deps app-fpm
+# nginx resolves app-fpm at start; recreate changes the container IP.
+$COMPOSE up -d --no-deps --force-recreate app-nginx
 for i in $(seq 1 60); do curl -sf "$BASE_URL/health" >/dev/null && break; sleep 1; done
+curl -sf "$BASE_URL/health" | tee "$run_dir/health.json"; echo
 
 # Clear spool
 $COMPOSE exec -T app-fpm php -r '
@@ -66,6 +69,8 @@ foreach ($it as $f) { if ($f->isFile()) @unlink($f->getPathname()); }
 ) &
 sampler=$!
 
+# Collect summary even if thresholds fail (we still want the chaos report).
+set +e
 docker run --rm --network host \
   -v "$ROOT/generators/k6:/scripts:ro" \
   -v "$run_dir:/out" \
@@ -74,12 +79,14 @@ docker run --rm --network host \
   -e DURATION="$DURATION" \
   -e EXPECT_PROFILING=1 \
   "$K6_IMAGE" run /scripts/overhead.js --summary-export=/out/k6.json
+k6_rc=$?
+set -e
 
 kill "$sampler" 2>/dev/null || true
 wait "$sampler" 2>/dev/null || true
 
 peak=$(awk -F, 'NR>1 {if($2>m)m=$2} END{print m+0}' "$run_dir/spool-timeseries.csv")
-echo "peak_files=$peak" | tee "$run_dir/peak.txt"
+echo "peak_files=$peak k6_rc=$k6_rc" | tee "$run_dir/peak.txt"
 
 echo "==> Remove toxic; restore direct Pyroscope URL"
 curl -sf -X DELETE "$TOXIPROXY_URL/proxies/pyroscope/toxics/pyroscope_latency" >/dev/null || true
@@ -88,8 +95,13 @@ TRACEWICK_PYROSCOPE_URL=http://pyroscope:4040 \
 
 fail=$(python3 - <<PY
 import json
-d=json.load(open("$run_dir/k6.json"))
-print(d.get("metrics",{}).get("http_req_failed",{}).get("value",0))
+from pathlib import Path
+p=Path("$run_dir/k6.json")
+if not p.is_file():
+    print("missing")
+else:
+    d=json.load(p.open())
+    print(d.get("metrics",{}).get("http_req_failed",{}).get("value",0))
 PY
 )
 

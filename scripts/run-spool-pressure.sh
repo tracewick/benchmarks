@@ -40,6 +40,7 @@ record_spool() {
 echo "==> Recreate app-fpm (enabled, sampleRate=$SAMPLE_RATE, maxFiles=$MAX_FILES)"
 TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" TRACEWICK_SPOOL_MAX_FILES="$MAX_FILES" \
   $COMPOSE up -d --force-recreate --no-deps app-fpm
+$COMPOSE up -d --no-deps --force-recreate app-nginx
 for i in $(seq 1 60); do curl -sf "$BASE_URL/health" >/dev/null && break; sleep 1; done
 curl -sf "$BASE_URL/health" | tee "$run_dir/health.json"; echo
 

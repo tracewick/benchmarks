@@ -33,6 +33,8 @@ recreate_app() {
   echo "==> Recreating app-fpm (TRACEWICK_ENABLED=$enabled SAMPLE_RATE=$rate)"
   TRACEWICK_ENABLED="$enabled" TRACEWICK_SAMPLE_RATE="$rate" \
     $COMPOSE up -d --force-recreate --no-deps app-fpm
+  # nginx resolves app-fpm at start; recreate changes the container IP.
+  $COMPOSE up -d --no-deps --force-recreate app-nginx
   # Drain keeps running; restart so it is not stuck on old claims after recreate.
   $COMPOSE up -d --no-deps app-drain
   for i in $(seq 1 60); do
