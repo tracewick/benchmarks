@@ -1,0 +1,68 @@
+# Tracewick benchmarks — capacity stand helpers.
+#
+#   make up              start observability stack
+#   make down            stop and remove volumes
+#   make bench-smoke     short k6 smoke (M1+: needs workload app)
+#   make collect-report  copy run artifacts into reports/_local/
+#   make k6-version      print pinned k6 image version
+
+SHELL := /bin/bash
+.DEFAULT_GOAL := help
+
+COMPOSE ?= docker compose
+K6_IMAGE ?= grafana/k6:1.8.2
+REPORTS_DIR ?= reports/_local
+
+.PHONY: help up down up-chaos wait-ready k6-version bench-smoke collect-report
+
+help: ## Show targets
+	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+
+up: ## Start Pyroscope + Grafana
+	$(COMPOSE) up -d --wait pyroscope grafana
+	@$(MAKE) --no-print-directory wait-ready
+
+up-chaos: ## Start stack including Toxiproxy (profile chaos)
+	$(COMPOSE) --profile chaos up -d --wait
+	@$(MAKE) --no-print-directory wait-ready
+
+wait-ready: ## Poll Grafana health and Pyroscope /ready (distroless has no healthcheck)
+	@echo "Waiting for Grafana…"
+	@for i in $$(seq 1 60); do \
+		curl -sf http://127.0.0.1:$${GRAFANA_PORT:-3000}/api/health >/dev/null && break; \
+		sleep 1; \
+	done
+	@curl -sf http://127.0.0.1:$${GRAFANA_PORT:-3000}/api/health >/dev/null
+	@echo "Waiting for Pyroscope /ready…"
+	@for i in $$(seq 1 90); do \
+		code=$$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:$${PYROSCOPE_PORT:-4040}/ready || true); \
+		[ "$$code" = "200" ] && break; \
+		sleep 1; \
+	done
+	@code=$$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:$${PYROSCOPE_PORT:-4040}/ready || true); \
+		[ "$$code" = "200" ] || { echo "Pyroscope not ready (HTTP $$code)"; exit 1; }
+	@echo "Stand ready (Grafana + Pyroscope)."
+
+down: ## Stop the stand and remove volumes
+	$(COMPOSE) --profile chaos down --volumes --remove-orphans
+
+k6-version: ## Show pinned k6 Docker image and its version string
+	@echo "K6_IMAGE=$(K6_IMAGE)"
+	docker run --rm $(K6_IMAGE) version
+
+bench-smoke: ## Run the smoke k6 script (requires make up + M1 workload on :8080)
+	@mkdir -p "$(CURDIR)/$(REPORTS_DIR)"
+	docker run --rm --network host \
+		-v "$(CURDIR)/generators/k6:/scripts:ro" \
+		-v "$(CURDIR)/$(REPORTS_DIR):/out" \
+		-e BASE_URL="$${BASE_URL:-http://127.0.0.1:8080}" \
+		-e VUS="$${VUS:-2}" \
+		-e DURATION="$${DURATION:-30s}" \
+		$(K6_IMAGE) run /scripts/smoke.js --summary-export=/out/smoke-summary.json
+
+collect-report: ## Gather local host meta under reports/_local/
+	@mkdir -p "$(CURDIR)/$(REPORTS_DIR)"
+	@uname -a > "$(CURDIR)/$(REPORTS_DIR)/uname.txt"
+	@date -u +"collected_at=%Y-%m-%dT%H:%M:%SZ" > "$(CURDIR)/$(REPORTS_DIR)/meta.txt"
+	@echo "K6_IMAGE=$(K6_IMAGE)" >> "$(CURDIR)/$(REPORTS_DIR)/meta.txt"
+	@echo "Wrote $(REPORTS_DIR)/uname.txt and meta.txt"

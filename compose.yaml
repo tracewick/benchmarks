@@ -1,0 +1,49 @@
+# Tracewick capacity stand (sibling of tracewick/tracewick).
+#
+#   make up      start Pyroscope + Grafana (+ optional Toxiproxy)
+#   make down    stop and remove volumes
+#
+# Workload app + drain land in M1. Ports bind to 127.0.0.1 only.
+
+name: tracewick-benchmarks
+
+services:
+  pyroscope:
+    image: ${PYROSCOPE_IMAGE:-grafana/pyroscope:2.4.2}
+    # Distroless: no in-container healthcheck binary; poll /ready from the host.
+    ports:
+      - 127.0.0.1:${PYROSCOPE_PORT:-4040}:4040
+
+  grafana:
+    image: ${GRAFANA_IMAGE:-grafana/grafana:13.3.0}
+    depends_on: [pyroscope]
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+    volumes:
+      - ./stand/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - 127.0.0.1:${GRAFANA_PORT:-3000}:3000
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://localhost:3000/api/health]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+
+  # Optional path for backend-degradation scenarios (M3).
+  toxiproxy:
+    image: ${TOXIPROXY_IMAGE:-ghcr.io/shopify/toxiproxy:2.13.0}
+    profiles: [chaos]
+    command: [-host=0.0.0.0, -config=/etc/toxiproxy/toxiproxy.json]
+    volumes:
+      - ./stand/toxiproxy/toxiproxy.json:/etc/toxiproxy/toxiproxy.json:ro
+    ports:
+      - 127.0.0.1:${TOXIPROXY_PORT:-8474}:8474
+
+  # M1 placeholders (uncomment / flesh out with the PHP workload + drain):
+  # app-fpm:     PHP-FPM + Tracewick SpoolSink (Packagist pin TRACEWICK_VERSION)
+  # app-drain:   vendor/bin/tracewick-drain → Pyroscope
+  # app-nginx:   front the FPM pool for k6

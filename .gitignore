@@ -1,0 +1,28 @@
+# Local env and secrets
+.env
+.env.local
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local run artifacts (checked-in reports/ is intentional)
+/tmp/
+/artifacts/
+*.log
+/stand/data/
+/stand/spool/
+/reports/_local/
+
+# Composer (when the workload app adds PHP deps)
+/stand/app/vendor/
+/stand/app/composer.lock
+
+# Cursor / agent scratch
+.cursor/
