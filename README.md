@@ -6,18 +6,27 @@ This is a **sibling** of the library repo. Capacity / soak / load harness lives 
 
 Packagist: [`tracewick/tracewick`](https://packagist.org/packages/tracewick/tracewick) (pin recorded in every report).
 
-## Quick start (M0)
+## Quick start
+
+Prerequisites: Docker with Compose v2, outbound network for the first image build (Packagist + pecl Excimer).
 
 ```bash
 git clone https://github.com/tracewick/benchmarks.git
 cd benchmarks
 cp .env.example .env   # optional
-make up                # Pyroscope :4040, Grafana :3000 (loopback)
-open http://127.0.0.1:3000
+make up                # build + Pyroscope + Grafana + PHP workload + drain
+make bench-smoke       # k6 → http://127.0.0.1:8080/work
 make down
 ```
 
-**M1** adds the PHP workload + drain and `make bench-smoke` end-to-end. Until then, `generators/k6/smoke.js` is checked in and k6 is pinned as `grafana/k6:1.8.2` (see `make k6-version`).
+| URL | What |
+| --- | --- |
+| http://127.0.0.1:8080/health | Workload liveness |
+| http://127.0.0.1:8080/work | Profiled work unit |
+| http://127.0.0.1:3000 | Grafana (anonymous Admin). **Explore → Profiles** (or Drilldown → Profiles), service `benchmarks-workload` |
+| http://127.0.0.1:4040 | Pyroscope |
+
+Pinned k6: `grafana/k6:1.8.2` (`make k6-version`). First `make up` compiles Excimer via PECL and may take several minutes.
 
 ## Documentation
 
@@ -27,26 +36,27 @@ make down
 | [LIMITATIONS.md](LIMITATIONS.md) | What we do not claim |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to change this repo |
 | [scenarios/](scenarios/) | Named profiles |
-| [reports/TEMPLATE.md](reports/TEMPLATE.md) | Report shape |
+| [reports/](reports/) | Checked-in reports + template |
 
 ## Layout
 
 ```
-stand/           compose support (Grafana provisioning, Toxiproxy, app placeholder)
+stand/           compose support + PHP workload (Packagist Tracewick)
 generators/k6/   primary load scripts
 scenarios/       scenario catalog
-reports/         checked-in reports (+ TEMPLATE); local scratch under reports/_local/
+reports/         checked-in reports; local scratch under reports/_local/
 ```
 
 ## Make targets
 
 | Target | Meaning |
 | --- | --- |
-| `make up` | Start Pyroscope + Grafana |
+| `make build` | Build PHP-FPM + nginx images |
+| `make up` | Build + start full smoke stand |
 | `make up-chaos` | Also start Toxiproxy |
 | `make down` | Stop and remove volumes |
 | `make k6-version` | Print / run pinned k6 image |
-| `make bench-smoke` | Short k6 smoke (needs M1 app) |
+| `make bench-smoke` | Short k6 smoke + Pyroscope app check |
 | `make collect-report` | Stash host meta under `reports/_local/` |
 
 ## Boundary with the library

@@ -1,16 +1,31 @@
 # Tracewick capacity stand (sibling of tracewick/tracewick).
 #
-#   make up      start Pyroscope + Grafana (+ optional Toxiproxy)
+#   make up      observability + workload (nginx :8080) + drain
 #   make down    stop and remove volumes
 #
-# Workload app + drain land in M1. Ports bind to 127.0.0.1 only.
+# Ports bind to 127.0.0.1 only.
 
 name: tracewick-benchmarks
+
+x-app-build: &app-build
+  context: stand/app
+  target: fpm
+  args:
+    PHP_VERSION: ${PHP_VERSION:-8.4}
+    EXCIMER_VERSION: ${EXCIMER_VERSION:-1.2.6}
+    TRACEWICK_VERSION: ${TRACEWICK_VERSION:-0.1.0}
+
+x-app-env: &app-env
+  TRACEWICK_SPOOL_DIR: ${TRACEWICK_SPOOL_DIR:-/var/spool/tracewick}
+  TRACEWICK_SAMPLE_RATE: ${TRACEWICK_SAMPLE_RATE:-1.0}
+  TRACEWICK_SERVICE: ${TRACEWICK_SERVICE:-benchmarks-workload}
+  TRACEWICK_ENV: ${TRACEWICK_ENV:-bench}
+  WORK_BUSY_MS: ${WORK_BUSY_MS:-25}
+  WORK_SLEEP_MS: ${WORK_SLEEP_MS:-10}
 
 services:
   pyroscope:
     image: ${PYROSCOPE_IMAGE:-grafana/pyroscope:2.4.2}
-    # Distroless: no in-container healthcheck binary; poll /ready from the host.
     ports:
       - 127.0.0.1:${PYROSCOPE_PORT:-4040}:4040
 
@@ -33,7 +48,6 @@ services:
       timeout: 3s
       retries: 24
 
-  # Optional path for backend-degradation scenarios (M3).
   toxiproxy:
     image: ${TOXIPROXY_IMAGE:-ghcr.io/shopify/toxiproxy:2.13.0}
     profiles: [chaos]
@@ -43,7 +57,50 @@ services:
     ports:
       - 127.0.0.1:${TOXIPROXY_PORT:-8474}:8474
 
-  # M1 placeholders (uncomment / flesh out with the PHP workload + drain):
-  # app-fpm:     PHP-FPM + Tracewick SpoolSink (Packagist pin TRACEWICK_VERSION)
-  # app-drain:   vendor/bin/tracewick-drain → Pyroscope
-  # app-nginx:   front the FPM pool for k6
+  app-fpm:
+    build: *app-build
+    image: tracewick-benchmarks-fpm:${TRACEWICK_VERSION:-0.1.0}
+    environment:
+      <<: *app-env
+    volumes:
+      - app-spool:/var/spool/tracewick
+    depends_on: [pyroscope]
+    healthcheck:
+      test: [CMD-SHELL, php -r 'exit(extension_loaded("excimer")?0:1);']
+      interval: 10s
+      timeout: 3s
+      retries: 12
+
+  app-drain:
+    image: tracewick-benchmarks-fpm:${TRACEWICK_VERSION:-0.1.0}
+    user: www-data
+    entrypoint: [vendor/bin/tracewick-drain]
+    command: [--memory-limit=128M]
+    environment:
+      TRACEWICK_SPOOL_DIR: ${TRACEWICK_SPOOL_DIR:-/var/spool/tracewick}
+      TRACEWICK_PYROSCOPE_URL: http://pyroscope:4040
+    volumes:
+      - app-spool:/var/spool/tracewick
+    depends_on: [pyroscope, app-fpm]
+    restart: unless-stopped
+
+  app-nginx:
+    build:
+      context: stand/app
+      target: nginx
+      args:
+        NGINX_VERSION: ${NGINX_VERSION:-1.28.0}
+    image: tracewick-benchmarks-nginx:${NGINX_VERSION:-1.28.0}
+    depends_on:
+      app-fpm:
+        condition: service_started
+    ports:
+      - 127.0.0.1:${APP_PORT:-8080}:80
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, http://127.0.0.1/health]
+      interval: 5s
+      timeout: 3s
+      retries: 24
+
+volumes:
+  app-spool:

@@ -1,0 +1,14 @@
+{
+  "name": "tracewick/benchmarks-workload",
+  "description": "Minimal PHP workload for Tracewick capacity smoke / benches",
+  "license": "Apache-2.0",
+  "type": "project",
+  "require": {
+    "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+    "tracewick/tracewick": "0.1.0"
+  },
+  "config": {
+    "sort-packages": true,
+    "platform-check": false
+  }
+}

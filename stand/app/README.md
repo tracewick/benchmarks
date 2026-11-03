@@ -1,9 +1,22 @@
-# Workload application (M1)
+# Workload application
 
-Placeholder for the PHP app under load:
+Minimal PHP-FPM app for capacity smoke / benches. Depends on Packagist `tracewick/tracewick` (pin in `composer.json`, default `0.1.0`).
 
-- Tracewick via Packagist pin (`TRACEWICK_VERSION`, default `0.1.0`)
-- SpoolSink → shared volume → `tracewick-drain` → Pyroscope
-- HTTP surface for k6 (`BASE_URL`)
+## Endpoints
 
-Do not vendor a copy of the library source here; depend on the published package or a pinned git ref and record it in every report.
+| Path | Purpose |
+| --- | --- |
+| `GET /health` | Liveness JSON (`excimer`, Tracewick class) |
+| `GET /` or `/work` | Busy + sleep work unit; profiled via SpoolSink |
+
+## Env
+
+| Variable | Default | Meaning |
+| --- | --- | --- |
+| `TRACEWICK_SPOOL_DIR` | `/var/spool/tracewick` | Spool directory (shared with drain) |
+| `TRACEWICK_SAMPLE_RATE` | `1.0` for smoke | Override to `0.1` for overhead A/B (M2) |
+| `TRACEWICK_SERVICE` | `benchmarks-workload` | Pyroscope application / service label |
+| `TRACEWICK_ENV` | `bench` | `env` label |
+| `WORK_BUSY_MS` / `WORK_SLEEP_MS` | `25` / `10` | Synthetic CPU + wall wait |
+
+Rebuild image when changing `TRACEWICK_VERSION` / Excimer pins (`make build`).
