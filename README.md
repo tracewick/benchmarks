@@ -60,6 +60,8 @@ reports/         checked-in reports; local scratch under reports/_local/
 | `make k6-version` | Print / run pinned k6 image |
 | `make bench-smoke` | Short k6 smoke + Pyroscope app check |
 | `make bench-overhead` | M2 A/B at `RATE` req/s (default 20) for `DURATION` (default `2m`) |
+| `make bench-spool-pressure` | M3: stop drain, fill spool, measure catch-up |
+| `make bench-chaos` | M3: Toxiproxy latency toward Pyroscope |
 | `make collect-report` | Stash host meta under `reports/_local/` |
 
 Overhead artifacts land in `reports/_local/overhead-<timestamp>/` and `reports/_local/overhead-latest.md`. Golden cloud A/B: [reports/2026-11-03-overhead-cloud.md](reports/2026-11-03-overhead-cloud.md).

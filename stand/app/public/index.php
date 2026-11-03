@@ -26,12 +26,14 @@ if ($path === '/health') {
         'tracewick' => class_exists(UnitOfWorkProfiler::class),
         'profiling_enabled' => $profilingEnabled,
         'sample_rate' => (float) (getenv('TRACEWICK_SAMPLE_RATE') ?: '0.1'),
+        'spool_max_files' => (int) (getenv('TRACEWICK_SPOOL_MAX_FILES') ?: '500'),
     ], JSON_THROW_ON_ERROR);
     exit;
 }
 
 $spoolDir = getenv('TRACEWICK_SPOOL_DIR') ?: '/var/spool/tracewick';
 $sampleRate = (float) (getenv('TRACEWICK_SAMPLE_RATE') ?: '0.1');
+$spoolMaxFiles = max(1, (int) (getenv('TRACEWICK_SPOOL_MAX_FILES') ?: '500'));
 $service = getenv('TRACEWICK_SERVICE') ?: 'benchmarks-workload';
 $envLabel = getenv('TRACEWICK_ENV') ?: 'bench';
 $busyMs = max(0, (int) (getenv('WORK_BUSY_MS') ?: '25'));
@@ -42,7 +44,7 @@ $profiler = null;
 
 if ($profilingEnabled) {
     $profiler = UnitOfWorkProfiler::create(
-        new SpoolSink($service, new SpoolConfig($spoolDir)),
+        new SpoolSink($service, new SpoolConfig($spoolDir, maxFiles: $spoolMaxFiles)),
         new ProfilerConfig(
             new Labels([
                 'service' => $service,

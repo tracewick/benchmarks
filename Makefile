@@ -17,7 +17,7 @@ PYROSCOPE_PORT ?= 4040
 RATE ?= 20
 DURATION ?= 2m
 
-.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead prepare-reports-dir collect-report smoke-check
+.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -91,6 +91,19 @@ bench-overhead: ## M2: baseline vs on @ fixed RPS; writes reports/_local/overhea
 	RATE="$(RATE)" DURATION="$(DURATION)" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" \
 		./scripts/run-overhead.sh
+
+bench-spool-pressure: ## M3: stop drain, fill spool to max_files, measure catch-up
+	@chmod +x scripts/run-spool-pressure.sh scripts/spool-snapshot.sh
+	RATE="$(RATE)" DURATION="$${DURATION:-90s}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
+		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" \
+		TRACEWICK_SPOOL_MAX_FILES="$${TRACEWICK_SPOOL_MAX_FILES:-80}" \
+		./scripts/run-spool-pressure.sh
+
+bench-chaos: ## M3 optional: Toxiproxy latency toward Pyroscope
+	@chmod +x scripts/run-chaos-pyroscope.sh scripts/spool-snapshot.sh
+	RATE="$(RATE)" DURATION="$${DURATION:-60s}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
+		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" LATENCY_MS="$${LATENCY_MS:-3000}" \
+		./scripts/run-chaos-pyroscope.sh
 
 # k6 image runs as a non-root uid; world-writable _local avoids "permission denied" on /out.
 prepare-reports-dir:
