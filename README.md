@@ -102,9 +102,12 @@ Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Ch
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 
 - [overhead A/B](reports/2026-11-06-overhead-depth48-cloud.md)
-- [spool pressure](reports/2026-11-06-spool-pressure-depth48-cloud.md)
-- [chaos Pyroscope](reports/2026-11-06-chaos-pyroscope-depth48-cloud.md)
-- [high-RPS pipeline ~700 hold](reports/2026-11-06-rps-pipeline-cloud.md)
+- [spool pressure (PHP drain)](reports/2026-11-06-spool-pressure-depth48-cloud.md)
+- [spool pressure (go-agent) — ~2s catch-up](reports/2026-11-06-spool-pressure-agent-depth48-cloud.md)
+- [chaos Pyroscope (PHP drain)](reports/2026-11-06-chaos-pyroscope-depth48-cloud.md)
+- [chaos Pyroscope (go-agent)](reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud.md)
+- [high-RPS ~700 (PHP drain, soft admission)](reports/2026-11-06-rps-pipeline-cloud.md)
+- [high-RPS ~700 (go-agent, spool below ceiling)](reports/2026-11-06-rps-pipeline-agent-depth48-cloud.md)
 - [soak 72h (FPM static + UnitOfWorkProfiler)](reports/2026-11-03-soak-cloud.md) — still **shallow** payloads until remade
 
 Historical (Nov-3, depth `0`, 2 vCPU — kept for depth/host comparison, **not** for citing SLOs):

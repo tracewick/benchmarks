@@ -1,0 +1,2 @@
+drain_catchup_sec=2
+reader=agent
