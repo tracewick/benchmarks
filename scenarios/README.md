@@ -9,3 +9,4 @@ Named capacity profiles. Each Make target `bench-<name>` maps to one scenario an
 | `spool-pressure` | Stop drain, fill toward `max_files`, catch-up lag | `make bench-spool-pressure` |
 | `chaos-pyroscope` | Toxiproxy latency to Pyroscope | `make bench-chaos` |
 | `soak` / `soak-72h` | Long RSS/CPU growth (FPM + drain series) | `make bench-soak` (default `RATE=10` `DURATION=72h`) |
+| `rps-pipeline` | High-RPS hold + spool files/bytes; deeper stacks via `WORK_STACK_DEPTH` | `make bench-rps` (default `RATE=500` `DURATION=5m`, depth 48) |

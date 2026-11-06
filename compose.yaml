@@ -25,6 +25,9 @@ x-app-env: &app-env
   TRACEWICK_ENV: ${TRACEWICK_ENV:-bench}
   WORK_BUSY_MS: ${WORK_BUSY_MS:-25}
   WORK_SLEEP_MS: ${WORK_SLEEP_MS:-10}
+  # 0 = shallow busyWork (default; keeps smoke/overhead/soak comparable).
+  WORK_STACK_DEPTH: ${WORK_STACK_DEPTH:-0}
+  PHP_FPM_MAX_CHILDREN: ${PHP_FPM_MAX_CHILDREN:-4}
 
 services:
   pyroscope:

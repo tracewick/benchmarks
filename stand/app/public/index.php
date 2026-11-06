@@ -27,6 +27,8 @@ if ($path === '/health') {
         'profiling_enabled' => $profilingEnabled,
         'sample_rate' => (float) (getenv('TRACEWICK_SAMPLE_RATE') ?: '0.1'),
         'spool_max_files' => (int) (getenv('TRACEWICK_SPOOL_MAX_FILES') ?: '500'),
+        'work_stack_depth' => max(0, (int) (getenv('WORK_STACK_DEPTH') ?: '0')),
+        'php_fpm_max_children' => max(1, (int) (getenv('PHP_FPM_MAX_CHILDREN') ?: '4')),
     ], JSON_THROW_ON_ERROR);
     exit;
 }
@@ -38,8 +40,15 @@ $service = getenv('TRACEWICK_SERVICE') ?: 'benchmarks-workload';
 $envLabel = getenv('TRACEWICK_ENV') ?: 'bench';
 $busyMs = max(0, (int) (getenv('WORK_BUSY_MS') ?: '25'));
 $sleepMs = max(0, (int) (getenv('WORK_SLEEP_MS') ?: '10'));
+// 0 = legacy shallow busyWork only (smoke / overhead / soak / chaos unchanged).
+$stackDepth = max(0, (int) (getenv('WORK_STACK_DEPTH') ?: '0'));
 
-$route = $path === '/' || $path === '/work' ? 'work' : 'other';
+// /work = default synthetic unit. /ping = optional zero-work probe (not used by golden scenarios).
+$route = match ($path) {
+    '/', '/work' => 'work',
+    '/ping' => 'ping',
+    default => 'other',
+};
 $profiler = null;
 
 if ($profilingEnabled) {
@@ -58,7 +67,7 @@ if ($profilingEnabled) {
     $profiler->registerShutdown();
 }
 
-if ($route !== 'work') {
+if ($route === 'other') {
     http_response_code(404);
     header('Content-Type: application/json');
     echo json_encode(['error' => 'not_found', 'path' => $path], JSON_THROW_ON_ERROR);
@@ -66,9 +75,17 @@ if ($route !== 'work') {
 }
 
 $started = hrtime(true);
-busyWork($busyMs);
-if ($sleepMs > 0) {
-    usleep($sleepMs * 1000);
+$effectiveBusy = $route === 'ping' ? 0 : $busyMs;
+$effectiveSleep = $route === 'ping' ? 0 : $sleepMs;
+$effectiveDepth = $route === 'ping' ? 0 : $stackDepth;
+
+if ($effectiveDepth > 0) {
+    deepStackWork($effectiveDepth, $effectiveBusy);
+} else {
+    busyWork($effectiveBusy);
+}
+if ($effectiveSleep > 0) {
+    usleep($effectiveSleep * 1000);
 }
 $elapsedMs = (hrtime(true) - $started) / 1_000_000;
 
@@ -76,8 +93,9 @@ header('Content-Type: application/json');
 echo json_encode([
     'ok' => true,
     'route' => $route,
-    'busy_ms' => $busyMs,
-    'sleep_ms' => $sleepMs,
+    'busy_ms' => $effectiveBusy,
+    'sleep_ms' => $effectiveSleep,
+    'stack_depth' => $effectiveDepth,
     'elapsed_ms' => round($elapsedMs, 3),
     'profiling_enabled' => $profilingEnabled,
     'sample_rate' => $sampleRate,
@@ -86,6 +104,7 @@ echo json_encode([
 
 /**
  * Burn roughly $milliseconds of CPU so wall/cpu samples have something to catch.
+ * Unchanged leaf used by all scenarios when WORK_STACK_DEPTH=0.
  */
 function busyWork(int $milliseconds): void
 {
@@ -101,4 +120,93 @@ function busyWork(int $milliseconds): void
             $x = 0.0;
         }
     }
+}
+
+/**
+ * Opt-in deeper call stacks for high-RPS / spool-size honesty.
+ * Wall budget stays in busyWork at the leaf — same WORK_BUSY_MS as shallow mode.
+ */
+function deepStackWork(int $depth, int $milliseconds): void
+{
+    stackLayerA($depth, $milliseconds);
+}
+
+function stackLayerA(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerB($depth - 1, $milliseconds);
+}
+
+function stackLayerB(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerC($depth - 1, $milliseconds);
+}
+
+function stackLayerC(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerD($depth - 1, $milliseconds);
+}
+
+function stackLayerD(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerE($depth - 1, $milliseconds);
+}
+
+function stackLayerE(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerF($depth - 1, $milliseconds);
+}
+
+function stackLayerF(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerG($depth - 1, $milliseconds);
+}
+
+function stackLayerG(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerH($depth - 1, $milliseconds);
+}
+
+function stackLayerH(int $depth, int $milliseconds): void
+{
+    if ($depth <= 1) {
+        busyWork($milliseconds);
+
+        return;
+    }
+    stackLayerA($depth - 1, $milliseconds);
 }

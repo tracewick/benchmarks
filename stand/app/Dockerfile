@@ -38,13 +38,17 @@ COPY --from=vendor /app/vendor /srv/app/vendor
 COPY --from=vendor /app/composer.json /app/composer.lock /srv/app/
 COPY public /srv/app/public
 COPY php-fpm.conf /usr/local/etc/php-fpm.d/zz-benchmarks.conf
+COPY docker-fpm-entrypoint.sh /usr/local/bin/docker-fpm-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-fpm-entrypoint.sh
 
 ENV TRACEWICK_SPOOL_DIR=/var/spool/tracewick \
     TRACEWICK_SAMPLE_RATE=1.0 \
     TRACEWICK_SERVICE=benchmarks-workload \
-    TRACEWICK_ENV=bench
+    TRACEWICK_ENV=bench \
+    PHP_FPM_MAX_CHILDREN=4
 
-USER www-data
+# Master runs as root (pool workers are www-data); entrypoint rewrites pm.max_children.
+ENTRYPOINT ["/usr/local/bin/docker-fpm-entrypoint.sh"]
 CMD ["php-fpm"]
 
 FROM nginx:${NGINX_VERSION}-alpine AS nginx

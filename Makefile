@@ -17,7 +17,7 @@ PYROSCOPE_PORT ?= 4040
 RATE ?= 20
 DURATION ?= 2m
 
-.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak prepare-reports-dir collect-report smoke-check
+.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak bench-rps prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -111,6 +111,17 @@ bench-soak: ## Soak: fixed RPS + FPM/drain RSS·CPU series (default RATE=10 DURA
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-60}" \
 		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
 		./scripts/run-soak.sh
+
+bench-rps: ## High-RPS pipeline: deep stacks + spool series (default RATE=500 DURATION=5m)
+	@chmod +x scripts/run-rps-pipeline.sh scripts/spool-snapshot.sh scripts/summarize-rps-pipeline.py
+	RATE="$${RATE:-500}" DURATION="$${DURATION:-5m}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
+		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-2}" \
+		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
+		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-48}" \
+		PHP_FPM_MAX_CHILDREN="$${PHP_FPM_MAX_CHILDREN:-32}" \
+		WORK_BUSY_MS="$${WORK_BUSY_MS:-25}" WORK_SLEEP_MS="$${WORK_SLEEP_MS:-10}" \
+		REQUEST_PATH="$${REQUEST_PATH:-/work}" DRAIN_MODE="$${DRAIN_MODE:-on}" \
+		./scripts/run-rps-pipeline.sh
 
 # k6 image runs as a non-root uid; world-writable _local avoids "permission denied" on /out.
 prepare-reports-dir:

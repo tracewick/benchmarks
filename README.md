@@ -64,6 +64,7 @@ reports/         checked-in reports; local scratch under reports/_local/
 | `make bench-spool-pressure` | M3: stop drain, fill spool, measure catch-up |
 | `make bench-chaos` | M3: Toxiproxy latency toward Pyroscope |
 | `make bench-soak` | Soak: fixed RPS + FPM/drain RSS·CPU (default `10` / `72h`) |
+| `make bench-rps` | High-RPS pipeline: deep stacks + spool series (default `500` / `5m`) |
 | `make collect-report` | Stash host meta under `reports/_local/` |
 
 ### Soak (manual / tmux)
@@ -79,6 +80,21 @@ make bench-soak
 ```
 
 Defaults: `RATE=10`, `DURATION=72h`, `STATS_INTERVAL=60`, `sampleRate=0.1`. Override as env vars. Artifacts: `reports/_local/soak-<utc>/` and `soak-latest.md`.
+
+### High-RPS pipeline (manual)
+
+Uses the same `/work` wall budget (`WORK_BUSY_MS` / `WORK_SLEEP_MS`) as overhead/soak. Opt-in `WORK_STACK_DEPTH` deepens call stacks so spool payloads are larger (closer to a real app). Default scenarios keep `WORK_STACK_DEPTH=0`.
+
+```bash
+cd /root/benchmarks && git pull --ff-only
+# first time after pull: rebuild FPM image (entrypoint / max_children)
+make up
+# start modest, then raise RATE toward what the 8-CPU box sustains
+RATE=500 DURATION=5m WORK_STACK_DEPTH=48 PHP_FPM_MAX_CHILDREN=32 make bench-rps
+# optional admission stress: DRAIN_MODE=off RATE=500 DURATION=2m ...
+```
+
+Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`.
 
 Local run scratch: `reports/_local/`. Golden cloud reports:
 
