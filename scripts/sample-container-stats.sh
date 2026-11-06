@@ -8,7 +8,11 @@ out=${2:?output csv path required}
 interval=${3:-2}
 compose=${COMPOSE:-docker compose}
 
-cid=$($compose ps -q "$service")
+cid=$($compose ps -q "$service" 2>/dev/null || true)
+# app-agent lives under compose profile "agent"
+if [ -z "$cid" ] && [ "$service" = "app-agent" ]; then
+    cid=$($compose --profile agent ps -q app-agent 2>/dev/null || true)
+fi
 if [ -z "$cid" ]; then
     echo "container for service $service not found" >&2
     exit 1

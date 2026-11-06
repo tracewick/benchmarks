@@ -92,10 +92,12 @@ cd /root/benchmarks && git pull --ff-only
 # first time after pull: rebuild FPM image (entrypoint / max_children)
 make up
 RATE=700 DURATION=5m PRE_VUS=500 MAX_VUS=2000 make bench-rps
-# optional admission stress: DRAIN_MODE=off RATE=700 DURATION=2m ...
+# optional admission stress: READER=off RATE=700 DURATION=2m ...
+# go-agent sidecar (alpha 0.1.0) instead of PHP drain:
+# READER=agent WORK_STACK_DEPTH=48 RATE=700 DURATION=5m make bench-rps
 ```
 
-Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Checked-in reports must repeat the single-instance / host-ceiling caveat.
+Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Checked-in reports must repeat the single-instance / host-ceiling caveat. `READER=drain|agent|off` (default `drain`).
 
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 

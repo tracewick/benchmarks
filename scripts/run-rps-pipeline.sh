@@ -19,7 +19,21 @@ FPM_CHILDREN=${PHP_FPM_MAX_CHILDREN:-32}
 BUSY_MS=${WORK_BUSY_MS:-25}
 SLEEP_MS=${WORK_SLEEP_MS:-10}
 STATS_INTERVAL=${STATS_INTERVAL:-2}
-DRAIN_MODE=${DRAIN_MODE:-on} # on | off
+# READER=drain|agent|off. DRAIN_MODE=off kept as alias for READER=off.
+DRAIN_MODE=${DRAIN_MODE:-on}
+READER=${READER:-}
+if [[ -z "$READER" ]]; then
+  if [[ "$DRAIN_MODE" == "off" ]]; then
+    READER=off
+  else
+    READER=drain
+  fi
+fi
+if [[ "$READER" == "off" ]]; then
+  DRAIN_MODE=off
+else
+  DRAIN_MODE=on
+fi
 
 if [[ "$REPORTS_DIR" != /* ]]; then
   REPORTS_DIR="$ROOT/$REPORTS_DIR"
@@ -33,7 +47,7 @@ mkdir -p "$run_dir"
 chmod a+rwx "$run_dir" || true
 
 echo "==> RPS pipeline RATE=$RATE DURATION=$DURATION PATH=$PATH_URI"
-echo "    STACK_DEPTH=$STACK_DEPTH FPM_CHILDREN=$FPM_CHILDREN SAMPLE_RATE=$SAMPLE_RATE DRAIN=$DRAIN_MODE"
+echo "    STACK_DEPTH=$STACK_DEPTH FPM_CHILDREN=$FPM_CHILDREN SAMPLE_RATE=$SAMPLE_RATE READER=$READER"
 echo "    BUSY_MS=$BUSY_MS SLEEP_MS=$SLEEP_MS (same wall budget as overhead/soak when depth=0)"
 
 {
@@ -46,6 +60,7 @@ echo "    BUSY_MS=$BUSY_MS SLEEP_MS=$SLEEP_MS (same wall budget as overhead/soak
   echo "PHP_FPM_MAX_CHILDREN=$FPM_CHILDREN"
   echo "WORK_BUSY_MS=$BUSY_MS"
   echo "WORK_SLEEP_MS=$SLEEP_MS"
+  echo "READER=$READER"
   echo "DRAIN_MODE=$DRAIN_MODE"
   echo "repo_sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)"
   echo "host=$(uname -a)"
@@ -61,11 +76,8 @@ PHP_FPM_MAX_CHILDREN="$FPM_CHILDREN" \
   $COMPOSE up -d --build --force-recreate --no-deps app-fpm
 $COMPOSE up -d --no-deps --force-recreate app-nginx
 
-if [[ "$DRAIN_MODE" == "off" ]]; then
-  $COMPOSE stop app-drain || true
-else
-  $COMPOSE up -d --no-deps app-drain
-fi
+chmod +x "$ROOT/scripts/ensure-reader.sh"
+READER="$READER" "$ROOT/scripts/ensure-reader.sh"
 
 for i in $(seq 1 90); do
   curl -sf "$BASE_URL/health" >/dev/null && break
@@ -112,9 +124,9 @@ docker run --rm --network host \
 cleanup
 trap - EXIT INT TERM
 
-# Ensure drain is back for the stand after drain=off runs.
-if [[ "$DRAIN_MODE" == "off" ]]; then
-  $COMPOSE up -d --no-deps app-drain || true
+# Restore default drain reader after off/agent runs so the stand is usable.
+if [[ "$READER" != "drain" ]]; then
+  READER=drain "$ROOT/scripts/ensure-reader.sh" || true
 fi
 
 sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)
@@ -132,7 +144,8 @@ python3 "$ROOT/scripts/summarize-rps-pipeline.py" \
   --stack-depth "$STACK_DEPTH" \
   --fpm-children "$FPM_CHILDREN" \
   --path "$PATH_URI" \
-  --drain "$DRAIN_MODE"
+  --drain "$DRAIN_MODE" \
+  --reader "$READER"
 
 cp "$report" "$REPORTS_DIR/rps-pipeline-latest.md"
 echo "finished_at_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$run_dir/meta.txt"

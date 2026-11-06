@@ -15,6 +15,7 @@ MAX_FILES=${TRACEWICK_SPOOL_MAX_FILES:-80}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE:-1.0}
 STATS_INTERVAL=${STATS_INTERVAL:-2}
 STACK_DEPTH=${WORK_STACK_DEPTH:-0}
+READER=${READER:-drain} # drain | agent | off (off = stop reader during fill; restart for catch-up)
 
 if [[ "$REPORTS_DIR" != /* ]]; then
   REPORTS_DIR="$ROOT/$REPORTS_DIR"
@@ -46,8 +47,14 @@ $COMPOSE up -d --no-deps --force-recreate app-nginx
 for i in $(seq 1 60); do curl -sf "$BASE_URL/health" >/dev/null && break; sleep 1; done
 curl -sf "$BASE_URL/health" | tee "$run_dir/health.json"; echo
 
-echo "==> Stop drain (build queue)"
-$COMPOSE stop app-drain
+echo "==> Stop readers (build queue); catch-up reader=$READER"
+chmod +x "$ROOT/scripts/ensure-reader.sh"
+READER=off "$ROOT/scripts/ensure-reader.sh"
+# Catch-up always uses a real reader (default drain); "off" here means drain for restore.
+CATCHUP_READER=$READER
+if [[ "$CATCHUP_READER" == "off" ]]; then
+  CATCHUP_READER=drain
+fi
 
 # Clear leftover spool so the ceiling is measurable.
 $COMPOSE exec -T app-fpm php -r '
@@ -88,9 +95,9 @@ peak_files=$(awk -F, 'NR>1 {if($2>m)m=$2} END{print m+0}' "$run_dir/spool-timese
 peak_bytes=$(awk -F, 'NR>1 {if($3>m)m=$3} END{print m+0}' "$run_dir/spool-timeseries.csv")
 echo "peak_files=$peak_files max_files=$MAX_FILES peak_bytes=$peak_bytes" | tee "$run_dir/peak.txt"
 
-echo "==> Restart drain; measure catch-up"
+echo "==> Start reader=$CATCHUP_READER; measure catch-up"
 start=$(date +%s)
-$COMPOSE start app-drain
+READER="$CATCHUP_READER" "$ROOT/scripts/ensure-reader.sh"
 # wait until regular spool files ~0 (allow brief claim churn)
 deadline=$((start + 180))
 while :; do
@@ -108,6 +115,7 @@ while :; do
 done
 end=$(date +%s)
 echo "drain_catchup_sec=$((end - start))" | tee "$run_dir/drain-catchup.txt"
+echo "reader=$CATCHUP_READER" | tee -a "$run_dir/drain-catchup.txt"
 record_spool spool-after-drain
 
 fail=$(python3 - <<PY
@@ -133,6 +141,7 @@ host=$(uname -a)
   echo "TRACEWICK_SAMPLE_RATE=$SAMPLE_RATE"
   echo "TRACEWICK_SPOOL_MAX_FILES=$MAX_FILES"
   echo "WORK_STACK_DEPTH=$STACK_DEPTH"
+  echo "READER=$CATCHUP_READER"
   echo "repo_sha=$sha"
   echo "host=$host"
 } > "$run_dir/meta.txt"
@@ -156,8 +165,9 @@ Methodology: [METHOD.md](../../METHOD.md) layer B.
 | sampleRate | \`$SAMPLE_RATE\` |
 | TRACEWICK_SPOOL_MAX_FILES | \`$MAX_FILES\` |
 | WORK_STACK_DEPTH | $STACK_DEPTH |
+| Catch-up reader | \`$CATCHUP_READER\` |
 | RATE / duration | $RATE / $DURATION |
-| Drain during load | **stopped** |
+| Reader during load | **stopped** |
 
 ## Results
 

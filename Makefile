@@ -25,17 +25,19 @@ help: ## Show targets
 build: ## Build PHP-FPM (+ nginx) workload images
 	$(COMPOSE) build app-fpm app-nginx
 
-up: build ## Start Pyroscope, Grafana, app, drain
+up: build ## Start Pyroscope, Grafana, app, drain (READER=agent for go sidecar)
 	$(COMPOSE) up -d --wait pyroscope grafana app-fpm app-nginx
 	@$(MAKE) --no-print-directory wait-ready
-	# Start drain after Pyroscope /ready so the first claim is not held across metastore warmup.
-	$(COMPOSE) up -d app-drain
+	# Start reader after Pyroscope /ready so the first claim is not held across metastore warmup.
+	@chmod +x scripts/ensure-reader.sh
+	READER="$${READER:-drain}" ./scripts/ensure-reader.sh
 	@$(MAKE) --no-print-directory wait-app
 
 up-chaos: build ## Start stack including Toxiproxy (profile chaos)
 	$(COMPOSE) --profile chaos up -d --wait pyroscope grafana app-fpm app-nginx toxiproxy
 	@$(MAKE) --no-print-directory wait-ready
-	$(COMPOSE) up -d app-drain
+	@chmod +x scripts/ensure-reader.sh
+	READER="$${READER:-drain}" ./scripts/ensure-reader.sh
 	@$(MAKE) --no-print-directory wait-app
 
 down: ## Stop the stand and remove volumes
@@ -93,30 +95,33 @@ bench-overhead: ## M2: baseline vs on @ fixed RPS; writes reports/_local/overhea
 		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
 		./scripts/run-overhead.sh
 
-bench-spool-pressure: ## M3: stop drain, fill spool to max_files, measure catch-up
-	@chmod +x scripts/run-spool-pressure.sh scripts/spool-snapshot.sh
+bench-spool-pressure: ## M3: stop reader, fill spool to max_files, measure catch-up (READER=drain|agent)
+	@chmod +x scripts/run-spool-pressure.sh scripts/spool-snapshot.sh scripts/ensure-reader.sh
 	RATE="$(RATE)" DURATION="$${DURATION:-90s}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" \
 		TRACEWICK_SPOOL_MAX_FILES="$${TRACEWICK_SPOOL_MAX_FILES:-80}" \
 		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
+		READER="$${READER:-drain}" \
 		./scripts/run-spool-pressure.sh
 
-bench-chaos: ## M3 optional: Toxiproxy latency toward Pyroscope
-	@chmod +x scripts/run-chaos-pyroscope.sh scripts/spool-snapshot.sh
+bench-chaos: ## M3 optional: Toxiproxy latency toward Pyroscope (READER=drain|agent)
+	@chmod +x scripts/run-chaos-pyroscope.sh scripts/spool-snapshot.sh scripts/ensure-reader.sh
 	RATE="$(RATE)" DURATION="$${DURATION:-60s}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" LATENCY_MS="$${LATENCY_MS:-3000}" \
 		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
+		READER="$${READER:-drain}" \
 		./scripts/run-chaos-pyroscope.sh
 
-bench-soak: ## Soak: fixed RPS + FPM/drain RSS·CPU series (default RATE=10 DURATION=72h)
-	@chmod +x scripts/run-soak.sh scripts/sample-container-stats.sh scripts/summarize-soak.py
+bench-soak: ## Soak: fixed RPS + FPM/reader RSS·CPU series (default RATE=10 DURATION=72h)
+	@chmod +x scripts/run-soak.sh scripts/sample-container-stats.sh scripts/summarize-soak.py scripts/ensure-reader.sh
 	RATE="$${RATE:-10}" DURATION="$${DURATION:-72h}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-60}" \
 		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
+		READER="$${READER:-drain}" \
 		./scripts/run-soak.sh
 
-bench-rps: ## High-RPS pipeline: deep stacks + spool series (default RATE=500 DURATION=5m)
-	@chmod +x scripts/run-rps-pipeline.sh scripts/spool-snapshot.sh scripts/summarize-rps-pipeline.py
+bench-rps: ## High-RPS pipeline: deep stacks + spool series (READER=drain|agent|off)
+	@chmod +x scripts/run-rps-pipeline.sh scripts/spool-snapshot.sh scripts/summarize-rps-pipeline.py scripts/ensure-reader.sh
 	RATE="$${RATE:-500}" DURATION="$${DURATION:-5m}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-2}" \
 		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
@@ -124,6 +129,7 @@ bench-rps: ## High-RPS pipeline: deep stacks + spool series (default RATE=500 DU
 		PHP_FPM_MAX_CHILDREN="$${PHP_FPM_MAX_CHILDREN:-32}" \
 		WORK_BUSY_MS="$${WORK_BUSY_MS:-25}" WORK_SLEEP_MS="$${WORK_SLEEP_MS:-10}" \
 		REQUEST_PATH="$${REQUEST_PATH:-/work}" DRAIN_MODE="$${DRAIN_MODE:-on}" \
+		READER="$${READER:-}" \
 		./scripts/run-rps-pipeline.sh
 
 # k6 image runs as a non-root uid; world-writable _local avoids "permission denied" on /out.

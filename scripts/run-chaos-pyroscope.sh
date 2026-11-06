@@ -15,6 +15,7 @@ DURATION=${DURATION:-60s}
 LATENCY_MS=${LATENCY_MS:-3000}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE:-1.0}
 STACK_DEPTH=${WORK_STACK_DEPTH:-0}
+READER=${READER:-drain} # drain | agent
 
 if [[ "$REPORTS_DIR" != /* ]]; then
   REPORTS_DIR="$ROOT/$REPORTS_DIR"
@@ -34,10 +35,6 @@ $COMPOSE --profile chaos up -d --wait pyroscope grafana toxiproxy app-fpm app-ng
 for i in $(seq 1 90); do curl -sf http://127.0.0.1:4040/ready >/dev/null && break; sleep 1; done
 for i in $(seq 1 60); do curl -sf "$BASE_URL/health" >/dev/null && break; sleep 1; done
 
-echo "==> Drain via toxiproxy:14040"
-TRACEWICK_PYROSCOPE_URL=http://toxiproxy:14040 \
-  $COMPOSE up -d --force-recreate --no-deps app-drain
-
 # Clear toxics, then add latency
 curl -sf -X POST "$TOXIPROXY_URL/reset" >/dev/null || true
 curl -sf -X POST "$TOXIPROXY_URL/proxies/pyroscope/toxics" \
@@ -53,6 +50,11 @@ TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" WORK_STACK_DEPTH="$STAC
 $COMPOSE up -d --no-deps --force-recreate app-nginx
 for i in $(seq 1 60); do curl -sf "$BASE_URL/health" >/dev/null && break; sleep 1; done
 curl -sf "$BASE_URL/health" | tee "$run_dir/health.json"; echo
+
+echo "==> Reader=$READER via toxiproxy:14040"
+chmod +x "$ROOT/scripts/ensure-reader.sh"
+TRACEWICK_PYROSCOPE_URL=http://toxiproxy:14040 READER="$READER" \
+  "$ROOT/scripts/ensure-reader.sh"
 
 # Clear spool
 $COMPOSE exec -T app-fpm php -r '
@@ -91,10 +93,10 @@ peak=$(awk -F, 'NR>1 {if($2>m)m=$2} END{print m+0}' "$run_dir/spool-timeseries.c
 peak_bytes=$(awk -F, 'NR>1 {if($3>m)m=$3} END{print m+0}' "$run_dir/spool-timeseries.csv")
 echo "peak_files=$peak peak_bytes=$peak_bytes k6_rc=$k6_rc" | tee "$run_dir/peak.txt"
 
-echo "==> Remove toxic; restore direct Pyroscope URL"
+echo "==> Remove toxic; restore direct Pyroscope URL + drain reader"
 curl -sf -X DELETE "$TOXIPROXY_URL/proxies/pyroscope/toxics/pyroscope_latency" >/dev/null || true
-TRACEWICK_PYROSCOPE_URL=http://pyroscope:4040 \
-  $COMPOSE up -d --force-recreate --no-deps app-drain
+TRACEWICK_PYROSCOPE_URL=http://pyroscope:4040 READER=drain \
+  "$ROOT/scripts/ensure-reader.sh"
 
 fail=$(python3 - <<PY
 import json
@@ -118,6 +120,7 @@ peak_mib=$(python3 -c "print(f'{$peak_bytes/1024/1024:.2f}')")
   echo "LATENCY_MS=$LATENCY_MS"
   echo "TRACEWICK_SAMPLE_RATE=$SAMPLE_RATE"
   echo "WORK_STACK_DEPTH=$STACK_DEPTH"
+  echo "READER=$READER"
   echo "repo_sha=$sha"
   echo "host=$host"
 } > "$run_dir/meta.txt"
@@ -133,6 +136,7 @@ cat > "$run_dir/chaos-report.md" <<EOF
 | RATE / duration | $RATE / $DURATION |
 | sampleRate | $SAMPLE_RATE |
 | WORK_STACK_DEPTH | $STACK_DEPTH |
+| READER | $READER |
 | Peak spool files during toxic | $peak |
 | Peak spool bytes | $peak_bytes ($peak_mib MiB) |
 | HTTP fail rate | $fail |

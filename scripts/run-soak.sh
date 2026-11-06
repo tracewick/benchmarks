@@ -14,6 +14,7 @@ RATE=${RATE:-10}
 DURATION=${DURATION:-72h}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE:-0.1}
 STATS_INTERVAL=${STATS_INTERVAL:-60}
+READER=${READER:-drain} # drain | agent
 
 if [[ "$REPORTS_DIR" != /* ]]; then
   REPORTS_DIR="$ROOT/$REPORTS_DIR"
@@ -31,7 +32,7 @@ log="$run_dir/soak.log"
 exec > >(tee -a "$log") 2>&1
 
 echo "==> Soak start $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-echo "    RATE=$RATE DURATION=$DURATION SAMPLE_RATE=$SAMPLE_RATE STATS_INTERVAL=${STATS_INTERVAL}s"
+echo "    RATE=$RATE DURATION=$DURATION SAMPLE_RATE=$SAMPLE_RATE STATS_INTERVAL=${STATS_INTERVAL}s READER=$READER"
 echo "    run_dir=$run_dir"
 echo "    tip: run inside tmux (tmux new -s soak) so logout does not kill k6"
 
@@ -41,6 +42,7 @@ echo "    tip: run inside tmux (tmux new -s soak) so logout does not kill k6"
   echo "DURATION=$DURATION"
   echo "TRACEWICK_SAMPLE_RATE=$SAMPLE_RATE"
   echo "STATS_INTERVAL=$STATS_INTERVAL"
+  echo "READER=$READER"
   echo "BASE_URL=$BASE_URL"
   echo "K6_IMAGE=$K6_IMAGE"
   echo "repo_sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)"
@@ -51,7 +53,8 @@ echo "==> Recreating app-fpm (profiling on)"
 TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" \
   $COMPOSE up -d --force-recreate --no-deps app-fpm
 $COMPOSE up -d --no-deps --force-recreate app-nginx
-$COMPOSE up -d --no-deps app-drain
+chmod +x "$ROOT/scripts/ensure-reader.sh"
+READER="$READER" "$ROOT/scripts/ensure-reader.sh"
 
 for i in $(seq 1 60); do
   if curl -sf "$BASE_URL/health" >/dev/null; then
@@ -63,12 +66,17 @@ curl -sf "$BASE_URL/health" | tee "$run_dir/health.json"
 echo
 
 fpm_stats="$run_dir/app-fpm-stats.csv"
-drain_stats="$run_dir/app-drain-stats.csv"
+if [[ "$READER" == "agent" ]]; then
+  reader_svc=app-agent
+else
+  reader_svc=app-drain
+fi
+reader_stats="$run_dir/${reader_svc}-stats.csv"
 
-echo "==> Sampling docker stats every ${STATS_INTERVAL}s"
+echo "==> Sampling docker stats every ${STATS_INTERVAL}s ($reader_svc)"
 COMPOSE="$COMPOSE" "$ROOT/scripts/sample-container-stats.sh" app-fpm "$fpm_stats" "$STATS_INTERVAL" &
 fpm_pid=$!
-COMPOSE="$COMPOSE" "$ROOT/scripts/sample-container-stats.sh" app-drain "$drain_stats" "$STATS_INTERVAL" &
+COMPOSE="$COMPOSE" "$ROOT/scripts/sample-container-stats.sh" "$reader_svc" "$reader_stats" "$STATS_INTERVAL" &
 drain_pid=$!
 
 cleanup() {
@@ -100,7 +108,7 @@ report="$run_dir/soak-report.md"
 python3 "$ROOT/scripts/summarize-soak.py" \
   --k6 "$run_dir/k6.json" \
   --fpm-stats "$fpm_stats" \
-  --drain-stats "$drain_stats" \
+  --drain-stats "$reader_stats" \
   --out "$report" \
   --repo-sha "$sha" \
   --host "$host" \

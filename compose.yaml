@@ -1,6 +1,7 @@
 # Tracewick capacity stand (sibling of tracewick/tracewick).
 #
-#   make up      observability + workload (nginx :8080) + drain
+#   make up      observability + workload (nginx :8080) + reader
+#   READER=drain|agent|off   (default drain; agent = go sidecar 0.1.0)
 #   make down    stop and remove volumes
 #
 # Ports bind to 127.0.0.1 only.
@@ -91,6 +92,34 @@ services:
       - app-spool:/var/spool/tracewick
     depends_on: [pyroscope, app-fpm]
     restart: unless-stopped
+
+  # Go agent (alpha). Same spool claim protocol as drain; UID 33 = www-data.
+  # Image from GitHub release tarball (GHCR may be private on the stand).
+  # Default make up still starts drain; use READER=agent (scripts/ensure-reader.sh).
+  app-agent:
+    build:
+      context: stand/agent
+      args:
+        AGENT_VERSION: ${AGENT_VERSION:-0.1.0}
+    image: tracewick-benchmarks-agent:${AGENT_VERSION:-0.1.0}
+    user: "33:33"
+    environment:
+      TRACEWICK_SPOOL_DIR: ${TRACEWICK_SPOOL_DIR:-/var/spool/tracewick}
+      TRACEWICK_PYROSCOPE_URL: ${TRACEWICK_PYROSCOPE_URL:-http://pyroscope:4040}
+      TRACEWICK_METRICS_LISTEN: ${TRACEWICK_METRICS_LISTEN:-0.0.0.0:9090}
+    command:
+      - run
+      - --reader-id=bench-agent
+      - --sleep=2s
+      - --metrics-listen=0.0.0.0:9090
+    volumes:
+      - app-spool:/var/spool/tracewick
+    ports:
+      - 127.0.0.1:${AGENT_METRICS_PORT:-9090}:9090
+    depends_on: [pyroscope, app-fpm]
+    restart: unless-stopped
+    # Do not auto-start beside drain — ensure-reader picks one.
+    profiles: [agent]
 
   app-nginx:
     build:

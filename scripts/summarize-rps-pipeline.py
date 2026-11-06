@@ -89,7 +89,9 @@ def main() -> None:
     ap.add_argument("--fpm-children", default="4")
     ap.add_argument("--path", default="/work")
     ap.add_argument("--drain", default="on")
+    ap.add_argument("--reader", default="")
     args = ap.parse_args()
+    reader = args.reader or ("off" if args.drain == "off" else "drain")
 
     summary = json.loads(args.k6.read_text()) if args.k6.is_file() else {}
     k6 = k6_bits(summary)
@@ -107,12 +109,12 @@ def main() -> None:
         "",
         "## Scope",
         "",
-        "- PHP-FPM + `UnitOfWorkProfiler` + `SpoolSink` + drain (unless drain=off).",
+        f"- PHP-FPM + `UnitOfWorkProfiler` + `SpoolSink` + reader=`{reader}`.",
         f"- Path `{args.path}` with `WORK_STACK_DEPTH={args.stack_depth}` "
         "(deeper stacks → larger spool payloads; wall budget still `WORK_BUSY_MS`).",
         "- **Single instance:** sustained RPS is the ceiling of this host + work unit + FPM pool "
         "(often co-located k6), not a universal Tracewick SLO or multi-node fleet result.",
-        "- Not ContinuousProfiler / RoadRunner / go-agent.",
+        "- Not ContinuousProfiler / RoadRunner / Swoole.",
         "",
         "## Identity",
         "",
@@ -132,7 +134,7 @@ def main() -> None:
         f"| sampleRate | {args.sample_rate} |",
         f"| WORK_STACK_DEPTH | {args.stack_depth} |",
         f"| PHP_FPM_MAX_CHILDREN | {args.fpm_children} |",
-        f"| drain | {args.drain} |",
+        f"| READER | {reader} |",
         f"| PATH | {args.path} |",
         "",
         "## k6",
