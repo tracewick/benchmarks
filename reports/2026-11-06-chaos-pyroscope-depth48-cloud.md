@@ -1,10 +1,10 @@
-# Report: chaos Pyroscope latency — 2026-11-06 (depth-48)
+# Report: chaos Pyroscope latency — 2026-11-06 (depth-48) — canonical
 
 Methodology: [METHOD.md](../METHOD.md) layer B. Limitations: [LIMITATIONS.md](../LIMITATIONS.md).
 
 Raw artifacts: [2026-11-06-chaos-pyroscope-depth48-cloud/](./2026-11-06-chaos-pyroscope-depth48-cloud/).
 
-Sibling of [2026-11-03-chaos-pyroscope-cloud.md](./2026-11-03-chaos-pyroscope-cloud.md) (shallow). Same Toxiproxy latency toxic; depth-48 raises bytes behind the soft file ceiling.
+**Canonical** chaos golden. Historical shallow: [2026-11-03-chaos-pyroscope-cloud.md](./2026-11-03-chaos-pyroscope-cloud.md). Same Toxiproxy latency toxic; depth-48 raises bytes behind the soft file ceiling.
 
 ## Setup
 

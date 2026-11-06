@@ -4,6 +4,8 @@ Methodology: [METHOD.md](../METHOD.md) (soak / RSS·CPU growth). Limitations: [L
 
 Raw artifacts: [2026-11-03-soak-cloud/](./2026-11-03-soak-cloud/).
 
+Canonical for **RSS/CPU soak** until a depth-48 soak exists; work unit was **shallow** (`WORK_STACK_DEPTH=0`). Overhead/pipeline cite the depth-48 goldens instead.
+
 ## Identity
 
 | Field | Value |

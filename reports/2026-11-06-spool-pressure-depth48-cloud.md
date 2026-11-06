@@ -1,10 +1,10 @@
-# Report: spool pressure — 2026-11-06 (depth-48)
+# Report: spool pressure — 2026-11-06 (depth-48) — canonical
 
 Methodology: [METHOD.md](../METHOD.md) layer B. Limitations: [LIMITATIONS.md](../LIMITATIONS.md).
 
 Raw artifacts: [2026-11-06-spool-pressure-depth48-cloud/](./2026-11-06-spool-pressure-depth48-cloud/).
 
-Sibling of [2026-11-03-spool-pressure-cloud.md](./2026-11-03-spool-pressure-cloud.md) (shallow). Same soft `max_files=80` fill; depth-48 makes each spool file ~**4.7×** larger in bytes.
+**Canonical** spool-pressure golden. Historical shallow: [2026-11-03-spool-pressure-cloud.md](./2026-11-03-spool-pressure-cloud.md). Same soft `max_files=80` fill; depth-48 makes each spool file ~**4.7×** larger in bytes.
 
 ## Setup
 

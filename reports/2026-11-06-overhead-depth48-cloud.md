@@ -1,10 +1,10 @@
-# Report: overhead A/B — 2026-11-06 (depth-48)
+# Report: overhead A/B — 2026-11-06 (depth-48) — canonical
 
 Methodology: [METHOD.md](../METHOD.md). Limitations: [LIMITATIONS.md](../LIMITATIONS.md).
 
 Raw artifacts: [2026-11-06-overhead-depth48-cloud/](./2026-11-06-overhead-depth48-cloud/).
 
-Sibling of the shallow golden [2026-11-03-overhead-cloud.md](./2026-11-03-overhead-cloud.md) (`WORK_STACK_DEPTH=0` on 2 vCPU). This remake uses **depth-48** stacks on the **8 vCPU** stand so profile payloads match high-RPS work shape. Do not treat host-size change and depth change as one factor.
+**Canonical** overhead golden: depth-48 on the **8 vCPU** stand. Historical shallow (2 vCPU, depth 0): [2026-11-03-overhead-cloud.md](./2026-11-03-overhead-cloud.md) — do not mix host-size and depth into one “delta”.
 
 ## Identity
 

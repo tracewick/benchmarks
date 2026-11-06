@@ -1,8 +1,8 @@
-# Report: spool pressure — 2026-11-03 (Timeweb Cloud)
+# Report: spool pressure — 2026-11-03 (Timeweb Cloud) — historical
+
+> **Not canonical.** Shallow `WORK_STACK_DEPTH=0`. Cite instead: [2026-11-06-spool-pressure-depth48-cloud.md](./2026-11-06-spool-pressure-depth48-cloud.md).
 
 Methodology: [METHOD.md](../METHOD.md) layer B. Raw artifacts: [2026-11-03-spool-pressure-cloud/](./2026-11-03-spool-pressure-cloud/).
-
-Depth-48 remake: [2026-11-06-spool-pressure-depth48-cloud.md](./2026-11-06-spool-pressure-depth48-cloud.md).
 
 ## Setup
 

@@ -1,4 +1,4 @@
-# Report: high-RPS pipeline — 2026-11-06
+# Report: high-RPS pipeline — 2026-11-06 — canonical
 
 Methodology: [METHOD.md](../METHOD.md) (high-RPS pipeline / spool). Limitations: [LIMITATIONS.md](../LIMITATIONS.md).
 

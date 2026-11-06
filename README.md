@@ -97,16 +97,19 @@ RATE=700 DURATION=5m PRE_VUS=500 MAX_VUS=2000 make bench-rps
 
 Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Checked-in reports must repeat the single-instance / host-ceiling caveat.
 
-Local run scratch: `reports/_local/`. Golden cloud reports:
+Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 
-- [overhead A/B (shallow, 2 vCPU)](reports/2026-11-03-overhead-cloud.md)
-- [overhead A/B (depth-48, 8 vCPU)](reports/2026-11-06-overhead-depth48-cloud.md)
-- [spool pressure (shallow)](reports/2026-11-03-spool-pressure-cloud.md)
-- [spool pressure (depth-48)](reports/2026-11-06-spool-pressure-depth48-cloud.md)
-- [chaos Pyroscope (shallow)](reports/2026-11-03-chaos-pyroscope-cloud.md)
-- [chaos Pyroscope (depth-48)](reports/2026-11-06-chaos-pyroscope-depth48-cloud.md)
-- [soak 72h (FPM static + UnitOfWorkProfiler, shallow)](reports/2026-11-03-soak-cloud.md)
-- [high-RPS pipeline ~700 hold (8 vCPU, depth-48)](reports/2026-11-06-rps-pipeline-cloud.md)
+- [overhead A/B](reports/2026-11-06-overhead-depth48-cloud.md)
+- [spool pressure](reports/2026-11-06-spool-pressure-depth48-cloud.md)
+- [chaos Pyroscope](reports/2026-11-06-chaos-pyroscope-depth48-cloud.md)
+- [high-RPS pipeline ~700 hold](reports/2026-11-06-rps-pipeline-cloud.md)
+- [soak 72h (FPM static + UnitOfWorkProfiler)](reports/2026-11-03-soak-cloud.md) — still **shallow** payloads until remade
+
+Historical (Nov-3, depth `0`, 2 vCPU — kept for depth/host comparison, **not** for citing SLOs):
+
+- [overhead A/B shallow](reports/2026-11-03-overhead-cloud.md)
+- [spool pressure shallow](reports/2026-11-03-spool-pressure-cloud.md)
+- [chaos Pyroscope shallow](reports/2026-11-03-chaos-pyroscope-cloud.md)
 
 
 ## Boundary with the library

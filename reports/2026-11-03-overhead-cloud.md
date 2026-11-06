@@ -1,10 +1,10 @@
-# Report: overhead A/B — 2026-11-03 (Timeweb Cloud)
+# Report: overhead A/B — 2026-11-03 (Timeweb Cloud) — historical
+
+> **Not canonical.** Shallow `WORK_STACK_DEPTH=0` on 2 vCPU. Cite instead: [2026-11-06-overhead-depth48-cloud.md](./2026-11-06-overhead-depth48-cloud.md).
 
 Methodology: [METHOD.md](../METHOD.md). Limitations: [LIMITATIONS.md](../LIMITATIONS.md).
 
 Raw k6 + `docker stats` samples: [2026-11-03-overhead-cloud/](./2026-11-03-overhead-cloud/).
-
-Depth-48 remake on the 8 vCPU stand: [2026-11-06-overhead-depth48-cloud.md](./2026-11-06-overhead-depth48-cloud.md).
 
 ## Identity
 
