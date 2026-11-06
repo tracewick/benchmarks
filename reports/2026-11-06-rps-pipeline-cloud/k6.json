@@ -1,0 +1,173 @@
+{
+    "metrics": {
+        "iteration_duration": {
+            "min": 36.028638,
+            "med": 41.3975725,
+            "max": 144.569729,
+            "p(90)": 48.2018288,
+            "p(95)": 51.1157098,
+            "p(99)": 58.26272711999999,
+            "avg": 42.53339319187026
+        },
+        "http_req_sending": {
+            "min": 0.005097,
+            "med": 0.010762,
+            "max": 30.781862,
+            "p(90)": 0.019623,
+            "p(95)": 0.023237,
+            "p(99)": 0.052162840000000085,
+            "avg": 0.014510434203320622
+        },
+        "http_req_receiving": {
+            "p(99)": 0.22588050000000026,
+            "avg": 0.05106647335514305,
+            "min": 0.013787,
+            "med": 0.038796,
+            "max": 22.444047,
+            "p(90)": 0.08114820000000016,
+            "p(95)": 0.15003319999999995
+        },
+        "http_req_tls_handshaking": {
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "p(99)": 0,
+            "avg": 0,
+            "min": 0
+        },
+        "vus": {
+            "value": 30,
+            "min": 0,
+            "max": 35
+        },
+        "http_req_duration": {
+            "min": 2.027986,
+            "med": 41.283643,
+            "max": 144.488456,
+            "p(90)": 48.08186680000001,
+            "p(95)": 50.9935197,
+            "p(99)": 58.09453502,
+            "avg": 42.41656702602475
+        },
+        "http_req_waiting": {
+            "min": 1.866746,
+            "med": 41.218441,
+            "max": 144.451335,
+            "p(90)": 48.0130606,
+            "p(95)": 50.9297762,
+            "p(99)": 58.01775404000004,
+            "avg": 42.350990118464665
+        },
+        "iterations": {
+            "count": 210002,
+            "rate": 697.5696120760587
+        },
+        "http_req_connecting": {
+            "med": 0,
+            "max": 7.267178,
+            "p(90)": 0,
+            "p(95)": 0,
+            "p(99)": 0,
+            "avg": 0.0009582080875035118,
+            "min": 0
+        },
+        "checks": {
+            "passes": 420006,
+            "fails": 0,
+            "value": 1
+        },
+        "http_reqs": {
+            "count": 210003,
+            "rate": 697.5729338044807
+        },
+        "vus_max": {
+            "max": 500,
+            "value": 500,
+            "min": 500
+        },
+        "http_req_duration{expected_response:true}": {
+            "p(90)": 48.08186680000001,
+            "p(95)": 50.9935197,
+            "p(99)": 58.09453502,
+            "avg": 42.41656702602475,
+            "min": 2.027986,
+            "med": 41.283643,
+            "max": 144.488456
+        },
+        "data_sent": {
+            "count": 15540224,
+            "rate": 51620.40374498841
+        },
+        "http_req_blocked": {
+            "p(99)": 0.019389,
+            "avg": 0.006125834935691684,
+            "min": 0.002128,
+            "med": 0.004305,
+            "max": 10.513824,
+            "p(90)": 0.005953,
+            "p(95)": 0.007084
+        },
+        "http_req_failed": {
+            "fails": 210003,
+            "passes": 0,
+            "thresholds": {
+                "rate<0.05": false
+            },
+            "value": 0
+        },
+        "data_received": {
+            "count": 77677839,
+            "rate": 258024.68556554956
+        }
+    },
+    "setup_data": {
+        "baseUrl": "http://127.0.0.1:8080",
+        "path": "/work"
+    },
+    "root_group": {
+        "groups": {
+            "setup": {
+                "groups": {},
+                "checks": {
+                        "health is 200": {
+                            "name": "health is 200",
+                            "path": "::setup::health is 200",
+                            "id": "5896a5489504eb71cf1488d2ecc95866",
+                            "passes": 1,
+                            "fails": 0
+                        },
+                        "excimer loaded": {
+                            "name": "excimer loaded",
+                            "path": "::setup::excimer loaded",
+                            "id": "9eec947316c67865ae3b7d9310d281f4",
+                            "passes": 1,
+                            "fails": 0
+                        }
+                    },
+                "name": "setup",
+                "path": "::setup",
+                "id": "5c0f8025f7e0b6654089e5b00e950f1a"
+            }
+        },
+        "checks": {
+            "status is 200": {
+                "path": "::status is 200",
+                "id": "6210a8cd14cd70477eba5c5e4cb3fb5f",
+                "passes": 210002,
+                "fails": 0,
+                "name": "status is 200"
+            },
+            "ok": {
+                "name": "ok",
+                "path": "::ok",
+                "id": "2385b52f13b6c5244d846734f1757fa3",
+                "passes": 210002,
+                "fails": 0
+            }
+        },
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e"
+    }
+}

@@ -14,7 +14,7 @@ What this repository does **not** claim. Aligns with [METHOD.md](METHOD.md) non-
 - Smoke windows (minutes) are not soak proof (hours/days).
 - The checked-in **72h soak** covers **PHP-FPM** (`pm=static` long-lived workers) with **`UnitOfWorkProfiler` + SpoolSink + drain** only. It is not evidence for RoadRunner, `ContinuousProfiler`, or go-agent — those need separate soaks.
 - High-RPS runs may set `WORK_STACK_DEPTH>0` for larger spool payloads; golden smoke/overhead/soak keep depth `0` so their timings stay comparable.
-- High-RPS figures are **single-instance** (one VPS: app + drain + Pyroscope + k6 on the same host unless a report says otherwise). A sustained RPS number is the **ceiling of that host + work unit + FPM pool**, not a universal Tracewick SLO and not multi-node “prod highload”.
+- High-RPS figures are **single-instance** (one VPS: app + drain + Pyroscope + k6 on the same host unless a report says otherwise). A sustained RPS number is the **ceiling of that host + work unit + FPM pool**, not a universal Tracewick SLO and not multi-node “prod highload”. The checked-in ~700 RPS hold used PHP `tracewick-drain`; spool sitting above soft `max_files` under that reader is soft admission, not a hard-cap bug. go-agent is expected to raise pipeline headroom on the same stand.
 - Layer C checks order-of-magnitude signal only; flame-graph symbol share is not a contractual metric in v1.
 
 ## Comparisons
