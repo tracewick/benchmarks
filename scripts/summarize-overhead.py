@@ -101,6 +101,7 @@ def main() -> None:
     p.add_argument("--rate", default="20")
     p.add_argument("--duration", default="2m")
     p.add_argument("--sample-rate", default="0.1")
+    p.add_argument("--stack-depth", default="0")
     args = p.parse_args()
 
     b = load_json(args.baseline_k6)
@@ -145,6 +146,7 @@ def main() -> None:
         "| baseline | `TRACEWICK_ENABLED=0` (profiler not constructed) |",
         f"| RATE / duration | {args.rate} req/s / {args.duration} |",
         "| WORK_BUSY_MS / WORK_SLEEP_MS | 25 / 10 |",
+        f"| WORK_STACK_DEPTH | {args.stack_depth} |",
         "",
         "## Results — A. Application overhead",
         "",
@@ -165,6 +167,7 @@ def main() -> None:
         "## What we proved / did not measure",
         "",
         "- Proved: relative overhead of Tracewick SpoolSink path vs profiler-not-wired on this synthetic `/work` unit at fixed arrival rate.",
+        f"- WORK_STACK_DEPTH={args.stack_depth}: 0 = shallow busyWork; >0 = deeper frames (larger profiles, same wall budget).",
         "- Did **not** measure: real app (DB/HTTP), soak/72h RSS growth, spool backpressure, chaos, multi-host isolation.",
         "- Absolute % is host-specific; compare delta columns, not marketing SLOs.",
         "",

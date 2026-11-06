@@ -14,6 +14,7 @@ RATE=${RATE:-20}
 DURATION=${DURATION:-60s}
 LATENCY_MS=${LATENCY_MS:-3000}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE:-1.0}
+STACK_DEPTH=${WORK_STACK_DEPTH:-0}
 
 if [[ "$REPORTS_DIR" != /* ]]; then
   REPORTS_DIR="$ROOT/$REPORTS_DIR"
@@ -45,7 +46,8 @@ curl -sf -X POST "$TOXIPROXY_URL/proxies/pyroscope/toxics" \
   | tee "$run_dir/toxic.json"
 echo
 
-TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" \
+echo "==> Recreate app-fpm (sampleRate=$SAMPLE_RATE WORK_STACK_DEPTH=$STACK_DEPTH)"
+TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" WORK_STACK_DEPTH="$STACK_DEPTH" \
   $COMPOSE up -d --force-recreate --no-deps app-fpm
 # nginx resolves app-fpm at start; recreate changes the container IP.
 $COMPOSE up -d --no-deps --force-recreate app-nginx
@@ -86,7 +88,8 @@ kill "$sampler" 2>/dev/null || true
 wait "$sampler" 2>/dev/null || true
 
 peak=$(awk -F, 'NR>1 {if($2>m)m=$2} END{print m+0}' "$run_dir/spool-timeseries.csv")
-echo "peak_files=$peak k6_rc=$k6_rc" | tee "$run_dir/peak.txt"
+peak_bytes=$(awk -F, 'NR>1 {if($3>m)m=$3} END{print m+0}' "$run_dir/spool-timeseries.csv")
+echo "peak_files=$peak peak_bytes=$peak_bytes k6_rc=$k6_rc" | tee "$run_dir/peak.txt"
 
 echo "==> Remove toxic; restore direct Pyroscope URL"
 curl -sf -X DELETE "$TOXIPROXY_URL/proxies/pyroscope/toxics/pyroscope_latency" >/dev/null || true
@@ -105,15 +108,33 @@ else:
 PY
 )
 
+sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)
+host=$(uname -a)
+peak_mib=$(python3 -c "print(f'{$peak_bytes/1024/1024:.2f}')")
+{
+  echo "started_at_utc=$stamp"
+  echo "RATE=$RATE"
+  echo "DURATION=$DURATION"
+  echo "LATENCY_MS=$LATENCY_MS"
+  echo "TRACEWICK_SAMPLE_RATE=$SAMPLE_RATE"
+  echo "WORK_STACK_DEPTH=$STACK_DEPTH"
+  echo "repo_sha=$sha"
+  echo "host=$host"
+} > "$run_dir/meta.txt"
+
 cat > "$run_dir/chaos-report.md" <<EOF
 # Report: chaos Pyroscope latency — $(date -u +%Y-%m-%d)
 
 | Field | Value |
 | --- | --- |
+| Host | $host |
+| repo SHA | \`$sha\` |
 | Toxic | latency ${LATENCY_MS}ms on toxiproxy→pyroscope |
 | RATE / duration | $RATE / $DURATION |
 | sampleRate | $SAMPLE_RATE |
+| WORK_STACK_DEPTH | $STACK_DEPTH |
 | Peak spool files during toxic | $peak |
+| Peak spool bytes | $peak_bytes ($peak_mib MiB) |
 | HTTP fail rate | $fail |
 
 App requests should remain healthy while delivery slows and spool grows.

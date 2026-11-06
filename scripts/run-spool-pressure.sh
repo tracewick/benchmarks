@@ -14,6 +14,7 @@ DURATION=${DURATION:-90s}
 MAX_FILES=${TRACEWICK_SPOOL_MAX_FILES:-80}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE:-1.0}
 STATS_INTERVAL=${STATS_INTERVAL:-2}
+STACK_DEPTH=${WORK_STACK_DEPTH:-0}
 
 if [[ "$REPORTS_DIR" != /* ]]; then
   REPORTS_DIR="$ROOT/$REPORTS_DIR"
@@ -37,8 +38,9 @@ record_spool() {
   echo "$line" | tee "$run_dir/$label.txt"
 }
 
-echo "==> Recreate app-fpm (enabled, sampleRate=$SAMPLE_RATE, maxFiles=$MAX_FILES)"
+echo "==> Recreate app-fpm (enabled, sampleRate=$SAMPLE_RATE, maxFiles=$MAX_FILES, WORK_STACK_DEPTH=$STACK_DEPTH)"
 TRACEWICK_ENABLED=1 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" TRACEWICK_SPOOL_MAX_FILES="$MAX_FILES" \
+  WORK_STACK_DEPTH="$STACK_DEPTH" \
   $COMPOSE up -d --force-recreate --no-deps app-fpm
 $COMPOSE up -d --no-deps --force-recreate app-nginx
 for i in $(seq 1 60); do curl -sf "$BASE_URL/health" >/dev/null && break; sleep 1; done
@@ -83,7 +85,8 @@ wait "$sampler" 2>/dev/null || true
 
 record_spool spool-after-load
 peak_files=$(awk -F, 'NR>1 {if($2>m)m=$2} END{print m+0}' "$run_dir/spool-timeseries.csv")
-echo "peak_files=$peak_files max_files=$MAX_FILES" | tee "$run_dir/peak.txt"
+peak_bytes=$(awk -F, 'NR>1 {if($3>m)m=$3} END{print m+0}' "$run_dir/spool-timeseries.csv")
+echo "peak_files=$peak_files max_files=$MAX_FILES peak_bytes=$peak_bytes" | tee "$run_dir/peak.txt"
 
 echo "==> Restart drain; measure catch-up"
 start=$(date +%s)
@@ -121,6 +124,22 @@ print(d.get("metrics",{}).get("http_reqs",{}).get("rate",""))
 PY
 )
 
+sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)
+host=$(uname -a)
+{
+  echo "started_at_utc=$stamp"
+  echo "RATE=$RATE"
+  echo "DURATION=$DURATION"
+  echo "TRACEWICK_SAMPLE_RATE=$SAMPLE_RATE"
+  echo "TRACEWICK_SPOOL_MAX_FILES=$MAX_FILES"
+  echo "WORK_STACK_DEPTH=$STACK_DEPTH"
+  echo "repo_sha=$sha"
+  echo "host=$host"
+} > "$run_dir/meta.txt"
+
+peak_mib=$(python3 -c "print(f'{$peak_bytes/1024/1024:.2f}')")
+catchup=$(cat "$run_dir/drain-catchup.txt" 2>/dev/null || true)
+
 report="$run_dir/spool-pressure-report.md"
 cat > "$report" <<EOF
 # Report: spool pressure — $(date -u +%Y-%m-%d)
@@ -132,8 +151,11 @@ Methodology: [METHOD.md](../../METHOD.md) layer B.
 | Field | Value |
 | --- | --- |
 | Host run dir | \`$run_dir\` |
+| Host | $host |
+| repo SHA | \`$sha\` |
 | sampleRate | \`$SAMPLE_RATE\` |
 | TRACEWICK_SPOOL_MAX_FILES | \`$MAX_FILES\` |
+| WORK_STACK_DEPTH | $STACK_DEPTH |
 | RATE / duration | $RATE / $DURATION |
 | Drain during load | **stopped** |
 
@@ -142,15 +164,17 @@ Methodology: [METHOD.md](../../METHOD.md) layer B.
 | Metric | Value |
 | --- | --- |
 | Peak spool files | $peak_files (cap $MAX_FILES) |
+| Peak spool bytes | $peak_bytes ($peak_mib MiB) |
 | HTTP fail rate during fill | $fail |
 | Achieved RPS | $rps |
-| Drain catch-up | see \`drain-catchup.txt\` |
+| Drain catch-up | $catchup |
 
 ## Interpretation
 
 - Spool grew while drain was down; HTTP should stay green (fail-open / soft admission).
 - Peak near \`max_files\` implies further profiles were dropped at admission (soft).
 - After drain restart, queue should shrink (catch-up lag).
+- Depth > 0 increases bytes per file vs shallow \`busyWork\` (same wall budget).
 
 ## Artifacts
 

@@ -90,6 +90,7 @@ bench-overhead: ## M2: baseline vs on @ fixed RPS; writes reports/_local/overhea
 	@chmod +x scripts/run-overhead.sh scripts/sample-container-stats.sh scripts/summarize-overhead.py
 	RATE="$(RATE)" DURATION="$(DURATION)" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" \
+		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
 		./scripts/run-overhead.sh
 
 bench-spool-pressure: ## M3: stop drain, fill spool to max_files, measure catch-up
@@ -97,12 +98,14 @@ bench-spool-pressure: ## M3: stop drain, fill spool to max_files, measure catch-
 	RATE="$(RATE)" DURATION="$${DURATION:-90s}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" \
 		TRACEWICK_SPOOL_MAX_FILES="$${TRACEWICK_SPOOL_MAX_FILES:-80}" \
+		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
 		./scripts/run-spool-pressure.sh
 
 bench-chaos: ## M3 optional: Toxiproxy latency toward Pyroscope
 	@chmod +x scripts/run-chaos-pyroscope.sh scripts/spool-snapshot.sh
 	RATE="$(RATE)" DURATION="$${DURATION:-60s}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" LATENCY_MS="$${LATENCY_MS:-3000}" \
+		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
 		./scripts/run-chaos-pyroscope.sh
 
 bench-soak: ## Soak: fixed RPS + FPM/drain RSS·CPU series (default RATE=10 DURATION=72h)

@@ -13,6 +13,7 @@ RATE=${RATE:-20}
 DURATION=${DURATION:-2m}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE_ON:-0.1}
 STATS_INTERVAL=${STATS_INTERVAL:-2}
+STACK_DEPTH=${WORK_STACK_DEPTH:-0}
 
 # Docker bind mounts require absolute host paths (relative → treated as volume names).
 if [[ "$REPORTS_DIR" != /* ]]; then
@@ -30,8 +31,8 @@ chmod a+rwx "$run_dir" || true
 recreate_app() {
   local enabled=$1
   local rate=$2
-  echo "==> Recreating app-fpm (TRACEWICK_ENABLED=$enabled SAMPLE_RATE=$rate)"
-  TRACEWICK_ENABLED="$enabled" TRACEWICK_SAMPLE_RATE="$rate" \
+  echo "==> Recreating app-fpm (TRACEWICK_ENABLED=$enabled SAMPLE_RATE=$rate WORK_STACK_DEPTH=$STACK_DEPTH)"
+  TRACEWICK_ENABLED="$enabled" TRACEWICK_SAMPLE_RATE="$rate" WORK_STACK_DEPTH="$STACK_DEPTH" \
     $COMPOSE up -d --force-recreate --no-deps app-fpm
   # nginx resolves app-fpm at start; recreate changes the container IP.
   $COMPOSE up -d --no-deps --force-recreate app-nginx
@@ -82,6 +83,16 @@ run_one on 1 1
 
 host=$(uname -a)
 sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)
+{
+  echo "started_at_utc=$stamp"
+  echo "RATE=$RATE"
+  echo "DURATION=$DURATION"
+  echo "TRACEWICK_SAMPLE_RATE_ON=$SAMPLE_RATE"
+  echo "WORK_STACK_DEPTH=$STACK_DEPTH"
+  echo "repo_sha=$sha"
+  echo "host=$host"
+} > "$run_dir/meta.txt"
+
 report="$run_dir/overhead-report.md"
 
 python3 "$ROOT/scripts/summarize-overhead.py" \
@@ -94,7 +105,8 @@ python3 "$ROOT/scripts/summarize-overhead.py" \
   --host "$host" \
   --rate "$RATE" \
   --duration "$DURATION" \
-  --sample-rate "$SAMPLE_RATE"
+  --sample-rate "$SAMPLE_RATE" \
+  --stack-depth "$STACK_DEPTH"
 
 # Also copy to a stable path for convenience.
 cp "$report" "$REPORTS_DIR/overhead-latest.md"
