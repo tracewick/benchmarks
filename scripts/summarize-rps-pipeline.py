@@ -110,6 +110,8 @@ def main() -> None:
         "- PHP-FPM + `UnitOfWorkProfiler` + `SpoolSink` + drain (unless drain=off).",
         f"- Path `{args.path}` with `WORK_STACK_DEPTH={args.stack_depth}` "
         "(deeper stacks → larger spool payloads; wall budget still `WORK_BUSY_MS`).",
+        "- **Single instance:** sustained RPS is the ceiling of this host + work unit + FPM pool "
+        "(often co-located k6), not a universal Tracewick SLO or multi-node fleet result.",
         "- Not ContinuousProfiler / RoadRunner / go-agent.",
         "",
         "## Identity",

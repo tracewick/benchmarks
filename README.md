@@ -85,16 +85,17 @@ Defaults: `RATE=10`, `DURATION=72h`, `STATS_INTERVAL=60`, `sampleRate=0.1`. Over
 
 Uses the same `/work` wall budget (`WORK_BUSY_MS` / `WORK_SLEEP_MS`) as overhead/soak. Opt-in `WORK_STACK_DEPTH` deepens call stacks so spool payloads are larger (closer to a real app). Default scenarios keep `WORK_STACK_DEPTH=0`.
 
+**Honesty:** these runs are **one instance** (typically app + drain + Pyroscope + k6 on a single VPS). The sustained RPS you publish is the **ceiling of that server configuration and synthetic work unit**, not “Tracewick handles N RPS everywhere” and not a multi-node fleet result. On the Timeweb 8 vCPU stand with depth-48 `/work` (~25 ms busy + 10 ms sleep, 32 FPM workers), overload probes showed ~760 achieved RPS with multi-second latency — so a clean hold is expected around **~700 RPS**, not 1.5–3k.
+
 ```bash
 cd /root/benchmarks && git pull --ff-only
 # first time after pull: rebuild FPM image (entrypoint / max_children)
 make up
-# start modest, then raise RATE toward what the 8-CPU box sustains
-RATE=500 DURATION=5m WORK_STACK_DEPTH=48 PHP_FPM_MAX_CHILDREN=32 make bench-rps
-# optional admission stress: DRAIN_MODE=off RATE=500 DURATION=2m ...
+RATE=700 DURATION=5m PRE_VUS=500 MAX_VUS=2000 make bench-rps
+# optional admission stress: DRAIN_MODE=off RATE=700 DURATION=2m ...
 ```
 
-Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`.
+Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Checked-in reports must repeat the single-instance / host-ceiling caveat.
 
 Local run scratch: `reports/_local/`. Golden cloud reports:
 
