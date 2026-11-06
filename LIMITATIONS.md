@@ -13,8 +13,9 @@ What this repository does **not** claim. Aligns with [METHOD.md](METHOD.md) non-
 - Results are tied to a pinned host class, image tags, and scenario parameters. They are not universal SLOs.
 - Smoke windows (minutes) are not soak proof (hours/days).
 - The checked-in **72h soak** covers **PHP-FPM** (`pm=static` long-lived workers) with **`UnitOfWorkProfiler` + SpoolSink + drain** only. It is not evidence for RoadRunner, `ContinuousProfiler`, or go-agent — those need separate soaks.
-- High-RPS runs may set `WORK_STACK_DEPTH>0` for larger spool payloads; golden smoke/overhead/soak keep depth `0` so their timings stay comparable.
+- `WORK_STACK_DEPTH=0` keeps a shallow `busyWork` leaf (legacy smoke / Nov-3 overhead / soak). Depth `48` deepens frames for larger profiles with the **same** wall budget — use it for pipeline-honest remakes (checked-in depth-48 overhead, spool pressure, chaos, and the ~700 RPS hold). Do not mix host-size and depth changes into one “delta” without saying so.
 - High-RPS figures are **single-instance** (one VPS: app + drain + Pyroscope + k6 on the same host unless a report says otherwise). A sustained RPS number is the **ceiling of that host + work unit + FPM pool**, not a universal Tracewick SLO and not multi-node “prod highload”. The checked-in ~700 RPS hold used PHP `tracewick-drain`; spool sitting above soft `max_files` under that reader is soft admission, not a hard-cap bug. go-agent is expected to raise pipeline headroom on the same stand.
+- The checked-in **72h soak** remains shallow-payload evidence until a depth-48 soak exists.
 - Layer C checks order-of-magnitude signal only; flame-graph symbol share is not a contractual metric in v1.
 
 ## Comparisons

@@ -4,6 +4,8 @@ Methodology: [METHOD.md](../METHOD.md). Limitations: [LIMITATIONS.md](../LIMITAT
 
 Raw k6 + `docker stats` samples: [2026-11-03-overhead-cloud/](./2026-11-03-overhead-cloud/).
 
+Depth-48 remake on the 8 vCPU stand: [2026-11-06-overhead-depth48-cloud.md](./2026-11-06-overhead-depth48-cloud.md).
+
 ## Identity
 
 | Field | Value |

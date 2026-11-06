@@ -99,10 +99,13 @@ Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Ch
 
 Local run scratch: `reports/_local/`. Golden cloud reports:
 
-- [overhead A/B](reports/2026-11-03-overhead-cloud.md)
-- [spool pressure](reports/2026-11-03-spool-pressure-cloud.md)
-- [chaos Pyroscope](reports/2026-11-03-chaos-pyroscope-cloud.md)
-- [soak 72h (FPM static + UnitOfWorkProfiler)](reports/2026-11-03-soak-cloud.md)
+- [overhead A/B (shallow, 2 vCPU)](reports/2026-11-03-overhead-cloud.md)
+- [overhead A/B (depth-48, 8 vCPU)](reports/2026-11-06-overhead-depth48-cloud.md)
+- [spool pressure (shallow)](reports/2026-11-03-spool-pressure-cloud.md)
+- [spool pressure (depth-48)](reports/2026-11-06-spool-pressure-depth48-cloud.md)
+- [chaos Pyroscope (shallow)](reports/2026-11-03-chaos-pyroscope-cloud.md)
+- [chaos Pyroscope (depth-48)](reports/2026-11-06-chaos-pyroscope-depth48-cloud.md)
+- [soak 72h (FPM static + UnitOfWorkProfiler, shallow)](reports/2026-11-03-soak-cloud.md)
 - [high-RPS pipeline ~700 hold (8 vCPU, depth-48)](reports/2026-11-06-rps-pipeline-cloud.md)
 
 

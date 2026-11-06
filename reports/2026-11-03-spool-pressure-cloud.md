@@ -2,6 +2,8 @@
 
 Methodology: [METHOD.md](../METHOD.md) layer B. Raw artifacts: [2026-11-03-spool-pressure-cloud/](./2026-11-03-spool-pressure-cloud/).
 
+Depth-48 remake: [2026-11-06-spool-pressure-depth48-cloud.md](./2026-11-06-spool-pressure-depth48-cloud.md).
+
 ## Setup
 
 | Field | Value |

@@ -2,6 +2,8 @@
 
 Methodology: [METHOD.md](../METHOD.md) layer B. Raw artifacts: [2026-11-03-chaos-pyroscope-cloud/](./2026-11-03-chaos-pyroscope-cloud/).
 
+Depth-48 remake: [2026-11-06-chaos-pyroscope-depth48-cloud.md](./2026-11-06-chaos-pyroscope-depth48-cloud.md).
+
 ## Setup
 
 | Field | Value |
