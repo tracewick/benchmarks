@@ -85,6 +85,7 @@ Local run scratch: `reports/_local/`. Golden cloud reports:
 - [overhead A/B](reports/2026-11-03-overhead-cloud.md)
 - [spool pressure](reports/2026-11-03-spool-pressure-cloud.md)
 - [chaos Pyroscope](reports/2026-11-03-chaos-pyroscope-cloud.md)
+- [soak 72h (FPM static + UnitOfWorkProfiler)](reports/2026-11-03-soak-cloud.md)
 
 
 ## Boundary with the library

@@ -1,0 +1,10 @@
+started_at_utc=2026-11-03T10:56:44Z
+RATE=10
+DURATION=72h
+TRACEWICK_SAMPLE_RATE=0.1
+STATS_INTERVAL=60
+BASE_URL=http://127.0.0.1:8080
+K6_IMAGE=grafana/k6:1.8.2
+repo_sha=9c1c9efd28fab0a8a69164e14ec9eef37f2929ea
+host=Linux nsk-1-vm-tsr3 7.0.0-42-generic #42-Ubuntu SMP PREEMPT_DYNAMIC Thu Oct 15 08:06:44 UTC 2026 x86_64 GNU/Linux
+finished_at_utc=2026-11-06T10:57:59Z
