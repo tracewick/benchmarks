@@ -102,12 +102,16 @@ def main() -> None:
     p.add_argument("--duration", default="2m")
     p.add_argument("--sample-rate", default="0.1")
     p.add_argument("--stack-depth", default="0")
+    p.add_argument("--runtime", default="fpm", choices=("fpm", "rr"))
+    p.add_argument("--reader", default="drain")
     args = p.parse_args()
 
     b = load_json(args.baseline_k6)
     o = load_json(args.on_k6)
     bl, ol = k6_latency(b), k6_latency(o)
     bs, os_ = stats_agg(args.baseline_stats), stats_agg(args.on_stats)
+    svc = "app-rr" if args.runtime == "rr" else "app-fpm"
+    runtime_label = "RoadRunner" if args.runtime == "rr" else "PHP-FPM"
 
     def delta_ms(a: float | None, b: float | None) -> str:
         if a is None or b is None:
@@ -142,6 +146,8 @@ def main() -> None:
         "| k6 image | `grafana/k6:1.8.2` |",
         "| PHP / Excimer | 8.4 / 1.2.6 |",
         "| Pyroscope | `grafana/pyroscope:2.4.2` |",
+        f"| RUNTIME | `{args.runtime}` ({runtime_label}) |",
+        f"| READER | `{args.reader}` |",
         f"| sampleRate (on) | `{args.sample_rate}` |",
         "| baseline | `TRACEWICK_ENABLED=0` (profiler not constructed) |",
         f"| RATE / duration | {args.rate} req/s / {args.duration} |",
@@ -157,16 +163,16 @@ def main() -> None:
         f"| Latency p99 | {fmt_ms(bl['p99'])} | {fmt_ms(ol['p99'])} | {delta_ms(bl['p99'], ol['p99'])} |",
         f"| HTTP RPS (achieved) | {k6_rps(b) or '—'} | {k6_rps(o) or '—'} | |",
         f"| http_req_failed | {k6_fail_rate(b)} | {k6_fail_rate(o)} | |",
-        f"| app-fpm CPU avg | {fmt_pct(bs['cpu_avg'])} | {fmt_pct(os_['cpu_avg'])} | {delta_pct_points(bs['cpu_avg'], os_['cpu_avg'])} |",
-        f"| app-fpm CPU max | {fmt_pct(bs['cpu_max'])} | {fmt_pct(os_['cpu_max'])} | {delta_pct_points(bs['cpu_max'], os_['cpu_max'])} |",
-        f"| app-fpm RSS avg | {fmt_bytes(bs['rss_avg'])} | {fmt_bytes(os_['rss_avg'])} | |",
-        f"| app-fpm RSS max | {fmt_bytes(bs['rss_max'])} | {fmt_bytes(os_['rss_max'])} | |",
+        f"| {svc} CPU avg | {fmt_pct(bs['cpu_avg'])} | {fmt_pct(os_['cpu_avg'])} | {delta_pct_points(bs['cpu_avg'], os_['cpu_avg'])} |",
+        f"| {svc} CPU max | {fmt_pct(bs['cpu_max'])} | {fmt_pct(os_['cpu_max'])} | {delta_pct_points(bs['cpu_max'], os_['cpu_max'])} |",
+        f"| {svc} RSS avg | {fmt_bytes(bs['rss_avg'])} | {fmt_bytes(os_['rss_avg'])} | |",
+        f"| {svc} RSS max | {fmt_bytes(bs['rss_max'])} | {fmt_bytes(os_['rss_max'])} | |",
         "",
-        f"Stats samples: baseline={bs['samples']}, on={os_['samples']} (docker stats on `app-fpm`).",
+        f"Stats samples: baseline={bs['samples']}, on={os_['samples']} (docker stats on `{svc}`).",
         "",
         "## What we proved / did not measure",
         "",
-        "- Proved: relative overhead of Tracewick SpoolSink path vs profiler-not-wired on this synthetic `/work` unit at fixed arrival rate.",
+        f"- Proved: relative overhead of Tracewick SpoolSink path vs profiler-not-wired on this synthetic `/work` unit ({runtime_label}).",
         f"- WORK_STACK_DEPTH={args.stack_depth}: 0 = shallow busyWork; >0 = deeper frames (larger profiles, same wall budget).",
         "- Did **not** measure: real app (DB/HTTP), soak/72h RSS growth, spool backpressure, chaos, multi-host isolation.",
         "- Absolute % is host-specific; compare delta columns, not marketing SLOs.",

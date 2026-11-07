@@ -38,7 +38,11 @@ recreate_app() {
     RUNTIME="$RUNTIME" BASE_URL="$BASE_URL" \
     PHP_FPM_MAX_CHILDREN="${PHP_FPM_MAX_CHILDREN:-4}" \
     RR_NUM_WORKERS="${RR_NUM_WORKERS:-4}" \
-    "$ROOT/scripts/recreate-workload.sh" | tee "$run_dir/health-enabled-${enabled}.json"
+    "$ROOT/scripts/recreate-workload.sh" >"$run_dir/recreate-enabled-${enabled}.log"
+  # Last non-empty line should be health JSON from recreate-workload.sh
+  awk 'NF{line=$0} END{print line}' "$run_dir/recreate-enabled-${enabled}.log" \
+    | tee "$run_dir/health-enabled-${enabled}.json"
+  echo
   READER="$READER" "$ROOT/scripts/ensure-reader.sh"
 }
 
@@ -104,7 +108,9 @@ python3 "$ROOT/scripts/summarize-overhead.py" \
   --rate "$RATE" \
   --duration "$DURATION" \
   --sample-rate "$SAMPLE_RATE" \
-  --stack-depth "$STACK_DEPTH"
+  --stack-depth "$STACK_DEPTH" \
+  --runtime "$RUNTIME" \
+  --reader "$READER"
 
 # Also copy to a stable path for convenience.
 cp "$report" "$REPORTS_DIR/overhead-latest.md"

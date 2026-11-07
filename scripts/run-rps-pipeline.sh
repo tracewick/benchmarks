@@ -147,7 +147,9 @@ python3 "$ROOT/scripts/summarize-rps-pipeline.py" \
   --fpm-children "$FPM_CHILDREN" \
   --path "$PATH_URI" \
   --drain "$DRAIN_MODE" \
-  --reader "$READER"
+  --reader "$READER" \
+  --runtime "$RUNTIME" \
+  --rr-workers "$RR_WORKERS"
 
 cp "$report" "$REPORTS_DIR/rps-pipeline-latest.md"
 echo "finished_at_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$run_dir/meta.txt"

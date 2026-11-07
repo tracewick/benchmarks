@@ -90,8 +90,11 @@ def main() -> None:
     ap.add_argument("--path", default="/work")
     ap.add_argument("--drain", default="on")
     ap.add_argument("--reader", default="")
+    ap.add_argument("--runtime", default="fpm", choices=("fpm", "rr"))
+    ap.add_argument("--rr-workers", default="")
     args = ap.parse_args()
     reader = args.reader or ("off" if args.drain == "off" else "drain")
+    runtime_label = "RoadRunner" if args.runtime == "rr" else "PHP-FPM"
 
     summary = json.loads(args.k6.read_text()) if args.k6.is_file() else {}
     k6 = k6_bits(summary)
@@ -99,6 +102,11 @@ def main() -> None:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     fail_s = f"{(k6['fail'] * 100):.3f}%" if k6["fail"] is not None else "—"
+    pool_row = (
+        f"| RR_NUM_WORKERS | {args.rr_workers or args.fpm_children} |"
+        if args.runtime == "rr"
+        else f"| PHP_FPM_MAX_CHILDREN | {args.fpm_children} |"
+    )
     lines = [
         f"# Report: rps-pipeline — {now[:10]}",
         "",
@@ -109,12 +117,14 @@ def main() -> None:
         "",
         "## Scope",
         "",
-        f"- PHP-FPM + `UnitOfWorkProfiler` + `SpoolSink` + reader=`{reader}`.",
+        f"- {runtime_label} + `UnitOfWorkProfiler` + `SpoolSink` + reader=`{reader}`.",
         f"- Path `{args.path}` with `WORK_STACK_DEPTH={args.stack_depth}` "
         "(deeper stacks → larger spool payloads; wall budget still `WORK_BUSY_MS`).",
-        "- **Single instance:** sustained RPS is the ceiling of this host + work unit + FPM pool "
+        "- **Single instance:** sustained RPS is the ceiling of this host + work unit + worker pool "
         "(often co-located k6), not a universal Tracewick SLO or multi-node fleet result.",
-        "- Not ContinuousProfiler / RoadRunner / Swoole.",
+        "- Not ContinuousProfiler / Swoole"
+        + (" / PHP-FPM" if args.runtime == "rr" else " / RoadRunner")
+        + ".",
         "",
         "## Identity",
         "",
@@ -133,7 +143,8 @@ def main() -> None:
         f"| DURATION | {args.duration} |",
         f"| sampleRate | {args.sample_rate} |",
         f"| WORK_STACK_DEPTH | {args.stack_depth} |",
-        f"| PHP_FPM_MAX_CHILDREN | {args.fpm_children} |",
+        f"| RUNTIME | {args.runtime} |",
+        pool_row,
         f"| READER | {reader} |",
         f"| PATH | {args.path} |",
         "",
