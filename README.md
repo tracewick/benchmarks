@@ -77,9 +77,11 @@ tmux new -s soak
 # inside tmux:
 make bench-soak
 # Detach: Ctrl-b d   |   Reattach: tmux attach -t soak
+# Agent + depth-48 short matrix (FPM → RR → Swoole), e.g. 6h each:
+# DURATION=6h RATE=10 READER=agent WORK_STACK_DEPTH=48 ./scripts/run-soak-matrix.sh
 ```
 
-Defaults: `RATE=10`, `DURATION=72h`, `STATS_INTERVAL=60`, `sampleRate=0.1`. Override as env vars. Artifacts: `reports/_local/soak-<utc>/` and `soak-latest.md`.
+Defaults: `RATE=10`, `DURATION=72h`, `STATS_INTERVAL=60`, `sampleRate=0.1`. `RUNTIME=fpm|rr|swoole`, `READER=drain|agent`. Artifacts: `reports/_local/soak-<utc>/` and `soak-latest.md`.
 
 ### High-RPS pipeline (manual)
 
