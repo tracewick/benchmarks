@@ -115,20 +115,48 @@ def k6_bits(summary: dict) -> dict[str, float | None]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--k6", type=Path, required=True)
-    ap.add_argument("--fpm-stats", type=Path, required=True)
-    ap.add_argument("--drain-stats", type=Path, required=True)
+    ap.add_argument("--app-stats", type=Path, default=None)
+    ap.add_argument("--reader-stats", type=Path, default=None)
+    # Legacy aliases
+    ap.add_argument("--fpm-stats", type=Path, default=None)
+    ap.add_argument("--drain-stats", type=Path, default=None)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--repo-sha", default="unknown")
     ap.add_argument("--host", default="")
     ap.add_argument("--rate", default="")
     ap.add_argument("--duration", default="")
     ap.add_argument("--sample-rate", default="0.1")
+    ap.add_argument("--runtime", default="fpm", choices=("fpm", "rr", "swoole"))
+    ap.add_argument("--reader", default="drain")
+    ap.add_argument("--stack-depth", default="0")
+    ap.add_argument("--app-service", default="")
+    ap.add_argument("--reader-service", default="")
     args = ap.parse_args()
+
+    app_stats = args.app_stats or args.fpm_stats
+    reader_stats = args.reader_stats or args.drain_stats
+    if app_stats is None or reader_stats is None:
+        raise SystemExit("summarize-soak: need --app-stats/--reader-stats (or legacy --fpm-stats/--drain-stats)")
+
+    runtime_label = {"rr": "RoadRunner", "swoole": "Swoole", "fpm": "PHP-FPM"}[args.runtime]
+    profiler = (
+        "`ContinuousProfiler`"
+        if args.runtime == "swoole"
+        else "`UnitOfWorkProfiler`"
+    )
+    app_svc = args.app_service or {
+        "fpm": "app-fpm",
+        "rr": "app-rr",
+        "swoole": "app-swoole",
+    }[args.runtime]
+    reader_svc = args.reader_service or (
+        "app-agent" if args.reader == "agent" else "app-drain"
+    )
 
     summary = json.loads(args.k6.read_text()) if args.k6.is_file() else {}
     k6 = k6_bits(summary)
-    fpm = series_summary(load_stats(args.fpm_stats), "app-fpm")
-    drain = series_summary(load_stats(args.drain_stats), "app-drain")
+    app = series_summary(load_stats(app_stats), app_svc)
+    reader = series_summary(load_stats(reader_stats), reader_svc)
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     lines = [
@@ -154,6 +182,10 @@ def main() -> None:
         "| Component | Value |",
         "| --- | --- |",
         "| k6 image | `grafana/k6:1.8.2` |",
+        f"| RUNTIME | `{args.runtime}` ({runtime_label}) |",
+        f"| Profiler | {profiler} + `SpoolSink` |",
+        f"| READER | `{args.reader}` |",
+        f"| WORK_STACK_DEPTH | {args.stack_depth} |",
         f"| RATE | {args.rate} req/s |",
         f"| DURATION | {args.duration} |",
         f"| sampleRate | {args.sample_rate} |",
@@ -191,7 +223,7 @@ def main() -> None:
         "| --- | ---: | ---: | --- | --- | ---: | --- | --- | --- |",
     ]
 
-    for s in (fpm, drain):
+    for s in (app, reader):
         lines.append(
             "| {label} | {samples} | {duration_h} | {a} → {b} | {d} | {p} | {mn} / {mx} | {ca} / {cm} | {v} |".format(
                 label=s["label"],
@@ -213,7 +245,8 @@ def main() -> None:
         "",
         "## What we proved / did not measure",
         "",
-        "- Proved (if verdicts stable): no large RSS climb on FPM/drain under moderate fixed RPS for the soak window.",
+        f"- Proved (if verdicts stable): no large RSS climb on `{app_svc}` / `{reader_svc}` "
+        f"({runtime_label} + {profiler}, reader=`{args.reader}`) under moderate fixed RPS for the soak window.",
         "- Did **not** measure: overhead A/B deltas, spool chaos, 1k+ RPS ceiling, multi-host isolation.",
         "",
     ]

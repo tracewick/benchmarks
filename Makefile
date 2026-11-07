@@ -142,12 +142,16 @@ bench-chaos: ## M3 optional: Toxiproxy latency toward Pyroscope (READER=drain|ag
 		READER="$${READER:-drain}" \
 		./scripts/run-chaos-pyroscope.sh
 
-bench-soak: ## Soak: fixed RPS + FPM/reader RSS·CPU series (default RATE=10 DURATION=72h)
-	@chmod +x scripts/run-soak.sh scripts/sample-container-stats.sh scripts/summarize-soak.py scripts/ensure-reader.sh
+bench-soak: ## Soak: fixed RPS + workload/reader RSS·CPU (RUNTIME=fpm|rr|swoole READER=drain|agent)
+	@chmod +x scripts/run-soak.sh scripts/sample-container-stats.sh scripts/summarize-soak.py scripts/ensure-reader.sh scripts/recreate-workload.sh
 	RATE="$${RATE:-10}" DURATION="$${DURATION:-72h}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-60}" \
 		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
-		READER="$${READER:-drain}" \
+		READER="$${READER:-drain}" RUNTIME="$${RUNTIME:-fpm}" \
+		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
+		PHP_FPM_MAX_CHILDREN="$${PHP_FPM_MAX_CHILDREN:-4}" \
+		RR_NUM_WORKERS="$${RR_NUM_WORKERS:-4}" \
+		SWOOLE_WORKER_NUM="$${SWOOLE_WORKER_NUM:-4}" \
 		./scripts/run-soak.sh
 
 bench-rps: ## High-RPS pipeline: deep stacks + spool (RUNTIME=fpm|rr|swoole READER=drain|agent|off)
