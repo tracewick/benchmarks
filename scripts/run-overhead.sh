@@ -14,7 +14,7 @@ DURATION=${DURATION:-2m}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE_ON:-0.1}
 STATS_INTERVAL=${STATS_INTERVAL:-2}
 STACK_DEPTH=${WORK_STACK_DEPTH:-0}
-RUNTIME=${RUNTIME:-fpm} # fpm | rr
+RUNTIME=${RUNTIME:-fpm} # fpm | rr | swoole
 READER=${READER:-drain}
 
 # Docker bind mounts require absolute host paths (relative → treated as volume names).
@@ -38,6 +38,7 @@ recreate_app() {
     RUNTIME="$RUNTIME" BASE_URL="$BASE_URL" \
     PHP_FPM_MAX_CHILDREN="${PHP_FPM_MAX_CHILDREN:-4}" \
     RR_NUM_WORKERS="${RR_NUM_WORKERS:-4}" \
+    SWOOLE_WORKER_NUM="${SWOOLE_WORKER_NUM:-4}" \
     "$ROOT/scripts/recreate-workload.sh" >"$run_dir/recreate-enabled-${enabled}.log"
   # Last non-empty line should be health JSON from recreate-workload.sh
   awk 'NF{line=$0} END{print line}' "$run_dir/recreate-enabled-${enabled}.log" \
@@ -57,6 +58,7 @@ run_one() {
 
   local svc=app-fpm
   if [[ "$RUNTIME" == "rr" ]]; then svc=app-rr; fi
+  if [[ "$RUNTIME" == "swoole" ]]; then svc=app-swoole; fi
   echo "==> Sampling docker stats for $svc → $stats"
   COMPOSE="$COMPOSE" "$ROOT/scripts/sample-container-stats.sh" "$svc" "$stats" "$STATS_INTERVAL" &
   local stats_pid=$!

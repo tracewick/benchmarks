@@ -102,7 +102,7 @@ def main() -> None:
     p.add_argument("--duration", default="2m")
     p.add_argument("--sample-rate", default="0.1")
     p.add_argument("--stack-depth", default="0")
-    p.add_argument("--runtime", default="fpm", choices=("fpm", "rr"))
+    p.add_argument("--runtime", default="fpm", choices=("fpm", "rr", "swoole"))
     p.add_argument("--reader", default="drain")
     args = p.parse_args()
 
@@ -110,8 +110,22 @@ def main() -> None:
     o = load_json(args.on_k6)
     bl, ol = k6_latency(b), k6_latency(o)
     bs, os_ = stats_agg(args.baseline_stats), stats_agg(args.on_stats)
-    svc = "app-rr" if args.runtime == "rr" else "app-fpm"
-    runtime_label = "RoadRunner" if args.runtime == "rr" else "PHP-FPM"
+    svc = {"rr": "app-rr", "swoole": "app-swoole"}.get(args.runtime, "app-fpm")
+    runtime_label = {
+        "rr": "RoadRunner",
+        "swoole": "Swoole",
+        "fpm": "PHP-FPM",
+    }.get(args.runtime, args.runtime)
+    sample_note = (
+        "n/a (ContinuousProfiler always-on when enabled)"
+        if args.runtime == "swoole"
+        else f"`{args.sample_rate}`"
+    )
+    profiler_note = (
+        "`ContinuousProfiler` + SpoolSink"
+        if args.runtime == "swoole"
+        else "`UnitOfWorkProfiler` + SpoolSink"
+    )
 
     def delta_ms(a: float | None, b: float | None) -> str:
         if a is None or b is None:
@@ -147,8 +161,9 @@ def main() -> None:
         "| PHP / Excimer | 8.4 / 1.2.6 |",
         "| Pyroscope | `grafana/pyroscope:2.4.2` |",
         f"| RUNTIME | `{args.runtime}` ({runtime_label}) |",
+        f"| Profiler | {profiler_note} |",
         f"| READER | `{args.reader}` |",
-        f"| sampleRate (on) | `{args.sample_rate}` |",
+        f"| sampleRate (on) | {sample_note} |",
         "| baseline | `TRACEWICK_ENABLED=0` (profiler not constructed) |",
         f"| RATE / duration | {args.rate} req/s / {args.duration} |",
         "| WORK_BUSY_MS / WORK_SLEEP_MS | 25 / 10 |",
@@ -156,7 +171,7 @@ def main() -> None:
         "",
         "## Results — A. Application overhead",
         "",
-        "| Metric | baseline (off) | on (0.1) | delta (on − baseline) |",
+        "| Metric | baseline (off) | on | delta (on − baseline) |",
         "| --- | --- | --- | --- |",
         f"| Latency med | {fmt_ms(bl['med'])} | {fmt_ms(ol['med'])} | {delta_ms(bl['med'], ol['med'])} |",
         f"| Latency p95 | {fmt_ms(bl['p95'])} | {fmt_ms(ol['p95'])} | {delta_ms(bl['p95'], ol['p95'])} |",

@@ -90,11 +90,29 @@ def main() -> None:
     ap.add_argument("--path", default="/work")
     ap.add_argument("--drain", default="on")
     ap.add_argument("--reader", default="")
-    ap.add_argument("--runtime", default="fpm", choices=("fpm", "rr"))
+    ap.add_argument("--runtime", default="fpm", choices=("fpm", "rr", "swoole"))
     ap.add_argument("--rr-workers", default="")
+    ap.add_argument("--swoole-workers", default="")
     args = ap.parse_args()
     reader = args.reader or ("off" if args.drain == "off" else "drain")
-    runtime_label = "RoadRunner" if args.runtime == "rr" else "PHP-FPM"
+    runtime_label = {"rr": "RoadRunner", "swoole": "Swoole", "fpm": "PHP-FPM"}.get(
+        args.runtime, args.runtime
+    )
+    profiler = (
+        "`ContinuousProfiler`"
+        if args.runtime == "swoole"
+        else "`UnitOfWorkProfiler`"
+    )
+    sample_rate_cell = (
+        "n/a (ContinuousProfiler always-on)"
+        if args.runtime == "swoole"
+        else args.sample_rate
+    )
+    others = {
+        "fpm": "RoadRunner / Swoole ContinuousProfiler",
+        "rr": "PHP-FPM / Swoole ContinuousProfiler",
+        "swoole": "PHP-FPM / RoadRunner UnitOfWorkProfiler",
+    }.get(args.runtime, "other runtimes")
 
     summary = json.loads(args.k6.read_text()) if args.k6.is_file() else {}
     k6 = k6_bits(summary)
@@ -102,11 +120,12 @@ def main() -> None:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     fail_s = f"{(k6['fail'] * 100):.3f}%" if k6["fail"] is not None else "—"
-    pool_row = (
-        f"| RR_NUM_WORKERS | {args.rr_workers or args.fpm_children} |"
-        if args.runtime == "rr"
-        else f"| PHP_FPM_MAX_CHILDREN | {args.fpm_children} |"
-    )
+    if args.runtime == "rr":
+        pool_row = f"| RR_NUM_WORKERS | {args.rr_workers or args.fpm_children} |"
+    elif args.runtime == "swoole":
+        pool_row = f"| SWOOLE_WORKER_NUM | {args.swoole_workers or args.fpm_children} |"
+    else:
+        pool_row = f"| PHP_FPM_MAX_CHILDREN | {args.fpm_children} |"
     lines = [
         f"# Report: rps-pipeline — {now[:10]}",
         "",
@@ -117,14 +136,12 @@ def main() -> None:
         "",
         "## Scope",
         "",
-        f"- {runtime_label} + `UnitOfWorkProfiler` + `SpoolSink` + reader=`{reader}`.",
+        f"- {runtime_label} + {profiler} + `SpoolSink` + reader=`{reader}`.",
         f"- Path `{args.path}` with `WORK_STACK_DEPTH={args.stack_depth}` "
         "(deeper stacks → larger spool payloads; wall budget still `WORK_BUSY_MS`).",
         "- **Single instance:** sustained RPS is the ceiling of this host + work unit + worker pool "
         "(often co-located k6), not a universal Tracewick SLO or multi-node fleet result.",
-        "- Not ContinuousProfiler / Swoole"
-        + (" / PHP-FPM" if args.runtime == "rr" else " / RoadRunner")
-        + ".",
+        f"- Not {others}.",
         "",
         "## Identity",
         "",
@@ -141,7 +158,7 @@ def main() -> None:
         "| --- | --- |",
         f"| RATE (target) | {args.rate} req/s |",
         f"| DURATION | {args.duration} |",
-        f"| sampleRate | {args.sample_rate} |",
+        f"| sampleRate | {sample_rate_cell} |",
         f"| WORK_STACK_DEPTH | {args.stack_depth} |",
         f"| RUNTIME | {args.runtime} |",
         pool_row,

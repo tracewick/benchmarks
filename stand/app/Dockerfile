@@ -1,12 +1,13 @@
 # syntax=docker/dockerfile:1
 #
-# Minimal PHP-FPM + RoadRunner workload for Tracewick benchmarks (Packagist pin).
+# Minimal PHP-FPM + RoadRunner + Swoole workload for Tracewick benchmarks (Packagist pin).
 
 ARG PHP_VERSION=8.4
 ARG EXCIMER_VERSION=1.2.6
 ARG TRACEWICK_VERSION=0.1.0
 ARG NGINX_VERSION=1.28.0
 ARG ROADRUNNER_VERSION=2025.1.15
+ARG SWOOLE_VERSION=6.0.2
 
 FROM composer:2 AS vendor
 
@@ -43,6 +44,7 @@ COPY --from=vendor /app/composer.json /app/composer.lock /srv/app/
 COPY public /srv/app/public
 COPY src /srv/app/src
 COPY worker.php /srv/app/worker.php
+COPY swoole-server.php /srv/app/swoole-server.php
 COPY .rr.yaml /srv/app/.rr.yaml
 
 ENV TRACEWICK_SPOOL_DIR=/var/spool/tracewick \
@@ -90,6 +92,25 @@ RUN chmod +x /usr/local/bin/docker-rr-entrypoint.sh
 ENV RR_NUM_WORKERS=4
 USER www-data
 ENTRYPOINT ["/usr/local/bin/docker-rr-entrypoint.sh"]
+CMD []
+
+FROM php-base AS swoole
+ARG SWOOLE_VERSION=6.0.2
+# pecl swoole defaults enable-brotli=yes → needs libbrotlienc; keep HTTP stand minimal (no curl/pgsql).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends $PHPIZE_DEPS libbrotli-dev \
+    && printf '%s\n' '' | pecl install --configureoptions 'enable-sockets="yes" enable-openssl="no" enable-http2="no" enable-mysqlnd="no" enable-swoole-curl="no" enable-cares="no" enable-brotli="yes"' "swoole-${SWOOLE_VERSION}" \
+    && docker-php-ext-enable swoole \
+    && apt-get purge -y --auto-remove $PHPIZE_DEPS \
+    && rm -rf /var/lib/apt/lists/* /tmp/pear \
+    && php -r 'exit(extension_loaded("swoole") ? 0 : 1);'
+COPY docker-swoole-entrypoint.sh /usr/local/bin/docker-swoole-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-swoole-entrypoint.sh
+ENV SWOOLE_WORKER_NUM=4 \
+    SWOOLE_LISTEN_HOST=0.0.0.0 \
+    SWOOLE_LISTEN_PORT=8080
+USER www-data
+ENTRYPOINT ["/usr/local/bin/docker-swoole-entrypoint.sh"]
 CMD []
 
 FROM nginx:${NGINX_VERSION}-alpine AS nginx

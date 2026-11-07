@@ -166,5 +166,31 @@ services:
       timeout: 3s
       retries: 12
 
+  # Same /work unit; ContinuousProfiler + SpoolSink (process-level). Port 8083.
+  app-swoole:
+    build:
+      context: stand/app
+      target: swoole
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.4}
+        EXCIMER_VERSION: ${EXCIMER_VERSION:-1.2.6}
+        TRACEWICK_VERSION: ${TRACEWICK_VERSION:-0.1.0}
+        SWOOLE_VERSION: ${SWOOLE_VERSION:-6.0.2}
+    image: tracewick-benchmarks-swoole:${TRACEWICK_VERSION:-0.1.0}
+    user: "33:33"
+    environment:
+      <<: *app-env
+      SWOOLE_WORKER_NUM: ${SWOOLE_WORKER_NUM:-4}
+    volumes:
+      - app-spool:/var/spool/tracewick
+    ports:
+      - 127.0.0.1:${SWOOLE_PORT:-8083}:8080
+    depends_on: [pyroscope]
+    healthcheck:
+      test: [CMD-SHELL, php -r 'exit(extension_loaded("excimer")&&extension_loaded("swoole")?0:1);']
+      interval: 10s
+      timeout: 3s
+      retries: 12
+
 volumes:
   app-spool:

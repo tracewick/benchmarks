@@ -22,7 +22,7 @@ STATS_INTERVAL=${STATS_INTERVAL:-2}
 # READER=drain|agent|off. DRAIN_MODE=off kept as alias for READER=off.
 DRAIN_MODE=${DRAIN_MODE:-on}
 READER=${READER:-}
-RUNTIME=${RUNTIME:-fpm} # fpm | rr
+RUNTIME=${RUNTIME:-fpm} # fpm | rr | swoole
 if [[ -z "$READER" ]]; then
   if [[ "$DRAIN_MODE" == "off" ]]; then
     READER=off
@@ -38,6 +38,9 @@ fi
 if [[ "$RUNTIME" == "rr" && "$BASE_URL" == "http://127.0.0.1:8080" ]]; then
   BASE_URL=http://127.0.0.1:8082
 fi
+if [[ "$RUNTIME" == "swoole" && "$BASE_URL" == "http://127.0.0.1:8080" ]]; then
+  BASE_URL=http://127.0.0.1:8083
+fi
 
 if [[ "$REPORTS_DIR" != /* ]]; then
   REPORTS_DIR="$ROOT/$REPORTS_DIR"
@@ -51,8 +54,9 @@ mkdir -p "$run_dir"
 chmod a+rwx "$run_dir" || true
 
 RR_WORKERS=${RR_NUM_WORKERS:-$FPM_CHILDREN}
+SWOOLE_WORKERS=${SWOOLE_WORKER_NUM:-$FPM_CHILDREN}
 echo "==> RPS pipeline RATE=$RATE DURATION=$DURATION PATH=$PATH_URI RUNTIME=$RUNTIME"
-echo "    STACK_DEPTH=$STACK_DEPTH FPM_CHILDREN=$FPM_CHILDREN RR_WORKERS=$RR_WORKERS SAMPLE_RATE=$SAMPLE_RATE READER=$READER"
+echo "    STACK_DEPTH=$STACK_DEPTH FPM_CHILDREN=$FPM_CHILDREN RR_WORKERS=$RR_WORKERS SWOOLE_WORKERS=$SWOOLE_WORKERS SAMPLE_RATE=$SAMPLE_RATE READER=$READER"
 echo "    BUSY_MS=$BUSY_MS SLEEP_MS=$SLEEP_MS (same wall budget as overhead/soak when depth=0)"
 
 {
@@ -64,6 +68,7 @@ echo "    BUSY_MS=$BUSY_MS SLEEP_MS=$SLEEP_MS (same wall budget as overhead/soak
   echo "WORK_STACK_DEPTH=$STACK_DEPTH"
   echo "PHP_FPM_MAX_CHILDREN=$FPM_CHILDREN"
   echo "RR_NUM_WORKERS=$RR_WORKERS"
+  echo "SWOOLE_WORKER_NUM=$SWOOLE_WORKERS"
   echo "WORK_BUSY_MS=$BUSY_MS"
   echo "WORK_SLEEP_MS=$SLEEP_MS"
   echo "READER=$READER"
@@ -82,6 +87,7 @@ WORK_BUSY_MS="$BUSY_MS" \
 WORK_SLEEP_MS="$SLEEP_MS" \
 PHP_FPM_MAX_CHILDREN="$FPM_CHILDREN" \
 RR_NUM_WORKERS="$RR_WORKERS" \
+SWOOLE_WORKER_NUM="$SWOOLE_WORKERS" \
 RUNTIME="$RUNTIME" \
 BASE_URL="$BASE_URL" \
   "$ROOT/scripts/recreate-workload.sh" | tee "$run_dir/health.json"
@@ -149,7 +155,8 @@ python3 "$ROOT/scripts/summarize-rps-pipeline.py" \
   --drain "$DRAIN_MODE" \
   --reader "$READER" \
   --runtime "$RUNTIME" \
-  --rr-workers "$RR_WORKERS"
+  --rr-workers "$RR_WORKERS" \
+  --swoole-workers "$SWOOLE_WORKERS"
 
 cp "$report" "$REPORTS_DIR/rps-pipeline-latest.md"
 echo "finished_at_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$run_dir/meta.txt"

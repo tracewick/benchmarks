@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Shared synthetic CPU work for FPM and RoadRunner workers.
+ * Shared synthetic CPU work for FPM, RoadRunner, and Swoole workers.
  * Wall budget stays in busyWork; WORK_STACK_DEPTH only deepens frames.
  */
 
