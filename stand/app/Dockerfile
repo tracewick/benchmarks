@@ -17,6 +17,7 @@ COPY composer.json ./
 # Pin is in composer.json; TRACEWICK_VERSION must match that constraint when rebuilding.
 RUN test -n "${TRACEWICK_VERSION}" \
     && composer update --no-interaction --no-progress --no-dev \
+      --ignore-platform-req=ext-sockets \
     && composer clear-cache \
     && composer show tracewick/tracewick | head -5
 
