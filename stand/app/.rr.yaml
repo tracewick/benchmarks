@@ -1,0 +1,17 @@
+version: "3"
+
+server:
+  command: "php /srv/app/worker.php"
+  relay: pipes
+
+http:
+  address: 0.0.0.0:8080
+  pool:
+    # Overwritten by docker-rr-entrypoint.sh from RR_NUM_WORKERS.
+    num_workers: 4
+    supervisor:
+      max_worker_memory: 256
+
+logs:
+  mode: production
+  level: warn

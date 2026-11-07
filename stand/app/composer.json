@@ -5,6 +5,9 @@
   "type": "project",
   "require": {
     "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+    "nyholm/psr7": "^1.8",
+    "spiral/roadrunner-http": "^3.5",
+    "spiral/roadrunner-worker": "^3.6",
     "tracewick/tracewick": "0.1.0"
   },
   "config": {

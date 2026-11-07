@@ -14,6 +14,8 @@ DURATION=${DURATION:-2m}
 SAMPLE_RATE=${TRACEWICK_SAMPLE_RATE_ON:-0.1}
 STATS_INTERVAL=${STATS_INTERVAL:-2}
 STACK_DEPTH=${WORK_STACK_DEPTH:-0}
+RUNTIME=${RUNTIME:-fpm} # fpm | rr
+READER=${READER:-drain}
 
 # Docker bind mounts require absolute host paths (relative → treated as volume names).
 if [[ "$REPORTS_DIR" != /* ]]; then
@@ -31,21 +33,13 @@ chmod a+rwx "$run_dir" || true
 recreate_app() {
   local enabled=$1
   local rate=$2
-  echo "==> Recreating app-fpm (TRACEWICK_ENABLED=$enabled SAMPLE_RATE=$rate WORK_STACK_DEPTH=$STACK_DEPTH)"
+  chmod +x "$ROOT/scripts/recreate-workload.sh" "$ROOT/scripts/ensure-reader.sh"
   TRACEWICK_ENABLED="$enabled" TRACEWICK_SAMPLE_RATE="$rate" WORK_STACK_DEPTH="$STACK_DEPTH" \
-    $COMPOSE up -d --force-recreate --no-deps app-fpm
-  # nginx resolves app-fpm at start; recreate changes the container IP.
-  $COMPOSE up -d --no-deps --force-recreate app-nginx
-  # Drain keeps running; restart so it is not stuck on old claims after recreate.
-  $COMPOSE up -d --no-deps app-drain
-  for i in $(seq 1 60); do
-    if curl -sf "$BASE_URL/health" >/dev/null; then
-      break
-    fi
-    sleep 1
-  done
-  curl -sf "$BASE_URL/health" | tee "$run_dir/health-enabled-${enabled}.json"
-  echo
+    RUNTIME="$RUNTIME" BASE_URL="$BASE_URL" \
+    PHP_FPM_MAX_CHILDREN="${PHP_FPM_MAX_CHILDREN:-4}" \
+    RR_NUM_WORKERS="${RR_NUM_WORKERS:-4}" \
+    "$ROOT/scripts/recreate-workload.sh" | tee "$run_dir/health-enabled-${enabled}.json"
+  READER="$READER" "$ROOT/scripts/ensure-reader.sh"
 }
 
 run_one() {
@@ -57,8 +51,10 @@ run_one() {
 
   recreate_app "$enabled" "$SAMPLE_RATE"
 
-  echo "==> Sampling docker stats for app-fpm → $stats"
-  COMPOSE="$COMPOSE" "$ROOT/scripts/sample-container-stats.sh" app-fpm "$stats" "$STATS_INTERVAL" &
+  local svc=app-fpm
+  if [[ "$RUNTIME" == "rr" ]]; then svc=app-rr; fi
+  echo "==> Sampling docker stats for $svc → $stats"
+  COMPOSE="$COMPOSE" "$ROOT/scripts/sample-container-stats.sh" "$svc" "$stats" "$STATS_INTERVAL" &
   local stats_pid=$!
   # Give one sample before load.
   sleep "$STATS_INTERVAL"
@@ -89,6 +85,8 @@ sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)
   echo "DURATION=$DURATION"
   echo "TRACEWICK_SAMPLE_RATE_ON=$SAMPLE_RATE"
   echo "WORK_STACK_DEPTH=$STACK_DEPTH"
+  echo "RUNTIME=$RUNTIME"
+  echo "READER=$READER"
   echo "repo_sha=$sha"
   echo "host=$host"
 } > "$run_dir/meta.txt"

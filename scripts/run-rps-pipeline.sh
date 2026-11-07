@@ -22,6 +22,7 @@ STATS_INTERVAL=${STATS_INTERVAL:-2}
 # READER=drain|agent|off. DRAIN_MODE=off kept as alias for READER=off.
 DRAIN_MODE=${DRAIN_MODE:-on}
 READER=${READER:-}
+RUNTIME=${RUNTIME:-fpm} # fpm | rr
 if [[ -z "$READER" ]]; then
   if [[ "$DRAIN_MODE" == "off" ]]; then
     READER=off
@@ -33,6 +34,9 @@ if [[ "$READER" == "off" ]]; then
   DRAIN_MODE=off
 else
   DRAIN_MODE=on
+fi
+if [[ "$RUNTIME" == "rr" && "$BASE_URL" == "http://127.0.0.1:8080" ]]; then
+  BASE_URL=http://127.0.0.1:8082
 fi
 
 if [[ "$REPORTS_DIR" != /* ]]; then
@@ -46,8 +50,9 @@ run_dir="$REPORTS_DIR/rps-pipeline-$stamp"
 mkdir -p "$run_dir"
 chmod a+rwx "$run_dir" || true
 
-echo "==> RPS pipeline RATE=$RATE DURATION=$DURATION PATH=$PATH_URI"
-echo "    STACK_DEPTH=$STACK_DEPTH FPM_CHILDREN=$FPM_CHILDREN SAMPLE_RATE=$SAMPLE_RATE READER=$READER"
+RR_WORKERS=${RR_NUM_WORKERS:-$FPM_CHILDREN}
+echo "==> RPS pipeline RATE=$RATE DURATION=$DURATION PATH=$PATH_URI RUNTIME=$RUNTIME"
+echo "    STACK_DEPTH=$STACK_DEPTH FPM_CHILDREN=$FPM_CHILDREN RR_WORKERS=$RR_WORKERS SAMPLE_RATE=$SAMPLE_RATE READER=$READER"
 echo "    BUSY_MS=$BUSY_MS SLEEP_MS=$SLEEP_MS (same wall budget as overhead/soak when depth=0)"
 
 {
@@ -58,33 +63,30 @@ echo "    BUSY_MS=$BUSY_MS SLEEP_MS=$SLEEP_MS (same wall budget as overhead/soak
   echo "TRACEWICK_SAMPLE_RATE=$SAMPLE_RATE"
   echo "WORK_STACK_DEPTH=$STACK_DEPTH"
   echo "PHP_FPM_MAX_CHILDREN=$FPM_CHILDREN"
+  echo "RR_NUM_WORKERS=$RR_WORKERS"
   echo "WORK_BUSY_MS=$BUSY_MS"
   echo "WORK_SLEEP_MS=$SLEEP_MS"
   echo "READER=$READER"
+  echo "RUNTIME=$RUNTIME"
   echo "DRAIN_MODE=$DRAIN_MODE"
+  echo "BASE_URL=$BASE_URL"
   echo "repo_sha=$(git rev-parse HEAD 2>/dev/null || echo unknown)"
   echo "host=$(uname -a)"
 } > "$run_dir/meta.txt"
 
-echo "==> Recreate app-fpm (needs image rebuild once for entrypoint / max_children)"
+chmod +x "$ROOT/scripts/recreate-workload.sh" "$ROOT/scripts/ensure-reader.sh"
 TRACEWICK_ENABLED=1 \
 TRACEWICK_SAMPLE_RATE="$SAMPLE_RATE" \
 WORK_STACK_DEPTH="$STACK_DEPTH" \
 WORK_BUSY_MS="$BUSY_MS" \
 WORK_SLEEP_MS="$SLEEP_MS" \
 PHP_FPM_MAX_CHILDREN="$FPM_CHILDREN" \
-  $COMPOSE up -d --build --force-recreate --no-deps app-fpm
-$COMPOSE up -d --no-deps --force-recreate app-nginx
+RR_NUM_WORKERS="$RR_WORKERS" \
+RUNTIME="$RUNTIME" \
+BASE_URL="$BASE_URL" \
+  "$ROOT/scripts/recreate-workload.sh" | tee "$run_dir/health.json"
 
-chmod +x "$ROOT/scripts/ensure-reader.sh"
 READER="$READER" "$ROOT/scripts/ensure-reader.sh"
-
-for i in $(seq 1 90); do
-  curl -sf "$BASE_URL/health" >/dev/null && break
-  sleep 1
-done
-curl -sf "$BASE_URL/health" | tee "$run_dir/health.json"
-echo
 
 echo "ts_unix,files,bytes,claimed_or_tmp" > "$run_dir/spool-timeseries.csv"
 (

@@ -95,9 +95,13 @@ RATE=700 DURATION=5m PRE_VUS=500 MAX_VUS=2000 make bench-rps
 # optional admission stress: READER=off RATE=700 DURATION=2m ...
 # go-agent sidecar (alpha 0.1.0) instead of PHP drain:
 # READER=agent WORK_STACK_DEPTH=48 RATE=700 DURATION=5m make bench-rps
+# RoadRunner (same /work + UnitOfWorkProfiler; not ContinuousProfiler):
+# make up-rr READER=agent
+# RUNTIME=rr READER=agent BASE_URL=http://127.0.0.1:8082 WORK_STACK_DEPTH=48 \
+#   RR_NUM_WORKERS=32 RATE=700 DURATION=5m make bench-rps
 ```
 
-Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Checked-in reports must repeat the single-instance / host-ceiling caveat. `READER=drain|agent|off` (default `drain`).
+Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Checked-in reports must repeat the single-instance / host-ceiling caveat. `READER=drain|agent|off` (default `drain`). `RUNTIME=fpm|rr` (default `fpm`).
 
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 

@@ -9,6 +9,7 @@ use Tracewick\Sink\SpoolSink;
 use Tracewick\Transport\SpoolConfig;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/src/SyntheticWork.php';
 
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -29,6 +30,7 @@ if ($path === '/health') {
         'spool_max_files' => (int) (getenv('TRACEWICK_SPOOL_MAX_FILES') ?: '500'),
         'work_stack_depth' => max(0, (int) (getenv('WORK_STACK_DEPTH') ?: '0')),
         'php_fpm_max_children' => max(1, (int) (getenv('PHP_FPM_MAX_CHILDREN') ?: '4')),
+        'runtime' => 'fpm',
     ], JSON_THROW_ON_ERROR);
     exit;
 }
@@ -100,113 +102,5 @@ echo json_encode([
     'profiling_enabled' => $profilingEnabled,
     'sample_rate' => $sampleRate,
     'spool_dir' => $spoolDir,
+    'runtime' => 'fpm',
 ], JSON_THROW_ON_ERROR);
-
-/**
- * Burn roughly $milliseconds of CPU so wall/cpu samples have something to catch.
- * Unchanged leaf used by all scenarios when WORK_STACK_DEPTH=0.
- */
-function busyWork(int $milliseconds): void
-{
-    if ($milliseconds <= 0) {
-        return;
-    }
-
-    $deadline = hrtime(true) + ($milliseconds * 1_000_000);
-    $x = 0.0;
-    while (hrtime(true) < $deadline) {
-        $x += sin($x + 1.2345);
-        if ($x > 1_000_000.0) {
-            $x = 0.0;
-        }
-    }
-}
-
-/**
- * Opt-in deeper call stacks for high-RPS / spool-size honesty.
- * Wall budget stays in busyWork at the leaf — same WORK_BUSY_MS as shallow mode.
- */
-function deepStackWork(int $depth, int $milliseconds): void
-{
-    stackLayerA($depth, $milliseconds);
-}
-
-function stackLayerA(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerB($depth - 1, $milliseconds);
-}
-
-function stackLayerB(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerC($depth - 1, $milliseconds);
-}
-
-function stackLayerC(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerD($depth - 1, $milliseconds);
-}
-
-function stackLayerD(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerE($depth - 1, $milliseconds);
-}
-
-function stackLayerE(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerF($depth - 1, $milliseconds);
-}
-
-function stackLayerF(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerG($depth - 1, $milliseconds);
-}
-
-function stackLayerG(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerH($depth - 1, $milliseconds);
-}
-
-function stackLayerH(int $depth, int $milliseconds): void
-{
-    if ($depth <= 1) {
-        busyWork($milliseconds);
-
-        return;
-    }
-    stackLayerA($depth - 1, $milliseconds);
-}

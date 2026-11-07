@@ -17,7 +17,7 @@ PYROSCOPE_PORT ?= 4040
 RATE ?= 20
 DURATION ?= 2m
 
-.PHONY: help build up down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak bench-rps prepare-reports-dir collect-report smoke-check
+.PHONY: help build build-rr up up-rr down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak bench-rps prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -25,13 +25,26 @@ help: ## Show targets
 build: ## Build PHP-FPM (+ nginx) workload images
 	$(COMPOSE) build app-fpm app-nginx
 
-up: build ## Start Pyroscope, Grafana, app, drain (READER=agent for go sidecar)
+build-rr: ## Build RoadRunner workload image
+	$(COMPOSE) build app-rr
+
+up: build ## Start Pyroscope, Grafana, FPM app, reader (READER=agent for go sidecar)
 	$(COMPOSE) up -d --wait pyroscope grafana app-fpm app-nginx
 	@$(MAKE) --no-print-directory wait-ready
 	# Start reader after Pyroscope /ready so the first claim is not held across metastore warmup.
 	@chmod +x scripts/ensure-reader.sh
 	READER="$${READER:-drain}" ./scripts/ensure-reader.sh
 	@$(MAKE) --no-print-directory wait-app
+
+up-rr: build-rr ## Start observability + RoadRunner (:8082) + reader
+	$(COMPOSE) up -d --wait pyroscope grafana
+	@$(MAKE) --no-print-directory wait-ready
+	$(COMPOSE) up -d app-rr
+	@chmod +x scripts/ensure-reader.sh
+	READER="$${READER:-agent}" ./scripts/ensure-reader.sh
+	@echo "Waiting for RR http://127.0.0.1:$${RR_PORT:-8082}/health…"
+	@for i in $$(seq 1 60); do curl -sf "http://127.0.0.1:$${RR_PORT:-8082}/health" >/dev/null && break; sleep 1; done
+	@curl -sf "http://127.0.0.1:$${RR_PORT:-8082}/health"; echo
 
 up-chaos: build ## Start stack including Toxiproxy (profile chaos)
 	$(COMPOSE) --profile chaos up -d --wait pyroscope grafana app-fpm app-nginx toxiproxy
@@ -88,11 +101,14 @@ bench-smoke: ## Run the smoke k6 script (requires make up)
 		$(K6_IMAGE) run /scripts/smoke.js --summary-export=/out/smoke-summary.json
 	@$(MAKE) --no-print-directory smoke-check
 
-bench-overhead: ## M2: baseline vs on @ fixed RPS; writes reports/_local/overhead-* 
-	@chmod +x scripts/run-overhead.sh scripts/sample-container-stats.sh scripts/summarize-overhead.py
+bench-overhead: ## M2: baseline vs on @ fixed RPS (RUNTIME=fpm|rr READER=drain|agent)
+	@chmod +x scripts/run-overhead.sh scripts/sample-container-stats.sh scripts/summarize-overhead.py scripts/recreate-workload.sh scripts/ensure-reader.sh
 	RATE="$(RATE)" DURATION="$(DURATION)" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" \
 		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
+		RUNTIME="$${RUNTIME:-fpm}" READER="$${READER:-drain}" \
+		PHP_FPM_MAX_CHILDREN="$${PHP_FPM_MAX_CHILDREN:-4}" \
+		RR_NUM_WORKERS="$${RR_NUM_WORKERS:-4}" \
 		./scripts/run-overhead.sh
 
 bench-spool-pressure: ## M3: stop reader, fill spool to max_files, measure catch-up (READER=drain|agent)
@@ -120,16 +136,17 @@ bench-soak: ## Soak: fixed RPS + FPM/reader RSS·CPU series (default RATE=10 DUR
 		READER="$${READER:-drain}" \
 		./scripts/run-soak.sh
 
-bench-rps: ## High-RPS pipeline: deep stacks + spool series (READER=drain|agent|off)
-	@chmod +x scripts/run-rps-pipeline.sh scripts/spool-snapshot.sh scripts/summarize-rps-pipeline.py scripts/ensure-reader.sh
+bench-rps: ## High-RPS pipeline: deep stacks + spool (RUNTIME=fpm|rr READER=drain|agent|off)
+	@chmod +x scripts/run-rps-pipeline.sh scripts/spool-snapshot.sh scripts/summarize-rps-pipeline.py scripts/ensure-reader.sh scripts/recreate-workload.sh
 	RATE="$${RATE:-500}" DURATION="$${DURATION:-5m}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
 		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-2}" \
 		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
 		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-48}" \
 		PHP_FPM_MAX_CHILDREN="$${PHP_FPM_MAX_CHILDREN:-32}" \
+		RR_NUM_WORKERS="$${RR_NUM_WORKERS:-32}" \
 		WORK_BUSY_MS="$${WORK_BUSY_MS:-25}" WORK_SLEEP_MS="$${WORK_SLEEP_MS:-10}" \
 		REQUEST_PATH="$${REQUEST_PATH:-/work}" DRAIN_MODE="$${DRAIN_MODE:-on}" \
-		READER="$${READER:-}" \
+		READER="$${READER:-}" RUNTIME="$${RUNTIME:-fpm}" \
 		./scripts/run-rps-pipeline.sh
 
 # k6 image runs as a non-root uid; world-writable _local avoids "permission denied" on /out.
