@@ -122,10 +122,7 @@ Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these �
 - [high-RPS ~700 (RoadRunner × agent)](reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud.md)
 - [overhead A/B (Swoole × ContinuousProfiler × agent)](reports/2026-11-07-overhead-swoole-agent-depth48-cloud.md)
 - [high-RPS ~700 (Swoole × ContinuousProfiler × agent)](reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud.md)
-- [soak 6h (FPM × agent, depth-48)](reports/2026-11-07-soak-fpm-agent-depth48-cloud.md) — stable
-- [soak 6h (RoadRunner × agent, depth-48)](reports/2026-11-07-soak-rr-agent-depth48-cloud.md) — **RR RSS growth concern**; agent stable
-- [soak 6h (Swoole × ContinuousProfiler × agent, depth-48)](reports/2026-11-07-soak-swoole-agent-depth48-cloud.md) — stable
-- [soak 72h (FPM static + drain, shallow)](reports/2026-11-03-soak-cloud.md) — historical
+- [soak 72h (FPM static + UnitOfWorkProfiler)](reports/2026-11-03-soak-cloud.md) — still **shallow** payloads until remade
 
 Historical (Nov-3, depth `0`, 2 vCPU — kept for depth/host comparison, **not** for citing SLOs):
 
