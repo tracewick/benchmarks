@@ -98,7 +98,7 @@ echo "ts_unix,files,bytes,claimed_or_tmp" > "$run_dir/spool-timeseries.csv"
 (
   while :; do
     ts=$(date +%s)
-    line=$("$ROOT/scripts/spool-snapshot.sh" || echo "0,0,0")
+    line=$(RUNTIME="$RUNTIME" "$ROOT/scripts/spool-snapshot.sh" || echo "0,0,0")
     echo "$ts,$line" >> "$run_dir/spool-timeseries.csv"
     sleep "$STATS_INTERVAL"
   done
