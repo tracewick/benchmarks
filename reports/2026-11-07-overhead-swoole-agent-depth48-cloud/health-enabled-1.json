@@ -1,0 +1,1 @@
+{"ok":true,"excimer":true,"swoole":true,"tracewick":true,"profiling_enabled":true,"profiler":"continuous","spool_max_files":500,"work_stack_depth":48,"runtime":"swoole","swoole_worker_num":4}

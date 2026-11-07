@@ -118,6 +118,8 @@ Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these �
 - [high-RPS ~700 (go-agent, spool below ceiling)](reports/2026-11-06-rps-pipeline-agent-depth48-cloud.md)
 - [overhead A/B (RoadRunner × agent)](reports/2026-11-07-overhead-rr-agent-depth48-cloud.md)
 - [high-RPS ~700 (RoadRunner × agent)](reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud.md)
+- [overhead A/B (Swoole × ContinuousProfiler × agent)](reports/2026-11-07-overhead-swoole-agent-depth48-cloud.md)
+- [high-RPS ~700 (Swoole × ContinuousProfiler × agent)](reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud.md)
 - [soak 72h (FPM static + UnitOfWorkProfiler)](reports/2026-11-03-soak-cloud.md) — still **shallow** payloads until remade
 
 Historical (Nov-3, depth `0`, 2 vCPU — kept for depth/host comparison, **not** for citing SLOs):
