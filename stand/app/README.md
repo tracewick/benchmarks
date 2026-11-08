@@ -20,4 +20,7 @@ Minimal PHP-FPM app for capacity smoke / benches. Depends on Packagist `tracewic
 | `TRACEWICK_ENV` | `bench` | `env` label |
 | `WORK_BUSY_MS` / `WORK_SLEEP_MS` | `25` / `10` | Synthetic CPU + wall wait |
 
+RoadRunner (`worker.php`) builds **one** `UnitOfWorkProfiler` per worker process and reuses it
+across requests. Per-request `::create()` in long-lived RR workers caused unbounded RSS growth.
+
 Rebuild image when changing `TRACEWICK_VERSION` / Excimer pins (`make build`).

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 /**
  * RoadRunner HTTP worker — same synthetic /work as public/index.php (FPM).
- * UnitOfWorkProfiler per request; SpoolSink → shared spool → drain/agent.
+ *
+ * UnitOfWorkProfiler + SpoolSink are constructed **once per worker process**. Creating a new
+ * Excimer-backed profiler on every request in a long-lived RR worker caused linear RSS growth
+ * (~+1 GiB / 6h @ 10 RPS). FPM recycles processes, so per-request create there is fine.
  */
 
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -36,6 +39,23 @@ $envLabel = getenv('TRACEWICK_ENV') ?: 'bench';
 $busyMs = max(0, (int) (getenv('WORK_BUSY_MS') ?: '25'));
 $sleepMs = max(0, (int) (getenv('WORK_SLEEP_MS') ?: '10'));
 $stackDepth = max(0, (int) (getenv('WORK_STACK_DEPTH') ?: '0'));
+
+$profiler = null;
+if ($profilingEnabled) {
+    $profiler = UnitOfWorkProfiler::create(
+        new SpoolSink($service, new SpoolConfig($spoolDir, maxFiles: $spoolMaxFiles)),
+        new ProfilerConfig(
+            new Labels([
+                'service' => $service,
+                'env' => $envLabel,
+                'runtime' => 'roadrunner',
+            ]),
+            sampleRate: $sampleRate,
+        ),
+    );
+    // Flush anything still buffered if the worker exits mid-request.
+    $profiler->registerShutdown();
+}
 
 while ($request = $rr->waitRequest()) {
     try {
@@ -72,19 +92,7 @@ while ($request = $rr->waitRequest()) {
             continue;
         }
 
-        $profiler = null;
-        if ($profilingEnabled) {
-            $profiler = UnitOfWorkProfiler::create(
-                new SpoolSink($service, new SpoolConfig($spoolDir, maxFiles: $spoolMaxFiles)),
-                new ProfilerConfig(
-                    new Labels([
-                        'service' => $service,
-                        'env' => $envLabel,
-                        'runtime' => 'roadrunner',
-                    ]),
-                    sampleRate: $sampleRate,
-                ),
-            );
+        if ($profiler !== null) {
             $profiler->start(['route' => $route, 'method' => $method]);
         }
 
