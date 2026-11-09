@@ -123,8 +123,8 @@ Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these �
 - [overhead A/B (Swoole × ContinuousProfiler × agent)](reports/2026-11-07-overhead-swoole-agent-depth48-cloud.md)
 - [high-RPS ~700 (Swoole × ContinuousProfiler × agent)](reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud.md)
 - [soak 6h (FPM × agent, depth-48)](reports/2026-11-07-soak-fpm-agent-depth48-cloud.md) — stable
+- [soak 6h (RoadRunner × agent, depth-48)](reports/2026-11-08-soak-rr-agent-depth48-cloud.md) — stable (after worker-scoped profiler)
 - [soak 6h (Swoole × ContinuousProfiler × agent, depth-48)](reports/2026-11-07-soak-swoole-agent-depth48-cloud.md) — stable
-- RoadRunner × agent depth-48 soak — **re-running** after worker-scoped `UnitOfWorkProfiler` (per-request `::create()` leaked ~+1 GiB / 6h)
 - [soak 72h (FPM static + drain, shallow)](reports/2026-11-03-soak-cloud.md) — historical
 
 Historical (Nov-3, depth `0`, 2 vCPU — kept for depth/host comparison, **not** for citing SLOs):

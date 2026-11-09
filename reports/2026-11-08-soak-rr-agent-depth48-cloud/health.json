@@ -1,0 +1,106 @@
+==> Recreate app-rr (ENABLED=1 SAMPLE=0.1 DEPTH=48 WORKERS=8)
+#1 [internal] load local bake definitions
+#1 reading from stdin 733B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 4.32kB done
+#2 DONE 0.0s
+
+#3 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#3 DONE 1.4s
+
+#4 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#4 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.0s done
+#4 CACHED
+
+#5 [internal] load metadata for docker.io/library/composer:2
+#5 ...
+
+#6 [internal] load metadata for docker.io/library/php:8.4-cli-bookworm
+#6 DONE 1.0s
+
+#5 [internal] load metadata for docker.io/library/composer:2
+#5 DONE 1.0s
+
+#7 [internal] load metadata for ghcr.io/roadrunner-server/roadrunner:2025.1.15
+#7 DONE 1.1s
+
+#8 [internal] load .dockerignore
+#8 transferring context: 2B done
+#8 DONE 0.0s
+
+#9 [vendor 1/4] FROM docker.io/library/composer:2@sha256:8de2184c6de224f4689e8f80ed5f5edaf0030b6b8b7839a22a2bcb6722ac87d0
+#9 resolve docker.io/library/composer:2@sha256:8de2184c6de224f4689e8f80ed5f5edaf0030b6b8b7839a22a2bcb6722ac87d0 0.0s done
+#9 DONE 0.0s
+
+#10 [roadrunner-binary 1/1] FROM ghcr.io/roadrunner-server/roadrunner:2025.1.15@sha256:18378c1313a71ce1c3cfc493c99e75c189ef5fb2eaf85290b8a99080fcb0f64f
+#10 resolve ghcr.io/roadrunner-server/roadrunner:2025.1.15@sha256:18378c1313a71ce1c3cfc493c99e75c189ef5fb2eaf85290b8a99080fcb0f64f 0.0s done
+#10 DONE 0.0s
+
+#11 [php-base  1/10] FROM docker.io/library/php:8.4-cli-bookworm@sha256:b3e907a1108629c562c4bb313ce3449e34d49991f6bb2487913f6146f47200fe
+#11 resolve docker.io/library/php:8.4-cli-bookworm@sha256:b3e907a1108629c562c4bb313ce3449e34d49991f6bb2487913f6146f47200fe 0.0s done
+#11 DONE 0.0s
+
+#12 [internal] load build context
+#12 transferring context: 5.46kB done
+#12 DONE 0.0s
+
+#13 [php-base  7/10] COPY src /srv/app/src
+#13 CACHED
+
+#14 [php-base  4/10] COPY --from=vendor /app/vendor /srv/app/vendor
+#14 CACHED
+
+#15 [php-base 10/10] COPY .rr.yaml /srv/app/.rr.yaml
+#15 CACHED
+
+#16 [php-base  5/10] COPY --from=vendor /app/composer.json /app/composer.lock /srv/app/
+#16 CACHED
+
+#17 [roadrunner 2/3] COPY docker-rr-entrypoint.sh /usr/local/bin/docker-rr-entrypoint.sh
+#17 CACHED
+
+#18 [php-base  3/10] WORKDIR /srv/app
+#18 CACHED
+
+#19 [php-base  8/10] COPY worker.php /srv/app/worker.php
+#19 CACHED
+
+#20 [php-base  6/10] COPY public /srv/app/public
+#20 CACHED
+
+#21 [vendor 3/4] COPY composer.json ./
+#21 CACHED
+
+#22 [roadrunner 1/3] COPY --from=roadrunner-binary /usr/bin/rr /usr/local/bin/rr
+#22 CACHED
+
+#23 [vendor 2/4] WORKDIR /app
+#23 CACHED
+
+#24 [php-base  2/10] RUN apt-get update     && apt-get install -y --no-install-recommends git unzip     && rm -rf /var/lib/apt/lists/*     && docker-php-ext-install -j"$(nproc)" pcntl sockets     && pecl install "excimer-1.2.6"     && docker-php-ext-enable excimer     && rm -rf /tmp/pear     && php -r 'exit(extension_loaded("excimer") ? 0 : 1);'     && install -d -o www-data -g www-data /var/spool/tracewick
+#24 CACHED
+
+#25 [php-base  9/10] COPY swoole-server.php /srv/app/swoole-server.php
+#25 CACHED
+
+#26 [vendor 4/4] RUN test -n "0.1.0"     && composer update --no-interaction --no-progress --no-dev       --ignore-platform-req=ext-sockets     && composer clear-cache     && composer show tracewick/tracewick | head -5
+#26 CACHED
+
+#27 [roadrunner 3/3] RUN chmod +x /usr/local/bin/docker-rr-entrypoint.sh
+#27 CACHED
+
+#28 exporting to image
+#28 exporting layers done
+#28 exporting manifest sha256:4f5b0259d24c5ffb1676b0b069635042694e770156c0b6147155a8309f1cb992 done
+#28 exporting config sha256:7bd9f8c4a9efaa5f78947f674cc39c4e52240e2ec248e8047de9d52100770a71 done
+#28 exporting attestation manifest sha256:f50924c2b8f88305363ef4a925caf9af13224075d29b7949e4f963bdee82ff8d done
+#28 exporting manifest list sha256:58d73c4e0de08f85ee383152115d9506145be26b3d2208eb51020af4389bc2d3 done
+#28 naming to docker.io/library/tracewick-benchmarks-rr:0.1.0 done
+#28 unpacking to docker.io/library/tracewick-benchmarks-rr:0.1.0 done
+#28 DONE 0.1s
+
+#29 resolving provenance for metadata file
+#29 DONE 0.0s
+{"ok":true,"excimer":true,"tracewick":true,"profiling_enabled":true,"sample_rate":0.1,"spool_max_files":500,"work_stack_depth":48,"runtime":"roadrunner","rr_num_workers":8}
