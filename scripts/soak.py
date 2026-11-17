@@ -274,8 +274,10 @@ class Soak:
         metrics = summary['metrics']
         expected = self.rate * seconds(duration)
         completed = metrics['iterations']['count']
-        if completed != expected or metrics['dropped_iterations']['count'] != 0:
-            raise ValueError(f'Incomplete load: completed {completed} of {expected} scheduled iterations')
+        dropped = metrics['dropped_iterations']['count']
+        # The final k6 arrival timer can race the scenario deadline.
+        if abs(completed - expected) > 1 or dropped != 0:
+            raise ValueError(f'Incomplete load: completed {completed} of {expected} scheduled iterations, {dropped} dropped')
 
     def runtime_identity(self):
         script = ('require "vendor/autoload.php"; echo json_encode(['

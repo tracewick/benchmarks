@@ -137,6 +137,8 @@ checks, dropped or incomplete load iterations, absent delivery or increasing RR 
 the observation invalid and the command exits nonzero. Raw artifacts and an invalid
 report survive failures. A **valid observation** only means these validity checks
 passed; inspect trends, queue and duration before deciding whether the soak passed.
+Allow one iteration at either side of the scheduled count for the k6 deadline
+boundary, while requiring zero reported drops.
 RSS growth alone does not prove a leak: allocator retention and shared pages matter.
 
 ## Plots after collection

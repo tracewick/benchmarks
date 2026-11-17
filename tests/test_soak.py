@@ -155,11 +155,11 @@ class EvidenceTest(unittest.TestCase):
     def test_k6_must_complete_the_scheduled_workload(self):
         runner = Soak.__new__(Soak)
         runner.rate = 10
-        for iterations, drops in ((600, 0), (599, 0), (601, 0), (600, 1)):
+        for iterations, drops in ((600, 0), (599, 0), (601, 0), (598, 0), (602, 0), (600, 1)):
             with self.subTest(iterations=iterations, drops=drops):
                 summary = {'metrics': {'iterations': {'count': iterations},
                                        'dropped_iterations': {'count': drops}}}
-                if (iterations, drops) == (600, 0):
+                if abs(iterations - 600) <= 1 and drops == 0:
                     runner.check_load_summary(summary, '1m')
                 else:
                     with self.assertRaisesRegex(ValueError, 'Incomplete load'):
