@@ -1,0 +1,10 @@
+version: "3"
+server:
+  command: php /workspace/benchmarks/scripts/signal-weight/rr.php
+  relay: pipes
+http:
+  address: 127.0.0.1:8089
+  pool:
+    num_workers: 1
+logs:
+  level: warn

@@ -1,0 +1,45 @@
+[
+  {
+    "runtime": "cli",
+    "requests": 10,
+    "pids": [
+      1
+    ],
+    "native_events": 300,
+    "spool_events": 300,
+    "php_pprof_ns": 300000000,
+    "agent_pprof_ns": 300000000,
+    "pyroscope_ns": 300000000,
+    "push_count": 1,
+    "captures_file": "cli-captures.jsonl"
+  },
+  {
+    "runtime": "fpm",
+    "requests": 10,
+    "pids": [
+      8,
+      9
+    ],
+    "native_events": 301,
+    "spool_events": 301,
+    "php_pprof_ns": 301000000,
+    "agent_pprof_ns": 301000000,
+    "pyroscope_ns": 301000000,
+    "push_count": 1,
+    "captures_file": "fpm-captures.jsonl"
+  },
+  {
+    "runtime": "rr",
+    "requests": 10,
+    "pids": [
+      13
+    ],
+    "native_events": 298,
+    "spool_events": 298,
+    "php_pprof_ns": 298000000,
+    "agent_pprof_ns": 298000000,
+    "pyroscope_ns": 298000000,
+    "push_count": 1,
+    "captures_file": "rr-captures.jsonl"
+  }
+]
