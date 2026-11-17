@@ -1,0 +1,30 @@
+{
+  "php": "8.5.12",
+  "excimer": "1.2.7",
+  "recording_span_class": "OpenTelemetry\\SDK\\Trace\\Span",
+  "unsampled_span_class": "OpenTelemetry\\SDK\\Trace\\NonRecordingSpan",
+  "unsampled_valid_local": true,
+  "native_weight": 405,
+  "batch_weight": 405,
+  "second_flush_weight": 0,
+  "phases": {
+    "sdkNone": 35,
+    "sdkParent": 35,
+    "sdkChild": 37,
+    "sdkEndedActive": 38,
+    "sdkRestored": 35,
+    "sdkUnsampled": 36,
+    "sdkRemote": 69,
+    "sdkLocalChild": 35,
+    "sdkAfterDetach": 35
+  },
+  "context_mismatches": 0,
+  "callback_autoloads": [],
+  "warnings": [],
+  "exports_in_callback": 0,
+  "exported_spans": 3,
+  "multi_entry_logs": 0,
+  "rotation_collected": 2,
+  "sink_in_callback": 0,
+  "pass": true
+}
