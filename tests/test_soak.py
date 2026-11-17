@@ -119,11 +119,17 @@ class EvidenceTest(unittest.TestCase):
     def test_disabled_or_inactive_profiling_is_not_a_healthy_run(self):
         runner = Soak.__new__(Soak)
         runner.base_url = 'http://localhost'
+        runner.runtime = 'rr'
+        runner.sample_rate = 0.1
         runner.env = {'WORK_STACK_DEPTH': '48'}
         healthy = {'ok': True, 'excimer': True, 'tracewick': True,
-                   'profiling_enabled': True, 'work_stack_depth': 48}
+                   'profiling_enabled': True, 'work_stack_depth': 48,
+                   'rr_num_workers': 1, 'sample_rate': 0.1}
+        with patch('soak.get_json', return_value=healthy):
+            self.assertEqual(healthy, runner.health(True))
         for changes in ({'excimer': False}, {'profiling_enabled': False},
-                        {'work_stack_depth': 0}, {'diagnostics': {'inactiveSampler': 'disabled'}}):
+                        {'work_stack_depth': 0}, {'rr_num_workers': 2}, {'sample_rate': 1},
+                        {'diagnostics': {'inactiveSampler': 'disabled'}}):
             with patch('soak.get_json', return_value={**healthy, **changes}):
                 with self.assertRaises(ValueError):
                     runner.health(True)
@@ -135,6 +141,29 @@ class EvidenceTest(unittest.TestCase):
         with patch('soak.command', return_value=json.dumps({'reference': 'b' * 40})):
             with self.assertRaisesRegex(ValueError, 'reference'):
                 runner.runtime_identity()
+
+    def test_wrong_excimer_version_is_rejected_before_traffic(self):
+        runner = Soak.__new__(Soak)
+        runner.package = '0.2.0'
+        runner.env = {'EXCIMER_VERSION': '1.2.7'}
+        runner.ids = {'app': 'test-container'}
+        actual = {'version': '0.2.0', 'excimer': '1.2.6'}
+        with patch('soak.command', return_value=json.dumps(actual)):
+            with self.assertRaisesRegex(ValueError, 'Excimer version'):
+                runner.runtime_identity()
+
+    def test_k6_must_complete_the_scheduled_workload(self):
+        runner = Soak.__new__(Soak)
+        runner.rate = 10
+        for iterations, drops in ((600, 0), (599, 0), (601, 0), (600, 1)):
+            with self.subTest(iterations=iterations, drops=drops):
+                summary = {'metrics': {'iterations': {'count': iterations},
+                                       'dropped_iterations': {'count': drops}}}
+                if (iterations, drops) == (600, 0):
+                    runner.check_load_summary(summary, '1m')
+                else:
+                    with self.assertRaisesRegex(ValueError, 'Incomplete load'):
+                        runner.check_load_summary(summary, '1m')
 
     def test_exact_pins_and_combined_durations(self):
         self.assertEqual(5400, seconds('1h30m'))

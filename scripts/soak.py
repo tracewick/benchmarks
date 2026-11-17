@@ -162,6 +162,9 @@ class Soak:
             raise ValueError('Wrong profiling state')
         if health.get('work_stack_depth') != int(self.env['WORK_STACK_DEPTH']):
             raise ValueError('Wrong workload depth')
+        if self.runtime == 'rr' and (health.get('rr_num_workers') != 1
+                                     or health.get('sample_rate') != self.sample_rate):
+            raise ValueError('Wrong RoadRunner worker count or profiling sample rate')
         diagnostics = health.get('diagnostics')
         if enabled and diagnostics and diagnostics.get('inactiveSampler') is not None:
             raise ValueError('Inactive sampler despite enabled profiling')
@@ -260,14 +263,19 @@ class Soak:
             if time.monotonic() - started < seconds(duration):
                 raise ValueError('Load ended before the requested duration')
             summary = json.loads((self.directory / (phase + '-k6.json')).read_text())
-            metrics = summary['metrics']
-            if metrics['http_reqs']['count'] <= 0 or metrics.get('dropped_iterations', {}).get('count', 0):
-                raise ValueError('No requests or dropped load-generator iterations')
+            self.check_load_summary(summary, duration)
         finally:
             subprocess.run(['docker', 'rm', '-f', self.load_name], capture_output=True, timeout=30)
             self.load.wait(timeout=30)
             self.load = None
             output.close()
+
+    def check_load_summary(self, summary, duration):
+        metrics = summary['metrics']
+        expected = self.rate * seconds(duration)
+        completed = metrics['iterations']['count']
+        if completed != expected or metrics['dropped_iterations']['count'] != 0:
+            raise ValueError(f'Incomplete load: completed {completed} of {expected} scheduled iterations')
 
     def runtime_identity(self):
         script = ('require "vendor/autoload.php"; echo json_encode(['
@@ -280,6 +288,8 @@ class Soak:
                 raise ValueError('Installed core reference does not match requested SHA')
         elif actual['version'].lstrip('v') != self.package.lstrip('v'):
             raise ValueError('Installed core version does not match requested version')
+        if actual['excimer'] != self.env['EXCIMER_VERSION']:
+            raise ValueError('Installed Excimer version does not match requested version')
         if self.reader == 'agent':
             actual['agent_version'] = command(['docker', 'exec', self.ids['reader'], 'tracewick-agent', 'version'])
             if self.env.get('AGENT_REF'):

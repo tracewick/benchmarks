@@ -109,9 +109,10 @@ Every STATS_INTERVAL seconds, `telemetry.jsonl` records:
 - Agent queue/delivery/retry/reject metrics, and the single RR worker's profiler
   diagnostics. FPM/Swoole writer-drop totals are not available from this harness.
   Go goroutine/heap metrics are not currently exported; OS threads are not goroutines.
-- k6 cumulative request/drop/error/latency checkpoints. REST polling avoids storing
-  per-request events for 72 hours. Quantiles are cumulative checkpoints; only the
-  final per-phase summaries are full-window p95/p99, not independent hourly quantiles.
+- k6 cumulative request, drop, error and latency checkpoints. The runner saves
+  interval snapshots. k6 itself retains trend samples for end-of-phase quantiles,
+  so track the generator's memory separately. REST includes cumulative p95 and
+  the per-phase summary includes full-window p95 and p99.
 
 `resource-series.csv` is a flattened export; `hourly.json` summarizes fixed-hour
 CPU/request and memory observations. `result.json` and `soak-report.md` separate
@@ -131,8 +132,8 @@ progress with a nonempty queue abort the run during collection. Increasing
 writer/delivery failure counters and rejected files also abort promptly.
 
 Missing/malformed telemetry, counter resets, container/worker replacement, OOM,
-large collection gaps, wrong pins/disabled profiling, missed HTTP checks, dropped
-load-generator iterations, absent delivery or increasing RR writer failures make
+large collection gaps, wrong pins or RoadRunner profiling settings, missed HTTP
+checks, dropped or incomplete load iterations, absent delivery or increasing RR writer failures make
 the observation invalid and the command exits nonzero. Raw artifacts and an invalid
 report survive failures. A **valid observation** only means these validity checks
 passed; inspect trends, queue and duration before deciding whether the soak passed.
