@@ -1,0 +1,16 @@
+{
+  "tracewick-signal-runtime:8.5": {
+    "id": "sha256:9c205c1a0cb6546fdca9629ade14c1462820d50f273204afe9bf4ef2fdfcd48d",
+    "repo_digests": []
+  },
+  "grafana/pyroscope:2.4.2": {
+    "id": "sha256:edce2d914020e82723d959e1beb4209980f43bd290990ec3e9914c90590c0b1c",
+    "repo_digests": [
+      "grafana/pyroscope@sha256:ef9b48976386aa2781e84664dfdba7cc33a1b6793c0cc9d130812173a926ca1f"
+    ]
+  },
+  "build_inputs": {
+    "docker.io/library/php:8.5-fpm-bookworm": "sha256:eec275cd99580e0a6e103dd343a7c160c86917003f6b9bba2d4c75d82419c683",
+    "ghcr.io/roadrunner-server/roadrunner:2025.1.15": "sha256:18378c1313a71ce1c3cfc493c99e75c189ef5fb2eaf85290b8a99080fcb0f64f"
+  }
+}

@@ -18,6 +18,17 @@ What this repository does **not** claim. Aligns with [METHOD.md](METHOD.md) non-
 - Depth-48 soak evidence for FPM/RR/Swoole×agent is checked in; 72h shallow FPM+drain remains historical.
 - Layer C checks order-of-magnitude signal only; flame-graph symbol share is not a contractual metric in v1.
 
+## Explicit-flush weight correction
+
+The [2026-11-17 signal-weight report](reports/2026-11-17-signal-weights.md) verifies
+exact native-event conservation on the merged fix for short CLI/FPM/RR units.
+Earlier reports remain evidence about their pinned versions. Explicit-flush
+weights could be inflated; the effect depends on threshold versus explicit
+flushes and cannot be corrected with one universal multiplier. Revalidate signal
+weights and remeasure overhead before presenting historical observations as
+current-version claims. This short probe does not establish sampling accuracy,
+capacity, or 72h stability.
+
 ## Comparisons
 
 - No marketing bake-off against Arc Lamp, Excimetry, or eBPF agents in v1.

@@ -1,0 +1,47 @@
+{
+  "flamegraph": {
+    "names": [
+      "total",
+      "{main}",
+      "capture",
+      "signalWork"
+    ],
+    "levels": [
+      {
+        "values": [
+          "0",
+          "298000000",
+          "0",
+          "0"
+        ]
+      },
+      {
+        "values": [
+          "0",
+          "298000000",
+          "0",
+          "1"
+        ]
+      },
+      {
+        "values": [
+          "0",
+          "298000000",
+          "0",
+          "2"
+        ]
+      },
+      {
+        "values": [
+          "0",
+          "298000000",
+          "298000000",
+          "3"
+        ]
+      }
+    ],
+    "total": "298000000",
+    "maxSelf": "298000000"
+  },
+  "tree": "AAABBnttYWlufQABB2NhcHR1cmUAAQpzaWduYWxXb3JrgL2MjgEA"
+}

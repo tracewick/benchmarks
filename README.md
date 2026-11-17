@@ -109,6 +109,12 @@ RATE=700 DURATION=5m PRE_VUS=500 MAX_VUS=2000 make bench-rps
 
 Artifacts: `reports/_local/rps-pipeline-<utc>/` and `rps-pipeline-latest.md`. Checked-in reports must repeat the single-instance / host-ceiling caveat. `READER=drain|agent|off` (default `drain`). `RUNTIME=fpm|rr|swoole` (default `fpm`).
 
+Post-fix [exact signal-weight verification](reports/2026-11-17-signal-weights.md)
+checks native events through CLI/FPM/RR, spool, agent pprof and live Pyroscope.
+It is correctness evidence, not a replacement for the capacity reports below.
+Those reports predate the explicit-flush fix; do not reuse their absolute profile
+weights as post-fix evidence or apply a blanket divide-by-two correction.
+
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 
 - [overhead A/B](reports/2026-11-06-overhead-depth48-cloud.md)

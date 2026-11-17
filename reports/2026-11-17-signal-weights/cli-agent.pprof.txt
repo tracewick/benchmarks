@@ -1,0 +1,13 @@
+PeriodType: wall nanoseconds
+Period: 1000000
+Time: 2026-11-17 15:36:12.622178992 +0300 MSK
+Duration: 305.
+Samples:
+wall/nanoseconds
+  300000000: 3 2 1 
+Locations
+     1: 0x0 M=1 {main} /workspace/benchmarks/scripts/signal-weight/cli.php:4:0 s=0
+     2: 0x0 M=1 capture /workspace/benchmarks/scripts/signal-weight/capture.php:50:0 s=0
+     3: 0x0 M=1 signalWork /workspace/benchmarks/scripts/signal-weight/capture.php:31:0 s=0
+Mappings
+1: 0x0/0x0/0x0   
