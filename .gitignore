@@ -23,3 +23,5 @@ Thumbs.db
 # Cursor / agent scratch
 .cursor/
 scripts/__pycache__/
+
+tests/__pycache__/

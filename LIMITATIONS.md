@@ -38,3 +38,13 @@ capacity, or 72h stability.
 
 - Secrets never belong in git; use `.env` from `.env.example`.
 - Toxiproxy chaos scenarios are optional and documented when enabled; default smoke does not require them.
+
+## Observed-soak instrumentation
+
+The new [soak runner](docs/soak.md) separates process RSS from cgroup memory and
+checks worker/container continuity. Historical Docker-stats CSVs do not provide
+per-process RSS, FD, thread, queue or restart evidence. Current instrumentation
+does not retroactively close the 72h depth-48 gate. Shared-cgroup managed runners
+can test the harness only; resource attribution must be validated on the actual
+Linux benchmark server. k6 REST quantiles are cumulative, not hourly quantiles;
+Go goroutine/heap and FPM/Swoole writer-drop totals are not collected.

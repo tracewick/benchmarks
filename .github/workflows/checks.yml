@@ -1,0 +1,22 @@
+name: Checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Soak regression tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Shell syntax and Compose configuration
+        run: |
+          bash -n scripts/run-soak.sh scripts/run-soak-matrix.sh scripts/run-soak-legacy.sh
+          sh -n scripts/soak_probe.sh
+          docker compose config --quiet

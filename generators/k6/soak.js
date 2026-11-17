@@ -1,5 +1,5 @@
 import http from "k6/http";
-import { check, sleep } from "k6";
+import { check, fail, sleep } from "k6";
 
 /**
  * Long soak at fixed arrival rate (METHOD.md soak / RSS growth).
@@ -9,6 +9,7 @@ const RATE = Number(__ENV.RATE || 10);
 const DURATION = __ENV.DURATION || "72h";
 const PRE_VUS = Number(__ENV.PRE_VUS || 20);
 const MAX_VUS = Number(__ENV.MAX_VUS || 40);
+const EXPECT_PROFILING = (__ENV.EXPECT_PROFILING || "1") === "1";
 
 export const options = {
   summaryTrendStats: ["avg", "min", "med", "max", "p(90)", "p(95)", "p(99)"],
@@ -24,7 +25,9 @@ export const options = {
   },
   // Soft gates: soak cares about survival + growth, not tight latency SLOs.
   thresholds: {
-    http_req_failed: ["rate<0.05"],
+    http_req_failed: ["rate==0"],
+    checks: ["rate==1"],
+    dropped_iterations: ["count==0"],
   },
 };
 
@@ -32,7 +35,7 @@ const BASE_URL = (__ENV.BASE_URL || "http://127.0.0.1:8080").replace(/\/$/, "");
 
 export function setup() {
   const health = http.get(`${BASE_URL}/health`);
-  check(health, {
+  const healthy = check(health, {
     "health is 200": (r) => r.status === 200,
     "excimer loaded": (r) => {
       try {
@@ -41,14 +44,15 @@ export function setup() {
         return false;
       }
     },
-    "profiling on": (r) => {
+    "expected profiling state": (r) => {
       try {
-        return r.json("profiling_enabled") === true;
+        return r.json("profiling_enabled") === EXPECT_PROFILING;
       } catch (e) {
         return false;
       }
     },
   });
+  if (!healthy) fail("Health/profiler preconditions failed");
   sleep(1);
   return { baseUrl: BASE_URL };
 }

@@ -73,6 +73,8 @@ while ($request = $rr->waitRequest()) {
                 'work_stack_depth' => $stackDepth,
                 'runtime' => 'roadrunner',
                 'rr_num_workers' => max(1, (int) (getenv('RR_NUM_WORKERS') ?: '4')),
+                'pid' => getmypid(),
+                'diagnostics' => $profiler?->diagnostics(),
             ], JSON_THROW_ON_ERROR);
             $rr->respond(new Response(200, ['Content-Type' => 'application/json'], $body));
 
