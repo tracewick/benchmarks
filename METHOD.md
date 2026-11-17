@@ -73,3 +73,14 @@ Use `reports/TEMPLATE.md`. Every checked-in report should record:
 - Metric table for layers A/B (and C if checked)
 - Screenshots (relative paths under `reports/…`)
 - Honesty paragraph: what was *not* measured
+
+## Observed soak validity
+
+The [observed-soak runbook](docs/soak.md) specifies exact source/runtime identity,
+a short unprofiled baseline, profiling warmup, steady load, drain and cooldown.
+Process RSS/anonymous memory are separate from container memory. Worker recycling,
+container changes, missing telemetry and undelivered work invalidate continuity.
+Record both first/last windows and whole-series growth slopes, CPU per completed
+k6 HTTP request, queue and delivery counters. A valid observation is not an
+automatic leak-free verdict; the elapsed steady duration and resource trends must
+be reviewed. No new 72-hour result is implied by adding this instrumentation.

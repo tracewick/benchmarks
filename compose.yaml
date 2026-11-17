@@ -14,6 +14,7 @@ x-app-build: &app-build
   args:
     PHP_VERSION: ${PHP_VERSION:-8.4}
     EXCIMER_VERSION: ${EXCIMER_VERSION:-1.2.6}
+    EXCIMER_REF: ${EXCIMER_REF:-}
     TRACEWICK_VERSION: ${TRACEWICK_VERSION:-0.1.0}
 
 x-app-env: &app-env
@@ -66,7 +67,7 @@ services:
 
   app-fpm:
     build: *app-build
-    image: tracewick-benchmarks-fpm:${TRACEWICK_VERSION:-0.1.0}
+    image: tracewick-benchmarks-fpm:${TRACEWICK_IMAGE_TAG:-${TRACEWICK_VERSION:-0.1.0}}
     environment:
       <<: *app-env
     volumes:
@@ -74,13 +75,13 @@ services:
       - app-spool:/var/spool/tracewick
     depends_on: [pyroscope]
     healthcheck:
-      test: [CMD-SHELL, php -r 'exit(extension_loaded("excimer")?0:1);']
+      test: ["CMD-SHELL", "php -r 'exit(extension_loaded(\"excimer\")?0:1);'"]
       interval: 10s
       timeout: 3s
       retries: 12
 
   app-drain:
-    image: tracewick-benchmarks-fpm:${TRACEWICK_VERSION:-0.1.0}
+    image: tracewick-benchmarks-fpm:${TRACEWICK_IMAGE_TAG:-${TRACEWICK_VERSION:-0.1.0}}
     user: www-data
     entrypoint: [vendor/bin/tracewick-drain]
     command: [--memory-limit=128M]
@@ -101,7 +102,9 @@ services:
       context: stand/agent
       args:
         AGENT_VERSION: ${AGENT_VERSION:-0.1.0}
-    image: tracewick-benchmarks-agent:${AGENT_VERSION:-0.1.0}
+        AGENT_REF: ${AGENT_REF:-}
+        AGENT_BUILD_TARGET: ${AGENT_BUILD_TARGET:-release}
+    image: tracewick-benchmarks-agent:${AGENT_IMAGE_TAG:-${AGENT_VERSION:-0.1.0}}
     user: "33:33"
     environment:
       TRACEWICK_SPOOL_DIR: ${TRACEWICK_SPOOL_DIR:-/var/spool/tracewick}
@@ -148,9 +151,10 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION:-8.4}
         EXCIMER_VERSION: ${EXCIMER_VERSION:-1.2.6}
+        EXCIMER_REF: ${EXCIMER_REF:-}
         TRACEWICK_VERSION: ${TRACEWICK_VERSION:-0.1.0}
         ROADRUNNER_VERSION: ${ROADRUNNER_VERSION:-2025.1.15}
-    image: tracewick-benchmarks-rr:${TRACEWICK_VERSION:-0.1.0}
+    image: tracewick-benchmarks-rr:${TRACEWICK_IMAGE_TAG:-${TRACEWICK_VERSION:-0.1.0}}
     user: "33:33"
     environment:
       <<: *app-env
@@ -161,7 +165,7 @@ services:
       - 127.0.0.1:${RR_PORT:-8082}:8080
     depends_on: [pyroscope]
     healthcheck:
-      test: [CMD-SHELL, php -r 'exit(extension_loaded("excimer")?0:1);']
+      test: ["CMD-SHELL", "php -r 'exit(extension_loaded(\"excimer\")?0:1);'"]
       interval: 10s
       timeout: 3s
       retries: 12
@@ -174,9 +178,10 @@ services:
       args:
         PHP_VERSION: ${PHP_VERSION:-8.4}
         EXCIMER_VERSION: ${EXCIMER_VERSION:-1.2.6}
+        EXCIMER_REF: ${EXCIMER_REF:-}
         TRACEWICK_VERSION: ${TRACEWICK_VERSION:-0.1.0}
         SWOOLE_VERSION: ${SWOOLE_VERSION:-6.0.2}
-    image: tracewick-benchmarks-swoole:${TRACEWICK_VERSION:-0.1.0}
+    image: tracewick-benchmarks-swoole:${TRACEWICK_IMAGE_TAG:-${TRACEWICK_VERSION:-0.1.0}}
     user: "33:33"
     environment:
       <<: *app-env
@@ -187,7 +192,7 @@ services:
       - 127.0.0.1:${SWOOLE_PORT:-8083}:8080
     depends_on: [pyroscope]
     healthcheck:
-      test: [CMD-SHELL, php -r 'exit(extension_loaded("excimer")&&extension_loaded("swoole")?0:1);']
+      test: ["CMD-SHELL", "php -r 'exit(extension_loaded(\"excimer\")&&extension_loaded(\"swoole\")?0:1);'"]
       interval: 10s
       timeout: 3s
       retries: 12

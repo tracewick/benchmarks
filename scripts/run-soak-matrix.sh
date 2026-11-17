@@ -16,7 +16,7 @@ REPORTS_DIR=${REPORTS_DIR:-reports/_local}
 
 # Modest pools — soak is about growth, not max RPS.
 FPM_CHILDREN=${PHP_FPM_MAX_CHILDREN:-8}
-RR_WORKERS=${RR_NUM_WORKERS:-8}
+RR_WORKERS=${RR_NUM_WORKERS:-1}
 SWOOLE_WORKERS=${SWOOLE_WORKER_NUM:-8}
 
 RUNTIMES=${RUNTIMES:-"fpm rr swoole"}

@@ -17,7 +17,7 @@ cp .env.example .env   # optional
 make up                # build + Pyroscope + Grafana + PHP workload + drain
 make bench-smoke       # wiring smoke (profiles → Pyroscope)
 make bench-overhead    # M2: baseline vs on @ fixed RPS (~2× duration)
-make bench-soak        # soak: RSS/CPU series (default 10 RPS / 72h; use tmux)
+# Long soaks run separately: see docs/soak.md for pins and the pilot.
 make down
 ```
 
@@ -63,29 +63,22 @@ reports/         checked-in reports; local scratch under reports/_local/
 | `make bench-overhead` | M2 A/B at `RATE` req/s (default 20) for `DURATION` (default `2m`) |
 | `make bench-spool-pressure` | M3: stop drain, fill spool, measure catch-up |
 | `make bench-chaos` | M3: Toxiproxy latency toward Pyroscope |
-| `make bench-soak` | Soak: fixed RPS + FPM/drain RSS·CPU (default `10` / `72h`) |
+| `make bench-soak` | Observed soak: explicit pins, RR/agent by default; [runbook](docs/soak.md) |
 | `make bench-rps` | High-RPS pipeline: deep stacks + spool series (default `500` / `5m`) |
 | `make collect-report` | Stash host meta under `reports/_local/` |
 
-### Soak (manual / tmux)
+### Observed soak (manual)
 
-Run on the VPS outside an IDE terminal so logout does not kill k6:
-
-```bash
-cd /root/benchmarks && git pull --ff-only && make up
-tmux new -s soak
-# inside tmux:
-make bench-soak
-# Detach: Ctrl-b d   |   Reattach: tmux attach -t soak
-# Agent + depth-48 short matrix (FPM → RR → Swoole), e.g. 6h each:
-# DURATION=6h RATE=10 READER=agent WORK_STACK_DEPTH=48 ./scripts/run-soak-matrix.sh
-```
-
-Defaults: `RATE=10`, `DURATION=72h`, `STATS_INTERVAL=60`, `sampleRate=0.1`. `RUNTIME=fpm|rr|swoole`, `READER=drain|agent`. Artifacts: `reports/_local/soak-<utc>/` and `soak-latest.md`.
+Follow [docs/soak.md](docs/soak.md): explicit source pins → short pilot → calibrated
+72-hour run under tmux. The runner starts its own Compose project; do not run
+`make up` alongside it on the same ports. Defaults: RR/agent, one RR worker,
+depth 48, sample rate 0.1, 15-second telemetry. Raw evidence and validity/resource
+reports are under `reports/_local/soak-<utc>/`. `make check-soak` runs regression
+checks; `make plot-soak RUN_DIR=...` renders preserved telemetry.
 
 ### High-RPS pipeline (manual)
 
-Uses the same `/work` wall budget (`WORK_BUSY_MS` / `WORK_SLEEP_MS`) as overhead/soak. Opt-in `WORK_STACK_DEPTH` deepens call stacks so spool payloads are larger (closer to a real app). Default scenarios keep `WORK_STACK_DEPTH=0`.
+Uses the same `/work` wall budget (`WORK_BUSY_MS` / `WORK_SLEEP_MS`) as overhead/soak. Opt-in `WORK_STACK_DEPTH` deepens call stacks so spool payloads are larger (closer to a real app). Other legacy scenarios keep `WORK_STACK_DEPTH=0`; observed soak defaults to 48.
 
 **Honesty:** these runs are **one instance** (typically app + drain + Pyroscope + k6 on a single VPS). The sustained RPS you publish is the **ceiling of that server configuration and synthetic work unit**, not “Tracewick handles N RPS everywhere” and not a multi-node fleet result. On the Timeweb 8 vCPU stand with depth-48 `/work` (~25 ms busy + 10 ms sleep, 32 FPM workers), overload probes showed ~760 achieved RPS with multi-second latency — so a clean hold is expected around **~700 RPS**, not 1.5–3k.
 

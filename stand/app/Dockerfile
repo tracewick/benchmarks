@@ -15,8 +15,11 @@ ARG TRACEWICK_VERSION=0.1.0
 
 WORKDIR /app
 COPY composer.json ./
-# Pin is in composer.json; TRACEWICK_VERSION must match that constraint when rebuilding.
-RUN test -n "${TRACEWICK_VERSION}" \
+# The build argument is the actual Composer constraint, including dev-develop#<SHA>.
+RUN --mount=type=secret,id=proxy_ca \
+    if [ -f /run/secrets/proxy_ca ]; then export COMPOSER_CAFILE=/run/secrets/proxy_ca; fi; \
+    test -n "${TRACEWICK_VERSION}" \
+    && composer require --no-update --no-interaction "tracewick/tracewick:${TRACEWICK_VERSION}" \
     && composer update --no-interaction --no-progress --no-dev \
       --ignore-platform-req=ext-sockets \
     && composer clear-cache \
@@ -27,13 +30,14 @@ FROM ghcr.io/roadrunner-server/roadrunner:${ROADRUNNER_VERSION} AS roadrunner-bi
 FROM php:${PHP_VERSION}-cli-bookworm AS php-base
 
 ARG EXCIMER_VERSION=1.2.6
+ARG EXCIMER_REF
+COPY install-excimer.sh /tmp/install-excimer.sh
 
-RUN apt-get update \
+RUN --mount=type=secret,id=proxy_ca apt-get update \
     && apt-get install -y --no-install-recommends git unzip \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install -j"$(nproc)" pcntl sockets \
-    && pecl install "excimer-${EXCIMER_VERSION}" \
-    && docker-php-ext-enable excimer \
+    && sh /tmp/install-excimer.sh \
     && rm -rf /tmp/pear \
     && php -r 'exit(extension_loaded("excimer") ? 0 : 1);' \
     && install -d -o www-data -g www-data /var/spool/tracewick
@@ -46,6 +50,9 @@ COPY src /srv/app/src
 COPY worker.php /srv/app/worker.php
 COPY swoole-server.php /srv/app/swoole-server.php
 COPY .rr.yaml /srv/app/.rr.yaml
+RUN chmod 0644 worker.php swoole-server.php .rr.yaml \
+    && find public src -type d -exec chmod 0755 {} + \
+    && find public src -type f -exec chmod 0644 {} +
 
 ENV TRACEWICK_SPOOL_DIR=/var/spool/tracewick \
     TRACEWICK_SAMPLE_RATE=1.0 \
@@ -55,13 +62,14 @@ ENV TRACEWICK_SPOOL_DIR=/var/spool/tracewick \
 FROM php:${PHP_VERSION}-fpm-bookworm AS fpm
 
 ARG EXCIMER_VERSION=1.2.6
+ARG EXCIMER_REF
+COPY install-excimer.sh /tmp/install-excimer.sh
 
-RUN apt-get update \
+RUN --mount=type=secret,id=proxy_ca apt-get update \
     && apt-get install -y --no-install-recommends git unzip \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install -j"$(nproc)" pcntl \
-    && pecl install "excimer-${EXCIMER_VERSION}" \
-    && docker-php-ext-enable excimer \
+    && sh /tmp/install-excimer.sh \
     && rm -rf /tmp/pear \
     && php -r 'exit(extension_loaded("excimer") ? 0 : 1);' \
     && install -d -o www-data -g www-data /var/spool/tracewick
@@ -73,7 +81,9 @@ COPY public /srv/app/public
 COPY src /srv/app/src
 COPY php-fpm.conf /usr/local/etc/php-fpm.d/zz-benchmarks.conf
 COPY docker-fpm-entrypoint.sh /usr/local/bin/docker-fpm-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-fpm-entrypoint.sh
+RUN chmod 0755 /usr/local/bin/docker-fpm-entrypoint.sh \
+    && find public src -type d -exec chmod 0755 {} + \
+    && find public src -type f -exec chmod 0644 {} +
 
 ENV TRACEWICK_SPOOL_DIR=/var/spool/tracewick \
     TRACEWICK_SAMPLE_RATE=1.0 \
@@ -88,7 +98,7 @@ CMD ["php-fpm"]
 FROM php-base AS roadrunner
 COPY --from=roadrunner-binary /usr/bin/rr /usr/local/bin/rr
 COPY docker-rr-entrypoint.sh /usr/local/bin/docker-rr-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-rr-entrypoint.sh
+RUN chmod 0755 /usr/local/bin/docker-rr-entrypoint.sh
 ENV RR_NUM_WORKERS=4
 USER www-data
 ENTRYPOINT ["/usr/local/bin/docker-rr-entrypoint.sh"]
@@ -105,7 +115,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/pear \
     && php -r 'exit(extension_loaded("swoole") ? 0 : 1);'
 COPY docker-swoole-entrypoint.sh /usr/local/bin/docker-swoole-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-swoole-entrypoint.sh
+RUN chmod 0755 /usr/local/bin/docker-swoole-entrypoint.sh
 ENV SWOOLE_WORKER_NUM=4 \
     SWOOLE_LISTEN_HOST=0.0.0.0 \
     SWOOLE_LISTEN_PORT=8080

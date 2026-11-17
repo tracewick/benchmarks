@@ -17,7 +17,7 @@ PYROSCOPE_PORT ?= 4040
 RATE ?= 20
 DURATION ?= 2m
 
-.PHONY: help build build-rr build-swoole up up-rr up-swoole down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak bench-rps prepare-reports-dir collect-report smoke-check
+.PHONY: check-soak plot-soak help build build-rr build-swoole up up-rr up-swoole down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak bench-rps prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -142,16 +142,16 @@ bench-chaos: ## M3 optional: Toxiproxy latency toward Pyroscope (READER=drain|ag
 		READER="$${READER:-drain}" \
 		./scripts/run-chaos-pyroscope.sh
 
-bench-soak: ## Soak: fixed RPS + workload/reader RSS·CPU (RUNTIME=fpm|rr|swoole READER=drain|agent)
+bench-soak: ## Observed soak: explicit pins + process/queue/CPU telemetry (default RR + agent)
 	@chmod +x scripts/run-soak.sh scripts/sample-container-stats.sh scripts/summarize-soak.py scripts/ensure-reader.sh scripts/recreate-workload.sh
-	RATE="$${RATE:-10}" DURATION="$${DURATION:-72h}" BASE_URL="$(BASE_URL)" K6_IMAGE="$(K6_IMAGE)" \
-		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-60}" \
+	RATE="$${RATE:-10}" DURATION="$${DURATION:-72h}" BASE_URL="$${BASE_URL:-}" K6_IMAGE="$(K6_IMAGE)" \
+		COMPOSE="$(COMPOSE)" REPORTS_DIR="$(REPORTS_DIR)" STATS_INTERVAL="$${STATS_INTERVAL:-15}" \
 		TRACEWICK_SAMPLE_RATE="$${TRACEWICK_SAMPLE_RATE:-0.1}" \
-		READER="$${READER:-drain}" RUNTIME="$${RUNTIME:-fpm}" \
-		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-0}" \
-		PHP_FPM_MAX_CHILDREN="$${PHP_FPM_MAX_CHILDREN:-4}" \
-		RR_NUM_WORKERS="$${RR_NUM_WORKERS:-4}" \
-		SWOOLE_WORKER_NUM="$${SWOOLE_WORKER_NUM:-4}" \
+		READER="$${READER:-agent}" RUNTIME="$${RUNTIME:-rr}" \
+		WORK_STACK_DEPTH="$${WORK_STACK_DEPTH:-48}" \
+		PHP_FPM_MAX_CHILDREN="$${PHP_FPM_MAX_CHILDREN:-1}" \
+		RR_NUM_WORKERS="$${RR_NUM_WORKERS:-1}" \
+		SWOOLE_WORKER_NUM="$${SWOOLE_WORKER_NUM:-1}" \
 		./scripts/run-soak.sh
 
 bench-rps: ## High-RPS pipeline: deep stacks + spool (RUNTIME=fpm|rr|swoole READER=drain|agent|off)
@@ -188,3 +188,12 @@ collect-report: ## Gather local host meta under reports/_local/
 	@echo "BASE_URL=$(BASE_URL)" >> "$(CURDIR)/$(REPORTS_DIR)/meta.txt"
 	@git rev-parse HEAD >> "$(CURDIR)/$(REPORTS_DIR)/meta.txt" 2>/dev/null || true
 	@echo "Wrote $(REPORTS_DIR)/uname.txt and meta.txt"
+
+check-soak: ## Soak telemetry/validity regression tests and configuration syntax
+	python3 -m unittest discover -s tests -v
+	bash -n scripts/run-soak.sh scripts/run-soak-legacy.sh scripts/run-soak-matrix.sh
+	sh -n scripts/soak_probe.sh stand/app/install-excimer.sh
+	$(COMPOSE) config --quiet
+
+plot-soak: ## Render preserved soak telemetry (RUN_DIR=..., requires python3-matplotlib)
+	python3 scripts/plot-soak.py "$(RUN_DIR)"
