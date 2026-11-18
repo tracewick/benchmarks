@@ -1,0 +1,28 @@
+{
+  "case": "rotation",
+  "cold": true,
+  "status": "pass",
+  "failure": null,
+  "php": "8.5.12",
+  "excimer": "1.2.7",
+  "native_entries": 52,
+  "native_weight": 53,
+  "callbacks": 65,
+  "max_callback_depth": 3,
+  "nested_nonempty_logs": 2,
+  "context_reads": 52,
+  "context_read_failures": 0,
+  "context_weights": {
+    "none": 23,
+    "1111111111111111": 20,
+    "2222222222222222": 10
+  },
+  "fiber_entries_omitted": 0,
+  "callback_autoloads": [],
+  "callback_warnings": [],
+  "callback_boundary_violations": [],
+  "spool_files": 6,
+  "spool_weight": 53,
+  "intentional_buffer_drop_weight": 0,
+  "production_correlation_wire_tested": false
+}

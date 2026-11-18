@@ -1,0 +1,23 @@
+{
+  "direct": {
+    "marked_callbacks": 358,
+    "targeted_syscalls": 0,
+    "balanced_markers": true,
+    "examples": [],
+    "pass": true
+  },
+  "rotation": {
+    "marked_callbacks": 315,
+    "targeted_syscalls": 0,
+    "balanced_markers": true,
+    "examples": [],
+    "pass": true
+  },
+  "cold_rotation": {
+    "marked_callbacks": 65,
+    "targeted_syscalls": 0,
+    "balanced_markers": true,
+    "examples": [],
+    "pass": true
+  }
+}
