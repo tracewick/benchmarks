@@ -1,0 +1,212 @@
+{
+  "revisions": {
+    "tracewick": "37e5928506cee2b1c395c2c8d01e89f2bf43a6b8",
+    "agent": "a15f0d310ba6d5942e67b37d3c3c55dc1b3b8100",
+    "benchmarks_base": "472be2566a1d03d0f5f636b31ea7e84dca0f73c1"
+  },
+  "images": {
+    "php_image": "tracewick-uow-php:8.5",
+    "pyroscope_image": "grafana/pyroscope:2.4.3",
+    "port": 14040
+  },
+  "image_ids": {
+    "php": "sha256:87fc0fefa75d730cc8f56072ad2c5fc66996a52f6a27d8c72009fb35130bb5fb",
+    "pyroscope": "sha256:d7642a49eb85faf046ac286b40881cb6e55dc6a2a2e008a2468816e676dfd2e9"
+  },
+  "host": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "cpus_visible": 3
+  },
+  "files_sha256": {
+    "run.py": "178e513b6caf1b807b10206cdc38c4e642b0c228d24f140c136c9d6ba635fc8f",
+    "analyze.py": "771a3985fa66e08a2bf3a474928e7ad84ecb44e371b2f4bdb6ac19fa9b85daac",
+    "capture.php": "17d7222edb7a86863cdef1099af17dc5dc10a982a05789afbfc3b6d32d96b99b"
+  },
+  "matrix": [
+    {
+      "id": "busy-70-100hz-r2",
+      "application": "share-20261118T114657Z-busy-70-100hz-r2",
+      "seed": 83001,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 70,
+      "sleep_beta": false
+    },
+    {
+      "id": "mixed-70-100hz-r3",
+      "application": "share-20261118T114657Z-mixed-70-100hz-r3",
+      "seed": 83008,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 70,
+      "sleep_beta": true
+    },
+    {
+      "id": "busy-70-100hz-r3",
+      "application": "share-20261118T114657Z-busy-70-100hz-r3",
+      "seed": 83002,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 70,
+      "sleep_beta": false
+    },
+    {
+      "id": "mixed-70-1000hz-r1",
+      "application": "share-20261118T114657Z-mixed-70-1000hz-r1",
+      "seed": 83015,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 70,
+      "sleep_beta": true
+    },
+    {
+      "id": "busy-20-100hz-r2",
+      "application": "share-20261118T114657Z-busy-20-100hz-r2",
+      "seed": 83004,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 20,
+      "sleep_beta": false
+    },
+    {
+      "id": "busy-20-1000hz-r2",
+      "application": "share-20261118T114657Z-busy-20-1000hz-r2",
+      "seed": 83013,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 20,
+      "sleep_beta": false
+    },
+    {
+      "id": "busy-20-100hz-r3",
+      "application": "share-20261118T114657Z-busy-20-100hz-r3",
+      "seed": 83005,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 20,
+      "sleep_beta": false
+    },
+    {
+      "id": "mixed-70-1000hz-r2",
+      "application": "share-20261118T114657Z-mixed-70-1000hz-r2",
+      "seed": 83016,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 70,
+      "sleep_beta": true
+    },
+    {
+      "id": "busy-70-1000hz-r3",
+      "application": "share-20261118T114657Z-busy-70-1000hz-r3",
+      "seed": 83011,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 70,
+      "sleep_beta": false
+    },
+    {
+      "id": "mixed-70-1000hz-r3",
+      "application": "share-20261118T114657Z-mixed-70-1000hz-r3",
+      "seed": 83017,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 70,
+      "sleep_beta": true
+    },
+    {
+      "id": "mixed-70-100hz-r2",
+      "application": "share-20261118T114657Z-mixed-70-100hz-r2",
+      "seed": 83007,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 70,
+      "sleep_beta": true
+    },
+    {
+      "id": "busy-20-1000hz-r1",
+      "application": "share-20261118T114657Z-busy-20-1000hz-r1",
+      "seed": 83012,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 20,
+      "sleep_beta": false
+    },
+    {
+      "id": "busy-20-1000hz-r3",
+      "application": "share-20261118T114657Z-busy-20-1000hz-r3",
+      "seed": 83014,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 20,
+      "sleep_beta": false
+    },
+    {
+      "id": "busy-70-1000hz-r1",
+      "application": "share-20261118T114657Z-busy-70-1000hz-r1",
+      "seed": 83009,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 70,
+      "sleep_beta": false
+    },
+    {
+      "id": "busy-20-100hz-r1",
+      "application": "share-20261118T114657Z-busy-20-100hz-r1",
+      "seed": 83003,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 20,
+      "sleep_beta": false
+    },
+    {
+      "id": "busy-70-1000hz-r2",
+      "application": "share-20261118T114657Z-busy-70-1000hz-r2",
+      "seed": 83010,
+      "period_ns": 1000000,
+      "duration_ns": 12000000000,
+      "min_periods": 9000,
+      "alpha_percent": 70,
+      "sleep_beta": false
+    },
+    {
+      "id": "busy-70-100hz-r1",
+      "application": "share-20261118T114657Z-busy-70-100hz-r1",
+      "seed": 83000,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 70,
+      "sleep_beta": false
+    },
+    {
+      "id": "mixed-70-100hz-r1",
+      "application": "share-20261118T114657Z-mixed-70-100hz-r1",
+      "seed": 83006,
+      "period_ns": 10000000,
+      "duration_ns": 40000000000,
+      "min_periods": 3000,
+      "alpha_percent": 70,
+      "sleep_beta": true
+    }
+  ],
+  "run_id": "20261118T114657Z",
+  "thresholds": {
+    "max_error_pp": 5,
+    "max_other_percent": 1
+  }
+}

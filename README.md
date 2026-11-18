@@ -108,6 +108,10 @@ It is correctness evidence, not a replacement for the capacity reports below.
 Those reports predate the explicit-flush fix; do not reuse their absolute profile
 weights as post-fix evidence or apply a blanket divide-by-two correction.
 
+The separate [known-function share experiment](reports/2026-11-18-profile-shares.md)
+checks wall-time proportions against independently measured function durations.
+Its [runbook](scripts/share-accuracy/README.md) defines the fixed matrix and limits.
+
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 
 - [overhead A/B](reports/2026-11-06-overhead-depth48-cloud.md)

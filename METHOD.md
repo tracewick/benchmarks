@@ -34,6 +34,15 @@ Runs: **baseline** (Tracewick off / kill switch) vs **on** at a pinned `sampleRa
 Profiles arrive in Pyroscope within the run window; sample volume is consistent with order-of-magnitude `RPS × sampleRate`.
 We do **not** claim exact per-symbol CPU percentages.
 
+Controlled wall-time share experiments use the separate
+[known-function probe](scripts/share-accuracy/README.md): elapsed-time measurements around
+mutually exclusive functions form an independent reference, and actual Pyroscope inclusive
+weights form the observation. Predeclare seeds, periods, repeats, minimum weighted volume,
+share-error and unclassified-weight bounds; retain every run and a total-preserving
+swapped-symbol negative control. Such a result describes its pinned workloads and runtime,
+not a universal accuracy guarantee or an overhead measurement. See the
+[recorded function-share experiment](reports/2026-11-18-profile-shares.md).
+
 ## Tools
 
 | Tool | Role |

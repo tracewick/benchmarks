@@ -22,6 +22,4 @@ Thumbs.db
 /stand/app/composer.lock
 # Cursor / agent scratch
 .cursor/
-scripts/__pycache__/
-
-tests/__pycache__/
+__pycache__/

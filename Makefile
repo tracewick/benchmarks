@@ -9,6 +9,7 @@ SHELL := /bin/bash
 
 COMPOSE ?= docker compose
 K6_IMAGE ?= grafana/k6:1.8.2
+SHARE_PHP_IMAGE ?= tracewick-php:8.5
 REPORTS_DIR ?= reports/_local
 BASE_URL ?= http://127.0.0.1:8080
 APP_PORT ?= 8080
@@ -17,7 +18,7 @@ PYROSCOPE_PORT ?= 4040
 RATE ?= 20
 DURATION ?= 2m
 
-.PHONY: check-soak plot-soak help build build-rr build-swoole up up-rr up-swoole down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak bench-rps prepare-reports-dir collect-report smoke-check
+.PHONY: bench-share-accuracy check-soak plot-soak help build build-rr build-swoole up up-rr up-swoole down up-chaos wait-ready wait-app k6-version bench-smoke bench-overhead bench-spool-pressure bench-chaos bench-soak bench-rps prepare-reports-dir collect-report smoke-check
 
 help: ## Show targets
 	@awk 'BEGIN {FS = ":.*##"; printf "Targets:\n"} /^[a-zA-Z0-9_-]+:.*?##/ { printf "  %-18s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -197,3 +198,6 @@ check-soak: ## Soak telemetry/validity regression tests and configuration syntax
 
 plot-soak: ## Render preserved soak telemetry (RUN_DIR=..., requires python3-matplotlib)
 	python3 scripts/plot-soak.py "$(RUN_DIR)"
+
+bench-share-accuracy: ## Known-function wall-time shares in isolated Pyroscope (requires prepared core PHP image)
+	python3 scripts/share-accuracy/run.py --php-image "$(SHARE_PHP_IMAGE)"
