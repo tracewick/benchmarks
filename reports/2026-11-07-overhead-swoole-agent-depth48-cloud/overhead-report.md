@@ -51,3 +51,10 @@ Stats samples: baseline=40, on=40 (docker stats on `app-swoole`).
 - Did **not** measure: real app (DB/HTTP), soak/72h RSS growth, spool backpressure, chaos, multi-host isolation.
 - Absolute % is host-specific; compare delta columns, not marketing SLOs.
 
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Memory is container usage from saved docker stats, not per-process RSS or proof of leak freedom.
+<!-- /saved-results-plot -->

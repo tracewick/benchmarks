@@ -55,3 +55,11 @@ Raw artifacts: `rps-pipeline-20261107T005129Z/`.
 
 - Pipeline under this arrival rate: HTTP fail-open, spool files/bytes trajectory, drain on/off as configured.
 - Did **not** claim a universal 3k RPS SLO; ceiling depends on host and stack depth.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

@@ -29,3 +29,11 @@ Same toxic as [drain depth-48](./2026-11-06-chaos-pyroscope-depth48-cloud.md); r
 ## Verdict
 
 App stayed green. Under the same 3s toxic, agent backlog stayed far below soft `max_files` while PHP drain filled to 500. (Auth/404 **pause** behaviour of the agent was not exercised here — latency toxic only.)
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-06-chaos-pyroscope-agent-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

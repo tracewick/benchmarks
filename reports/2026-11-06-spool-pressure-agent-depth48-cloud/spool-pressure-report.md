@@ -37,3 +37,11 @@ reader=agent |
 ## Artifacts
 
 - `k6.json`, `spool-timeseries.csv`, health + spool snapshots in this directory.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Catch-up annotation comes from the saved restart measurement; no synthetic drain curve is added.
+<!-- /saved-results-plot -->

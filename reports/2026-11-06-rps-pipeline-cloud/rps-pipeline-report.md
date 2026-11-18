@@ -58,3 +58,11 @@ Steady ~600 files with drain on = soft admission + saturated PHP drain (fail-ope
 
 - Pipeline under this arrival rate: HTTP fail-open, spool files/bytes trajectory, drain on as configured.
 - Did **not** claim a universal 3k RPS SLO; ceiling depends on host and stack depth (~700 clean hold on this 8-vCPU stand; overload probes ~760 with multi-second latency).
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

@@ -20,3 +20,11 @@ RR holds the same ~700 target with agent (spool below soft `max_files`). Latency
 ## Pins
 
 `RUNTIME=rr`, `READER=agent`, `RR_NUM_WORKERS=32`, `WORK_STACK_DEPTH=48`, 700 RPS / 5m, repo `8d658ff`.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-07-rps-pipeline-rr-agent-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

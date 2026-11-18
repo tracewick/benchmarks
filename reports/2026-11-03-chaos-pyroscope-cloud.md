@@ -25,3 +25,11 @@ Methodology: [METHOD.md](../METHOD.md) layer B. Raw artifacts: [2026-11-03-chaos
 ## Verdict
 
 Backend degradation does not take down request path: latency toxic on Pyroscope made delivery stall and spool grow, while `/work` stayed healthy. Aligns with fail-open / spool architecture.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-03-chaos-pyroscope-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

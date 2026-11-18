@@ -77,3 +77,11 @@ It does **not** cover RoadRunner, `ContinuousProfiler`, or go-agent. PHP drain i
 
 - Proved: depth-48 `/work` pipeline holds ~700 RPS with HTTP fail 0% and p99 ~58 ms; spool sits at soft-admission steady state (~600 files / ~1.1 MiB) with PHP drain on.
 - Did **not** measure: drain=off admission stress golden, ContinuousProfiler / RR / go-agent throughput, multi-host isolation, K8s.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-06-rps-pipeline-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

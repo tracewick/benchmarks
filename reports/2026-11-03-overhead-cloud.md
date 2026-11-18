@@ -55,3 +55,11 @@ Stats samples: 39 per arm (`docker stats` on `app-fpm`).
 
 - Proved: measurable but modest overhead for SpoolSink path vs off at fixed RPS on commodity cloud VPS.
 - Did **not** measure: real app (DB/HTTP), 1k–5k RPS ceiling, soak/72h growth, spool backpressure, chaos, isolated k6 host.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-03-overhead-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Memory is container usage from saved docker stats, not per-process RSS or proof of leak freedom.
+<!-- /saved-results-plot -->

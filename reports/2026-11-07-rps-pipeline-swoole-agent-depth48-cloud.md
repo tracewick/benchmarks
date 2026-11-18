@@ -20,3 +20,11 @@ Swoole holds ~700 with agent. ContinuousProfiler aggregates into fewer spool fil
 ## Pins
 
 `RUNTIME=swoole`, `READER=agent`, `SWOOLE_WORKER_NUM=32`, `WORK_STACK_DEPTH=48`, 700 RPS / 5m, repo `c81d1d9`.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-07-rps-pipeline-swoole-agent-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

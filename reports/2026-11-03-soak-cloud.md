@@ -66,3 +66,11 @@ It does **not** cover RoadRunner, `ContinuousProfiler`, or go-agent.
 
 - Proved: no material RSS climb on FPM workers or drain under moderate fixed RPS for ~72h in this FPM + UnitOfWorkProfiler setup (HTTP fail 0%, RPS held).
 - Did **not** measure: ContinuousProfiler / RR / go-agent soaks, overhead A/B (see separate report), spool chaos, 1k+ RPS ceiling, multi-host isolation.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-03-soak-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Memory is container usage from saved docker stats, not per-process RSS or proof of leak freedom.
+<!-- /saved-results-plot -->

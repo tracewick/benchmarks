@@ -41,6 +41,34 @@ Pinned k6: `grafana/k6:1.8.2` (`make k6-version`). First `make up` compiles Exci
 | [scenarios/](scenarios/) | Named profiles |
 | [reports/](reports/) | Checked-in reports + template |
 
+## Recorded overhead and long-run behavior
+
+**Historical measurements on core/agent 0.1.0, not current-version performance claims.**
+These figures show the saved November 6–8 runs and their recorded configurations.
+
+![Historical overhead A/B: latency and container CPU](reports/overview/overhead.svg)
+
+Each runtime has its own off/on pair at 20 requests/s, depth 48 and sample rate 0.1.
+Worker configurations differ; this is not a cross-runtime ranking. Sources:
+[FPM](reports/2026-11-06-overhead-depth48-cloud.md),
+[RoadRunner](reports/2026-11-07-overhead-rr-agent-depth48-cloud.md),
+[Swoole](reports/2026-11-07-overhead-swoole-agent-depth48-cloud.md).
+
+![Historical six-hour container memory observations](reports/overview/soak-memory.svg)
+
+All saved observations from completed six-hour depth-48 soaks are shown, including startup.
+Changes between **first-hour and last-hour average** app-container usage were FPM **+3.6 MiB**,
+RoadRunner **+3.4 MiB**, and Swoole **+1.9 MiB**.
+RoadRunner is the November 8 rerun **after reusing one profiler per worker**; the earlier
+per-request-construction run (~+1 GiB / 6h) is not included or retained in these artifacts.
+These are **container memory usage**, not PHP process RSS. The small increases do not establish
+a process leak, prove leak freedom, or replace the separate 72-hour test. Sources:
+[FPM](reports/2026-11-07-soak-fpm-agent-depth48-cloud.md),
+[RoadRunner](reports/2026-11-08-soak-rr-agent-depth48-cloud.md),
+[Swoole](reports/2026-11-07-soak-swoole-agent-depth48-cloud.md).
+
+Each report also has its own figure. See [plot reproduction and provenance](docs/report-plots.md).
+
 ## Layout
 
 ```

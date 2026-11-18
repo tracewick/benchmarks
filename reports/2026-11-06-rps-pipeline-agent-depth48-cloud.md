@@ -38,3 +38,11 @@ Same hold as [drain ~700](./2026-11-06-rps-pipeline-cloud.md); reader = **go-age
 ## Verdict
 
 HTTP path identical. Agent keeps spool **well below** soft `max_files=500` at the same ~700 RPS where PHP drain sat at soft admission (~600 files). Matches the expectation that go-agent raises pipeline headroom.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-06-rps-pipeline-agent-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

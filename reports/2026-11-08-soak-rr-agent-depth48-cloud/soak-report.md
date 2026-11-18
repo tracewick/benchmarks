@@ -49,3 +49,11 @@ Raw artifacts: `soak-20261108T092931Z/`.
 
 - Proved (if verdicts stable): no large RSS climb on `app-rr` / `app-agent` (RoadRunner + `UnitOfWorkProfiler`, reader=`agent`) under moderate fixed RPS for the soak window.
 - Did **not** measure: overhead A/B deltas, spool chaos, 1k+ RPS ceiling, multi-host isolation.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Memory is container usage from saved docker stats, not per-process RSS or proof of leak freedom.
+<!-- /saved-results-plot -->

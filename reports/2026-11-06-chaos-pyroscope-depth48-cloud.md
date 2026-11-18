@@ -31,3 +31,11 @@ Raw artifacts: [2026-11-06-chaos-pyroscope-depth48-cloud/](./2026-11-06-chaos-py
 ## Verdict
 
 Backend degradation still does not take down the request path: latency toxic stalled delivery and filled the soft file ceiling while `/work` stayed healthy. Depth-48 multiplies bytes (~4.8× vs shallow) without changing the fail-open story.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-06-chaos-pyroscope-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->

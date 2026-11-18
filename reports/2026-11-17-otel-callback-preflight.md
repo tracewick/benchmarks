@@ -77,6 +77,14 @@ The immediate/no-read mode shows that callback frequency and eager aggregation a
 - No production-wide overhead percentage, HTTP p99 claim, default-enable recommendation or extrapolation from CPU-only work to I/O-heavy applications.
 - The running 72-hour soak uses its original pinned versions. These experiments neither alter it nor validate future correlation-enabled stability.
 
-## Next decision
+## Disposition — 2026-11-18
 
-Review the sequential, opt-in design with its actual hot-path cost visible. Keep the cold-bootstrap fix independent. A production implementation needs maintained context/lifecycle regressions, explicit unsupported-context behavior, bounded correlation-aware stacks, shared wire fixtures and new measurements on its final code. No release gate is closed merely by accepting the proposal.
+OTel trace correlation is deferred indefinitely, outside RC, with no commitment to implement it later. The proposed ADR in [core PR #81](https://github.com/tracewick/tracewick/pull/81) was closed without merging, and [issue #80](https://github.com/tracewick/tracewick/issues/80) was closed as not planned. This report and its isolated experiment remain historical research. The independent cold-bootstrap fix remains relevant; accepting this evidence does not accept a correlation design or close an RC gate.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-17-otel-callback-preflight/results.svg)
+
+Deferred research, not product overhead or an RC commitment. Dots show all pairs; diamonds show paired medians. Comparisons use matching rounds; the median paired ratio is not the ratio of marginal medians.
+<!-- /saved-results-plot -->
