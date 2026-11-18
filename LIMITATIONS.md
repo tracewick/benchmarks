@@ -16,7 +16,7 @@ What this repository does **not** claim. Aligns with [METHOD.md](METHOD.md) non-
 - **Canonical** capacity goldens for overhead / spool pressure / chaos / high-RPS use `WORK_STACK_DEPTH=48` on the 8 vCPU stand (same wall budget as shallow; larger profiles). Nov-3 depth-`0` reports on 2 vCPU are **historical** only — useful to see how depth multiplies spool bytes; do not cite them as current overhead/pipeline numbers, and do not mix host-size + depth into one “delta”.
 - High-RPS figures are **single-instance** (one VPS: app + reader + Pyroscope + k6 on the same host unless a report says otherwise). A sustained RPS number is the **ceiling of that host + work unit + FPM pool**, not a universal Tracewick SLO and not multi-node “prod highload”. With PHP `tracewick-drain` at ~700 RPS, spool sat at soft admission (~600 files). With go-agent `0.1.0` on the same hold, spool stayed below soft `max_files` (~222 peak / ~109 last) — reader choice matters for pipeline headroom. Soft overshoot past `max_files` is fail-open by design, not a hard-cap bug.
 - Depth-48 soak evidence for FPM/RR/Swoole×agent is checked in; 72h shallow FPM+drain remains historical.
-- Layer C checks order-of-magnitude signal only; flame-graph symbol share is not a contractual metric in v1.
+- Capacity layer C checks order-of-magnitude signal. A separate [controlled function-share experiment](reports/2026-11-18-profile-shares.md) compares selected wall-time workloads with independent elapsed-time measurements; flame-graph symbol share is not a universal or contractual metric in v1.
 
 ## Explicit-flush weight correction
 

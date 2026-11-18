@@ -1,0 +1,924 @@
+{
+  "complete": true,
+  "pass": true,
+  "results": [
+    {
+      "expected": {
+        "alpha": 0.6998485670554151,
+        "beta": 0.30015143294458496
+      },
+      "observed": {
+        "alpha": 0.702621722846442,
+        "beta": 0.2973782771535581
+      },
+      "error_pp": {
+        "alpha": 0.2773155791026882,
+        "beta": 0.2773155791026882
+      },
+      "other_percent": 0.024962556165751375,
+      "weighted_periods": 4005.0,
+      "weights_ns": {
+        "alpha": 28140000000,
+        "beta": 11910000000,
+        "other": 10000000,
+        "total": 40060000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-70-100hz-r2",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6998485670554151,
+          "beta": 0.30015143294458496
+        },
+        "observed": {
+          "alpha": 0.2973782771535581,
+          "beta": 0.702621722846442
+        },
+        "error_pp": {
+          "alpha": 40.247028990185704,
+          "beta": 40.247028990185704
+        },
+        "other_percent": 0.024962556165751375,
+        "weighted_periods": 4005.0,
+        "weights_ns": {
+          "alpha": 11910000000,
+          "beta": 28140000000,
+          "other": 10000000,
+          "total": 40060000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6983027120134867,
+        "beta": 0.30169728798651335
+      },
+      "observed": {
+        "alpha": 0.6985514485514486,
+        "beta": 0.3014485514485514
+      },
+      "error_pp": {
+        "alpha": 0.02487365379618689,
+        "beta": 0.02487365379619244
+      },
+      "other_percent": 0.024968789013732832,
+      "weighted_periods": 4004.0,
+      "weights_ns": {
+        "alpha": 27970000000,
+        "beta": 12070000000,
+        "other": 10000000,
+        "total": 40050000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "mixed-70-100hz-r3",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6983027120134867,
+          "beta": 0.30169728798651335
+        },
+        "observed": {
+          "alpha": 0.3014485514485514,
+          "beta": 0.6985514485514486
+        },
+        "error_pp": {
+          "alpha": 39.68541605649353,
+          "beta": 39.68541605649352
+        },
+        "other_percent": 0.024968789013732832,
+        "weighted_periods": 4004.0,
+        "weights_ns": {
+          "alpha": 12070000000,
+          "beta": 27970000000,
+          "other": 10000000,
+          "total": 40050000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6989134842969648,
+        "beta": 0.3010865157030353
+      },
+      "observed": {
+        "alpha": 0.6973026973026973,
+        "beta": 0.3026973026973027
+      },
+      "error_pp": {
+        "alpha": 0.16107869942674213,
+        "beta": 0.16107869942674213
+      },
+      "other_percent": 0.024968789013732832,
+      "weighted_periods": 4004.0,
+      "weights_ns": {
+        "alpha": 27920000000,
+        "beta": 12120000000,
+        "other": 10000000,
+        "total": 40050000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-70-100hz-r3",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6989134842969648,
+          "beta": 0.3010865157030353
+        },
+        "observed": {
+          "alpha": 0.3026973026973027,
+          "beta": 0.6973026973026973
+        },
+        "error_pp": {
+          "alpha": 39.621618159966204,
+          "beta": 39.621618159966204
+        },
+        "other_percent": 0.024968789013732832,
+        "weighted_periods": 4004.0,
+        "weights_ns": {
+          "alpha": 12120000000,
+          "beta": 27920000000,
+          "other": 10000000,
+          "total": 40050000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6985426659644937,
+        "beta": 0.30145733403550634
+      },
+      "observed": {
+        "alpha": 0.6979904944550988,
+        "beta": 0.3020095055449012
+      },
+      "error_pp": {
+        "alpha": 0.055217150939490534,
+        "beta": 0.05521715093948498
+      },
+      "other_percent": 0.05833333333333334,
+      "weighted_periods": 11993.0,
+      "weights_ns": {
+        "alpha": 8371000000,
+        "beta": 3622000000,
+        "other": 7000000,
+        "total": 12000000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "mixed-70-1000hz-r1",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6985426659644937,
+          "beta": 0.30145733403550634
+        },
+        "observed": {
+          "alpha": 0.3020095055449012,
+          "beta": 0.6979904944550988
+        },
+        "error_pp": {
+          "alpha": 39.65331604195924,
+          "beta": 39.65331604195924
+        },
+        "other_percent": 0.05833333333333334,
+        "weighted_periods": 11993.0,
+        "weights_ns": {
+          "alpha": 3622000000,
+          "beta": 8371000000,
+          "other": 7000000,
+          "total": 12000000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.19998104235944808,
+        "beta": 0.800018957640552
+      },
+      "observed": {
+        "alpha": 0.2012987012987013,
+        "beta": 0.7987012987012987
+      },
+      "error_pp": {
+        "alpha": 0.131765893925323,
+        "beta": 0.13176589392532856
+      },
+      "other_percent": 0.024968789013732832,
+      "weighted_periods": 4004.0,
+      "weights_ns": {
+        "alpha": 8060000000,
+        "beta": 31980000000,
+        "other": 10000000,
+        "total": 40050000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-20-100hz-r2",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.19998104235944808,
+          "beta": 0.800018957640552
+        },
+        "observed": {
+          "alpha": 0.7987012987012987,
+          "beta": 0.2012987012987013
+        },
+        "error_pp": {
+          "alpha": 59.87202563418506,
+          "beta": 59.872025634185064
+        },
+        "other_percent": 0.024968789013732832,
+        "weighted_periods": 4004.0,
+        "weights_ns": {
+          "alpha": 31980000000,
+          "beta": 8060000000,
+          "other": 10000000,
+          "total": 40050000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.199947491550299,
+        "beta": 0.800052508449701
+      },
+      "observed": {
+        "alpha": 0.19996669996669997,
+        "beta": 0.8000333000333001
+      },
+      "error_pp": {
+        "alpha": 0.0019208416400962047,
+        "beta": 0.0019208416400906536
+      },
+      "other_percent": 0.0166472448809722,
+      "weighted_periods": 12012.0,
+      "weights_ns": {
+        "alpha": 2402000000,
+        "beta": 9610000000,
+        "other": 2000000,
+        "total": 12014000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-20-1000hz-r2",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.199947491550299,
+          "beta": 0.800052508449701
+        },
+        "observed": {
+          "alpha": 0.8000333000333001,
+          "beta": 0.19996669996669997
+        },
+        "error_pp": {
+          "alpha": 60.008580848300106,
+          "beta": 60.0085808483001
+        },
+        "other_percent": 0.0166472448809722,
+        "weighted_periods": 12012.0,
+        "weights_ns": {
+          "alpha": 9610000000,
+          "beta": 2402000000,
+          "other": 2000000,
+          "total": 12014000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.20061857705538677,
+        "beta": 0.7993814229446132
+      },
+      "observed": {
+        "alpha": 0.2015,
+        "beta": 0.7985
+      },
+      "error_pp": {
+        "alpha": 0.08814229446132416,
+        "beta": 0.08814229446132416
+      },
+      "other_percent": 0.0,
+      "weighted_periods": 4000.0,
+      "weights_ns": {
+        "alpha": 8060000000,
+        "beta": 31940000000,
+        "other": 0,
+        "total": 40000000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-20-100hz-r3",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.20061857705538677,
+          "beta": 0.7993814229446132
+        },
+        "observed": {
+          "alpha": 0.7985,
+          "beta": 0.2015
+        },
+        "error_pp": {
+          "alpha": 59.78814229446132,
+          "beta": 59.78814229446132
+        },
+        "other_percent": 0.0,
+        "weighted_periods": 4000.0,
+        "weights_ns": {
+          "alpha": 31940000000,
+          "beta": 8060000000,
+          "other": 0,
+          "total": 40000000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6907730193630622,
+        "beta": 0.3092269806369377
+      },
+      "observed": {
+        "alpha": 0.6904821176665837,
+        "beta": 0.3095178823334163
+      },
+      "error_pp": {
+        "alpha": 0.029090169647849606,
+        "beta": 0.02909016964786071
+      },
+      "other_percent": 0.041473125414731256,
+      "weighted_periods": 12051.0,
+      "weights_ns": {
+        "alpha": 8321000000,
+        "beta": 3730000000,
+        "other": 5000000,
+        "total": 12056000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "mixed-70-1000hz-r2",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6907730193630622,
+          "beta": 0.3092269806369377
+        },
+        "observed": {
+          "alpha": 0.3095178823334163,
+          "beta": 0.6904821176665837
+        },
+        "error_pp": {
+          "alpha": 38.12551370296459,
+          "beta": 38.125513702964604
+        },
+        "other_percent": 0.041473125414731256,
+        "weighted_periods": 12051.0,
+        "weights_ns": {
+          "alpha": 3730000000,
+          "beta": 8321000000,
+          "other": 5000000,
+          "total": 12056000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6999990093231262,
+        "beta": 0.3000009906768738
+      },
+      "observed": {
+        "alpha": 0.7002493765586035,
+        "beta": 0.2997506234413965
+      },
+      "error_pp": {
+        "alpha": 0.02503672354773334,
+        "beta": 0.02503672354772779
+      },
+      "other_percent": 0.04154549231408392,
+      "weighted_periods": 12030.0,
+      "weights_ns": {
+        "alpha": 8424000000,
+        "beta": 3606000000,
+        "other": 5000000,
+        "total": 12035000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-70-1000hz-r3",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6999990093231262,
+          "beta": 0.3000009906768738
+        },
+        "observed": {
+          "alpha": 0.2997506234413965,
+          "beta": 0.7002493765586035
+        },
+        "error_pp": {
+          "alpha": 40.02483858817297,
+          "beta": 40.024838588172976
+        },
+        "other_percent": 0.04154549231408392,
+        "weighted_periods": 12030.0,
+        "weights_ns": {
+          "alpha": 3606000000,
+          "beta": 8424000000,
+          "other": 5000000,
+          "total": 12035000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.699059667597603,
+        "beta": 0.30094033240239704
+      },
+      "observed": {
+        "alpha": 0.6997917534360683,
+        "beta": 0.3002082465639317
+      },
+      "error_pp": {
+        "alpha": 0.07320858384652906,
+        "beta": 0.07320858384653461
+      },
+      "other_percent": 0.016656950112434413,
+      "weighted_periods": 12005.0,
+      "weights_ns": {
+        "alpha": 8401000000,
+        "beta": 3604000000,
+        "other": 2000000,
+        "total": 12007000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "mixed-70-1000hz-r3",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.699059667597603,
+          "beta": 0.30094033240239704
+        },
+        "observed": {
+          "alpha": 0.3002082465639317,
+          "beta": 0.6997917534360683
+        },
+        "error_pp": {
+          "alpha": 39.88514210336713,
+          "beta": 39.88514210336712
+        },
+        "other_percent": 0.016656950112434413,
+        "weighted_periods": 12005.0,
+        "weights_ns": {
+          "alpha": 3604000000,
+          "beta": 8401000000,
+          "other": 2000000,
+          "total": 12007000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6966868790908607,
+        "beta": 0.3033131209091393
+      },
+      "observed": {
+        "alpha": 0.6981509245377311,
+        "beta": 0.30184907546226886
+      },
+      "error_pp": {
+        "alpha": 0.1464045446870399,
+        "beta": 0.14640454468704545
+      },
+      "other_percent": 0.0749063670411985,
+      "weighted_periods": 4002.0,
+      "weights_ns": {
+        "alpha": 27940000000,
+        "beta": 12080000000,
+        "other": 30000000,
+        "total": 40050000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "mixed-70-100hz-r2",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6966868790908607,
+          "beta": 0.3033131209091393
+        },
+        "observed": {
+          "alpha": 0.30184907546226886,
+          "beta": 0.6981509245377311
+        },
+        "error_pp": {
+          "alpha": 39.483780362859186,
+          "beta": 39.48378036285918
+        },
+        "other_percent": 0.0749063670411985,
+        "weighted_periods": 4002.0,
+        "weights_ns": {
+          "alpha": 12080000000,
+          "beta": 27940000000,
+          "other": 30000000,
+          "total": 40050000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.19897398926660292,
+        "beta": 0.8010260107333971
+      },
+      "observed": {
+        "alpha": 0.20941274468971263,
+        "beta": 0.7905872553102874
+      },
+      "error_pp": {
+        "alpha": 1.0438755423109707,
+        "beta": 1.043875542310968
+      },
+      "other_percent": 0.18292175937474017,
+      "weighted_periods": 12005.0,
+      "weights_ns": {
+        "alpha": 2514000000,
+        "beta": 9491000000,
+        "other": 22000000,
+        "total": 12027000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-20-1000hz-r1",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.19897398926660292,
+          "beta": 0.8010260107333971
+        },
+        "observed": {
+          "alpha": 0.7905872553102874,
+          "beta": 0.20941274468971263
+        },
+        "error_pp": {
+          "alpha": 59.16132660436845,
+          "beta": 59.16132660436845
+        },
+        "other_percent": 0.18292175937474017,
+        "weighted_periods": 12005.0,
+        "weights_ns": {
+          "alpha": 9491000000,
+          "beta": 2514000000,
+          "other": 22000000,
+          "total": 12027000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.20105171219429993,
+        "beta": 0.7989482878057
+      },
+      "observed": {
+        "alpha": 0.20179895061214292,
+        "beta": 0.7982010493878571
+      },
+      "error_pp": {
+        "alpha": 0.07472384178429936,
+        "beta": 0.07472384178429659
+      },
+      "other_percent": 0.02497918401332223,
+      "weighted_periods": 12007.0,
+      "weights_ns": {
+        "alpha": 2423000000,
+        "beta": 9584000000,
+        "other": 3000000,
+        "total": 12010000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-20-1000hz-r3",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.20105171219429993,
+          "beta": 0.7989482878057
+        },
+        "observed": {
+          "alpha": 0.7982010493878571,
+          "beta": 0.20179895061214292
+        },
+        "error_pp": {
+          "alpha": 59.71493371935571,
+          "beta": 59.71493371935571
+        },
+        "other_percent": 0.02497918401332223,
+        "weighted_periods": 12007.0,
+        "weights_ns": {
+          "alpha": 9584000000,
+          "beta": 2423000000,
+          "other": 3000000,
+          "total": 12010000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6953816082232084,
+        "beta": 0.3046183917767917
+      },
+      "observed": {
+        "alpha": 0.6948450190618266,
+        "beta": 0.3051549809381734
+      },
+      "error_pp": {
+        "alpha": 0.053658916138177304,
+        "beta": 0.05365891613817175
+      },
+      "other_percent": 0.04142158893215144,
+      "weighted_periods": 12066.0,
+      "weights_ns": {
+        "alpha": 8384000000,
+        "beta": 3682000000,
+        "other": 5000000,
+        "total": 12071000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-70-1000hz-r1",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6953816082232084,
+          "beta": 0.3046183917767917
+        },
+        "observed": {
+          "alpha": 0.3051549809381734,
+          "beta": 0.6948450190618266
+        },
+        "error_pp": {
+          "alpha": 39.0226627285035,
+          "beta": 39.02266272850349
+        },
+        "other_percent": 0.04142158893215144,
+        "weighted_periods": 12066.0,
+        "weights_ns": {
+          "alpha": 3682000000,
+          "beta": 8384000000,
+          "other": 5000000,
+          "total": 12071000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.20035604797910705,
+        "beta": 0.799643952020893
+      },
+      "observed": {
+        "alpha": 0.20044988752811796,
+        "beta": 0.799550112471882
+      },
+      "error_pp": {
+        "alpha": 0.009383954901090452,
+        "beta": 0.009383954901098779
+      },
+      "other_percent": 0.0,
+      "weighted_periods": 4001.0,
+      "weights_ns": {
+        "alpha": 8020000000,
+        "beta": 31990000000,
+        "other": 0,
+        "total": 40010000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-20-100hz-r1",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.20035604797910705,
+          "beta": 0.799643952020893
+        },
+        "observed": {
+          "alpha": 0.799550112471882,
+          "beta": 0.20044988752811796
+        },
+        "error_pp": {
+          "alpha": 59.91940644927749,
+          "beta": 59.9194064492775
+        },
+        "other_percent": 0.0,
+        "weighted_periods": 4001.0,
+        "weights_ns": {
+          "alpha": 31990000000,
+          "beta": 8020000000,
+          "other": 0,
+          "total": 40010000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6998463701835007,
+        "beta": 0.30015362981649923
+      },
+      "observed": {
+        "alpha": 0.699268130405855,
+        "beta": 0.30073186959414505
+      },
+      "error_pp": {
+        "alpha": 0.0578239777645706,
+        "beta": 0.0578239777645817
+      },
+      "other_percent": 0.041566214980463874,
+      "weighted_periods": 12024.0,
+      "weights_ns": {
+        "alpha": 8408000000,
+        "beta": 3616000000,
+        "other": 5000000,
+        "total": 12029000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-70-1000hz-r2",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6998463701835007,
+          "beta": 0.30015362981649923
+        },
+        "observed": {
+          "alpha": 0.30073186959414505,
+          "beta": 0.699268130405855
+        },
+        "error_pp": {
+          "alpha": 39.911450058935564,
+          "beta": 39.91145005893558
+        },
+        "other_percent": 0.041566214980463874,
+        "weighted_periods": 12024.0,
+        "weights_ns": {
+          "alpha": 3616000000,
+          "beta": 8408000000,
+          "other": 5000000,
+          "total": 12029000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6998004586404231,
+        "beta": 0.30019954135957694
+      },
+      "observed": {
+        "alpha": 0.7001000500250125,
+        "beta": 0.2998999499749875
+      },
+      "error_pp": {
+        "alpha": 0.029959138458945933,
+        "beta": 0.029959138458945933
+      },
+      "other_percent": 0.05,
+      "weighted_periods": 3998.0,
+      "weights_ns": {
+        "alpha": 27990000000,
+        "beta": 11990000000,
+        "other": 20000000,
+        "total": 40000000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "busy-70-100hz-r1",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6998004586404231,
+          "beta": 0.30019954135957694
+        },
+        "observed": {
+          "alpha": 0.2998999499749875,
+          "beta": 0.7001000500250125
+        },
+        "error_pp": {
+          "alpha": 39.990050866543555,
+          "beta": 39.990050866543555
+        },
+        "other_percent": 0.05,
+        "weighted_periods": 3998.0,
+        "weights_ns": {
+          "alpha": 11990000000,
+          "beta": 27990000000,
+          "other": 20000000,
+          "total": 40000000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    },
+    {
+      "expected": {
+        "alpha": 0.6989876927189759,
+        "beta": 0.3010123072810242
+      },
+      "observed": {
+        "alpha": 0.6964241060265066,
+        "beta": 0.3035758939734934
+      },
+      "error_pp": {
+        "alpha": 0.2563586692469255,
+        "beta": 0.25635866924691997
+      },
+      "other_percent": 0.07496251874062969,
+      "weighted_periods": 3999.0,
+      "weights_ns": {
+        "alpha": 27850000000,
+        "beta": 12140000000,
+        "other": 30000000,
+        "total": 40020000000
+      },
+      "pass": true,
+      "failures": [],
+      "id": "mixed-70-100hz-r1",
+      "negative_control": {
+        "expected": {
+          "alpha": 0.6989876927189759,
+          "beta": 0.3010123072810242
+        },
+        "observed": {
+          "alpha": 0.3035758939734934,
+          "beta": 0.6964241060265066
+        },
+        "error_pp": {
+          "alpha": 39.54117987454825,
+          "beta": 39.54117987454824
+        },
+        "other_percent": 0.07496251874062969,
+        "weighted_periods": 3999.0,
+        "weights_ns": {
+          "alpha": 12140000000,
+          "beta": 27850000000,
+          "other": 30000000,
+          "total": 40020000000
+        },
+        "pass": false,
+        "failures": [
+          "share_error"
+        ]
+      }
+    }
+  ]
+}
