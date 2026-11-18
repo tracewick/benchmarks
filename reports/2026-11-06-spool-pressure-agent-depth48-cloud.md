@@ -31,3 +31,11 @@ Same fill as [drain depth-48](./2026-11-06-spool-pressure-depth48-cloud.md); cat
 ## Verdict
 
 Fail-open unchanged. Agent clears the same 80-file soft ceiling ~**20×** faster than PHP drain on this stand.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-06-spool-pressure-agent-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Catch-up annotation comes from the saved restart measurement; no synthetic drain curve is added.
+<!-- /saved-results-plot -->

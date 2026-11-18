@@ -32,3 +32,11 @@ Raw artifacts: [2026-11-06-spool-pressure-depth48-cloud/](./2026-11-06-spool-pre
 ## Verdict
 
 Fail-open holds with realistic stack depth: app stayed green while spool filled to the configured file ceiling (further profiles dropped at admission). Bytes per file grew ~4.7× vs shallow; catch-up lag stayed ~40 s on this stand (vs ~41 s shallow). Matches M3 intent under deeper profiles.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-06-spool-pressure-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Catch-up annotation comes from the saved restart measurement; no synthetic drain curve is added.
+<!-- /saved-results-plot -->

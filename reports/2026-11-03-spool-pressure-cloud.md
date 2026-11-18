@@ -26,3 +26,11 @@ Methodology: [METHOD.md](../METHOD.md) layer B. Raw artifacts: [2026-11-03-spool
 ## Verdict
 
 Fail-open holds: app stayed green while spool filled to the configured ceiling (further profiles dropped at admission). After drain restart, queue cleared in ~41s. Matches M3 intent.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-03-spool-pressure-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Catch-up annotation comes from the saved restart measurement; no synthetic drain curve is added.
+<!-- /saved-results-plot -->

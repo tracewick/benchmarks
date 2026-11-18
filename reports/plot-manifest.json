@@ -1,0 +1,717 @@
+{
+  "matplotlib": "3.10.8",
+  "figures": [
+    {
+      "report": "reports/2026-11-03-chaos-pyroscope-cloud.md",
+      "kind": "chaos",
+      "image": "reports/2026-11-03-chaos-pyroscope-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-03-chaos-pyroscope-cloud/health.json": "1b719144b32b09a0397aa318390f75c2e771e88241ea15d280ef02b7d8d97385",
+        "reports/2026-11-03-chaos-pyroscope-cloud/k6.json": "b4072253037e347befa60bcbd224c160513644f1424783193a6db451bfb116a6",
+        "reports/2026-11-03-chaos-pyroscope-cloud/spool-timeseries.csv": "84342b6b7ba479df86b12082db8e9dda92ea0133a4295bd81a2cd9be7cd58354",
+        "reports/2026-11-03-chaos-pyroscope-cloud/toxic.json": "4474b611f2c602ec99b70a4fc8479e6e55682f6143d6c51a5785fd4372a9a170"
+      },
+      "derived": {
+        "achieved_rps": 19.689223912502214,
+        "http_failed_percent": 0,
+        "max_files": 500.0,
+        "last_files": 500.0,
+        "soft_setting": 500
+      },
+      "svg_sha256": "a853b26b97c5043ec11bca5704824cac78448461a62e114ebcc31ed6d6497229"
+    },
+    {
+      "report": "reports/2026-11-03-overhead-cloud.md",
+      "kind": "overhead",
+      "image": "reports/2026-11-03-overhead-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-03-overhead-cloud/baseline-fpm-stats.csv": "2edcd6d3b8cf7c2a19d309b2e708cf0f38db87ffda61b4870c7aca7db3cbffc2",
+        "reports/2026-11-03-overhead-cloud/baseline-k6.json": "3ab39d85119810a501d436762c88f02fb4d9f0ad65b0d77013283ebb3e749678",
+        "reports/2026-11-03-overhead-cloud/on-fpm-stats.csv": "eea9071cfe009c7758f139688bd44f4ce73e5cb44ce6cf06eac67c4a287bd40a",
+        "reports/2026-11-03-overhead-cloud/on-k6.json": "940d0b4636870e3244aecb7ec2340b82af4c44297e6c3d5e750e2d0ea1db6cd0"
+      },
+      "derived": {
+        "latency_ms": [
+          {
+            "med": 37.639461499999996,
+            "p(95)": 38.847482,
+            "p(99)": 40.76288038
+          },
+          {
+            "med": 38.185096,
+            "p(95)": 40.250348,
+            "p(99)": 42.168463
+          }
+        ],
+        "achieved_rps": [
+          19.843512894789157,
+          19.841382257798816
+        ],
+        "http_failed_percent": [
+          0,
+          0
+        ]
+      },
+      "svg_sha256": "b6536807b60fd64594f699d4c3e2e8f7e5c244105b2ce98e1540d58d023566f3"
+    },
+    {
+      "report": "reports/2026-11-03-smoke-sample.md",
+      "kind": "smoke",
+      "image": "reports/2026-11-03-smoke-sample/results.svg",
+      "sources": {
+        "reports/2026-11-03-smoke-sample.md": "9fad10e653221d48d53ea21031e09f192e598efd874b88b3fc6092ad3625b145"
+      },
+      "derived": {
+        "approximate_latency_ms_from_markdown": [
+          39.2,
+          41.9,
+          74.7
+        ]
+      },
+      "svg_sha256": "f0be052ac3aa2c3988489f3c411bbe93933f50cbddaeac47f527b83d9dd2c799"
+    },
+    {
+      "report": "reports/2026-11-03-soak-cloud.md",
+      "kind": "soak",
+      "image": "reports/2026-11-03-soak-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-03-soak-cloud/app-drain-stats.csv": "154b253203f8e672a8e860dc257d5e2c7511859337677cb40fde0767a45fd0ba",
+        "reports/2026-11-03-soak-cloud/app-fpm-stats.csv": "f4239ad2655720f3e039bf0f9e5b5bb5cd435e4320348640fed5d23b3d751e9e"
+      },
+      "derived": {
+        "app-drain": {
+          "samples": 4238,
+          "hours": 72.00222222222222,
+          "memory_first_mib": 69.5,
+          "memory_last_mib": 69.5
+        },
+        "app-fpm": {
+          "samples": 4238,
+          "hours": 72.00277777777778,
+          "memory_first_mib": 32.41999912261963,
+          "memory_last_mib": 35.709999084472656
+        }
+      },
+      "svg_sha256": "a6bca90ca0b1481b5ad27e779ad1ffbe08b1b541bcafedd870808037ddfcd65d"
+    },
+    {
+      "report": "reports/2026-11-03-spool-pressure-cloud.md",
+      "kind": "spool-pressure",
+      "image": "reports/2026-11-03-spool-pressure-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-03-spool-pressure-cloud/drain-catchup.txt": "a1c9867052e627fa4c2815d3685cec53e21fe1efed6dcfa83a43e5f178c2c2c0",
+        "reports/2026-11-03-spool-pressure-cloud/health.json": "1794b91a45a836463d198895f7d24f7d711ba71d7204dc8d439d21a2106aa456",
+        "reports/2026-11-03-spool-pressure-cloud/k6.json": "08639f80bd8319105c4dc25af0656a0e22c4e891491af905a1c2ec7f5da20f77",
+        "reports/2026-11-03-spool-pressure-cloud/spool-timeseries.csv": "d00f0a6ad3e42a63bc86a9affb18d901f3b84e8d86de3afbdb41d449d27e5c06"
+      },
+      "derived": {
+        "achieved_rps": 19.79202282635529,
+        "http_failed_percent": 0,
+        "max_files": 80.0,
+        "last_files": 0.0,
+        "soft_setting": 80,
+        "catchup_seconds": 41
+      },
+      "svg_sha256": "eb30c80f9ef3a2f3fd57bb0504163f5c098657a233796463e24101a8845506ca"
+    },
+    {
+      "report": "reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud.md",
+      "kind": "chaos",
+      "image": "reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud/health.json": "9034bf8145f9fa9aa329ace627ddef46e6ef9aa0d44ec1cba445dc0e7cd9e66e",
+        "reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud/k6.json": "c88c8bbf30eb3e6ce8599f04d51ea1d695bbd028e1fa4fca0f3676d368ddaeb5",
+        "reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud/meta.txt": "ba3ead0d7337b40b347be30fd7a612abde31990671a6358b649770e11830c954",
+        "reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud/spool-timeseries.csv": "50d91e8630e98a7a2799b8ebbc0a4d268ee42b722650fccdf0c9857bbb13ca56",
+        "reports/2026-11-06-chaos-pyroscope-agent-depth48-cloud/toxic.json": "4474b611f2c602ec99b70a4fc8479e6e55682f6143d6c51a5785fd4372a9a170"
+      },
+      "derived": {
+        "achieved_rps": 19.691087808746456,
+        "http_failed_percent": 0,
+        "max_files": 172.0,
+        "last_files": 5.0,
+        "soft_setting": 500
+      },
+      "svg_sha256": "1cacc6217c589df8a072bae6a15a7874f5f289b327481ba63742c98edbb08f63"
+    },
+    {
+      "report": "reports/2026-11-06-chaos-pyroscope-depth48-cloud.md",
+      "kind": "chaos",
+      "image": "reports/2026-11-06-chaos-pyroscope-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-06-chaos-pyroscope-depth48-cloud/health.json": "9034bf8145f9fa9aa329ace627ddef46e6ef9aa0d44ec1cba445dc0e7cd9e66e",
+        "reports/2026-11-06-chaos-pyroscope-depth48-cloud/k6.json": "c17768e667d10e07601a78801b8abbc9d5c67edadf3f3a878a63784ba4935d8f",
+        "reports/2026-11-06-chaos-pyroscope-depth48-cloud/meta.txt": "29c37f980abcca864d768515ed566d7df792c9bff4f3ff531f295f721eb939e3",
+        "reports/2026-11-06-chaos-pyroscope-depth48-cloud/spool-timeseries.csv": "954e89b5c64791891b885a164ae88da7517e10b81ad58f37338020174f385de5",
+        "reports/2026-11-06-chaos-pyroscope-depth48-cloud/toxic.json": "4474b611f2c602ec99b70a4fc8479e6e55682f6143d6c51a5785fd4372a9a170"
+      },
+      "derived": {
+        "achieved_rps": 19.68716822883097,
+        "http_failed_percent": 0,
+        "max_files": 500.0,
+        "last_files": 500.0,
+        "soft_setting": 500
+      },
+      "svg_sha256": "9bb9183b8ee681176df83ef7d78b5d98c107e95bd5e315568a06dfd02661a003"
+    },
+    {
+      "report": "reports/2026-11-06-overhead-depth48-cloud.md",
+      "kind": "overhead",
+      "image": "reports/2026-11-06-overhead-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-06-overhead-depth48-cloud/baseline-fpm-stats.csv": "16595e2a334cd5973300f037c7188a81ff7fb5f6b67b605f8a965f576e07a60e",
+        "reports/2026-11-06-overhead-depth48-cloud/baseline-k6.json": "1d39e0d0ae84c07ca26b2b4fb3b87b14a8632e5f3e20cef0a565c4629c71fa41",
+        "reports/2026-11-06-overhead-depth48-cloud/on-fpm-stats.csv": "9fb314cbe48628278274a97d50e08793fceb9e8627850e40579010aa44a50948",
+        "reports/2026-11-06-overhead-depth48-cloud/on-k6.json": "e8cf50fb2527405d27924526dd4132db1cf38fbe8f127047fa573f6ee0d83d63"
+      },
+      "derived": {
+        "latency_ms": [
+          {
+            "med": 36.161514499999996,
+            "p(95)": 36.4165162,
+            "p(99)": 36.56652108
+          },
+          {
+            "med": 36.640962,
+            "p(95)": 37.802752,
+            "p(99)": 38.229776
+          }
+        ],
+        "achieved_rps": [
+          19.844478618655224,
+          19.842215499671457
+        ],
+        "http_failed_percent": [
+          0,
+          0
+        ]
+      },
+      "svg_sha256": "b8826aed7784a3a9820b8b423c3d7ad3deae635b34ff081b8ac04970f749fbb6"
+    },
+    {
+      "report": "reports/2026-11-06-rps-pipeline-agent-depth48-cloud.md",
+      "kind": "rps-pipeline",
+      "image": "reports/2026-11-06-rps-pipeline-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-06-rps-pipeline-agent-depth48-cloud/health.json": "af85c7f2b9222d091fe3786d566fd9a68a56b7848835871d529c1c9aaa22dcfb",
+        "reports/2026-11-06-rps-pipeline-agent-depth48-cloud/k6.json": "524779f2cb9bb3648e86f5fa545cf84d37716cdcdba78c0ab5c017c59b9613b7",
+        "reports/2026-11-06-rps-pipeline-agent-depth48-cloud/meta.txt": "c38d8a684de625ba037e1edc0cdcf54905b91328f2fe9b5b27ebe8f248551137",
+        "reports/2026-11-06-rps-pipeline-agent-depth48-cloud/spool-timeseries.csv": "41dfd408d820c19d1a7df51f7d87aa48713b00d180b0968d134bfc97bd9ea6da"
+      },
+      "derived": {
+        "achieved_rps": 697.5831709474521,
+        "http_failed_percent": 0,
+        "max_files": 222.0,
+        "last_files": 109.0,
+        "soft_setting": 500
+      },
+      "svg_sha256": "b1a90579f18c8f8a23d08827514778526e9ec8fd0f0e41cd54b4ac90887833cf"
+    },
+    {
+      "report": "reports/2026-11-06-rps-pipeline-cloud.md",
+      "kind": "rps-pipeline",
+      "image": "reports/2026-11-06-rps-pipeline-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-06-rps-pipeline-cloud/health.json": "af85c7f2b9222d091fe3786d566fd9a68a56b7848835871d529c1c9aaa22dcfb",
+        "reports/2026-11-06-rps-pipeline-cloud/k6.json": "c9d6c361488d88da3f3501de156152c988c4c0a70796b1668cdb2683723c13cc",
+        "reports/2026-11-06-rps-pipeline-cloud/meta.txt": "7c3ddb337b3e40a1726e5173d56670e5706e4581df2c901536d84800a50f532d",
+        "reports/2026-11-06-rps-pipeline-cloud/spool-timeseries.csv": "5a50e0a3c8afb9d0b87eb31bfcfa1ecf98cde513e5210d62eeb165ab42c9de27"
+      },
+      "derived": {
+        "achieved_rps": 697.5729338044807,
+        "http_failed_percent": 0,
+        "max_files": 602.0,
+        "last_files": 600.0,
+        "soft_setting": 500
+      },
+      "svg_sha256": "53f2b152b72f5a61a63ba202f837aa14e1928dc1c61657534e9aae0219cca098"
+    },
+    {
+      "report": "reports/2026-11-06-spool-pressure-agent-depth48-cloud.md",
+      "kind": "spool-pressure",
+      "image": "reports/2026-11-06-spool-pressure-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-06-spool-pressure-agent-depth48-cloud/drain-catchup.txt": "b9aa13b33ddb3895e28393a806f5ea8cb3613612d8564c187453870a652b6edf",
+        "reports/2026-11-06-spool-pressure-agent-depth48-cloud/health.json": "5c52b20eb8999c1273be280af6edce62195b708285763ec0625d4a16d94502da",
+        "reports/2026-11-06-spool-pressure-agent-depth48-cloud/k6.json": "98242968ccd2d138e467420ba0cc7f93ea788a2a13633308bb6f5a80ea9220b8",
+        "reports/2026-11-06-spool-pressure-agent-depth48-cloud/meta.txt": "0e55e743fb36054f30ab69570c7fd559e61b7b1ac24d17a0f676283642b2e627",
+        "reports/2026-11-06-spool-pressure-agent-depth48-cloud/spool-timeseries.csv": "79b3c9aa8704b0ba2ba52556c64b6f1b62a1bf9465753f2662c00f872636c71f"
+      },
+      "derived": {
+        "achieved_rps": 19.790129113313295,
+        "http_failed_percent": 0,
+        "max_files": 80.0,
+        "last_files": 0.0,
+        "soft_setting": 80,
+        "catchup_seconds": 2
+      },
+      "svg_sha256": "6dbe0c96defb51b305e1789046557f082aa4160769f3a589a5f85ab4d2cb1c30"
+    },
+    {
+      "report": "reports/2026-11-06-spool-pressure-depth48-cloud.md",
+      "kind": "spool-pressure",
+      "image": "reports/2026-11-06-spool-pressure-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-06-spool-pressure-depth48-cloud/drain-catchup.txt": "b93e68a5fbe1239b5c0b86a70985e6a19f1ab5ec23ef7048a36d54ba2eda0559",
+        "reports/2026-11-06-spool-pressure-depth48-cloud/health.json": "5c52b20eb8999c1273be280af6edce62195b708285763ec0625d4a16d94502da",
+        "reports/2026-11-06-spool-pressure-depth48-cloud/k6.json": "6744291d91108775bc11aafc1e7318b736228c2b2db58f4a7d93073d10d2dee4",
+        "reports/2026-11-06-spool-pressure-depth48-cloud/meta.txt": "8ad36449eca8291e92a356b62d4f216c3ceb696cc0e6f70921134b726d782dbf",
+        "reports/2026-11-06-spool-pressure-depth48-cloud/spool-timeseries.csv": "4f89c04627b8d1725a140a55b7be9bbe3057010f9680ecad885014e0097d70a5"
+      },
+      "derived": {
+        "achieved_rps": 19.793143370471086,
+        "http_failed_percent": 0,
+        "max_files": 80.0,
+        "last_files": 0.0,
+        "soft_setting": 80,
+        "catchup_seconds": 40
+      },
+      "svg_sha256": "0ee45d9299d166d3af1e71b57d5d9efedc352983b4f9fe0e11f968460cd82c2b"
+    },
+    {
+      "report": "reports/2026-11-07-overhead-rr-agent-depth48-cloud.md",
+      "kind": "overhead",
+      "image": "reports/2026-11-07-overhead-rr-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/baseline-fpm-stats.csv": "7695fc8040ba6d175437a2d676f608a4b3998eea63266b5b532a2cbcd61ab276",
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/baseline-k6.json": "36cad572fb0d3290ef2d80b5f48e3071d75b420e5765700563d72dcd2ca28af6",
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/on-fpm-stats.csv": "b90cb14bb974b36a38a256a024ed73fca3a045ffb62d3c23544673dc896c8e06",
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/on-k6.json": "bc2ee4df9d70e2758fb16df712f5554ff6a54ff98279ed982d2de1df68130d2b"
+      },
+      "derived": {
+        "latency_ms": [
+          {
+            "med": 36.603497000000004,
+            "p(95)": 36.866413,
+            "p(99)": 37.102427819999996
+          },
+          {
+            "med": 36.7606065,
+            "p(95)": 37.092006950000005,
+            "p(99)": 37.3853758
+          }
+        ],
+        "achieved_rps": [
+          19.842087585726937,
+          19.84192927308932
+        ],
+        "http_failed_percent": [
+          0,
+          0
+        ]
+      },
+      "svg_sha256": "011054b4f306e0795b754a077c01fccf6655be329d4d9d23bcb9221c4fc5f733"
+    },
+    {
+      "report": "reports/2026-11-07-overhead-swoole-agent-depth48-cloud.md",
+      "kind": "overhead",
+      "image": "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/baseline-fpm-stats.csv": "83f9d4b7607f709c8c3eab42b6672e8aaf516af8d58479cac679e3c9f01d8e19",
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/baseline-k6.json": "d103e8a67d5c3af6fa0feb0112c70b3e2e68c5b7dca4d734b52ce46309afc0e1",
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/on-fpm-stats.csv": "ec325b4f569cf4c3ecc5f51fc51b013a67ad19a56e77971c2f6b87453316f28a",
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/on-k6.json": "0296823aa6ad59ccbf99daa01ab3b0db1c421b6510099df0e947672183623916"
+      },
+      "derived": {
+        "latency_ms": [
+          {
+            "med": 35.619895,
+            "p(95)": 35.76694615,
+            "p(99)": 35.84290692
+          },
+          {
+            "med": 35.55875,
+            "p(95)": 35.7399865,
+            "p(99)": 35.86901415
+          }
+        ],
+        "achieved_rps": [
+          19.844847736465525,
+          19.844811687429804
+        ],
+        "http_failed_percent": [
+          0,
+          0
+        ]
+      },
+      "svg_sha256": "8ea05dae0744a68b108bfce82a77b600f4a18c5f7d5814ae21f3421e3b7eff22"
+    },
+    {
+      "report": "reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud.md",
+      "kind": "rps-pipeline",
+      "image": "reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud/health.json": "5df4f3dbbc28870c7c90a9c3c8df5586d6fb93857db8908abd917d615840c56e",
+        "reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud/k6.json": "5044325c75e156ea72e84e1f80cbbb9212d8c869d9ab241cc2712c88ad33acb6",
+        "reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud/meta.txt": "dff7b909f003533a2c7193dde77fc48b5096f953f388943900e8c5d3bff3cd34",
+        "reports/2026-11-07-rps-pipeline-rr-agent-depth48-cloud/spool-timeseries.csv": "e002e53f1fa9eaec510f5294c0fe5ca7613a7a1a18a0d178ce4f21e59bcd95d0"
+      },
+      "derived": {
+        "achieved_rps": 697.5530450433149,
+        "http_failed_percent": 0,
+        "max_files": 230.0,
+        "last_files": 124.0,
+        "soft_setting": null,
+        "health_note": "Archived capture is not JSON; no soft threshold inferred"
+      },
+      "svg_sha256": "762221a2807d068b2758c82e3d9d2c3be08f0d992427fc9a9121a962c054a8fb"
+    },
+    {
+      "report": "reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud.md",
+      "kind": "rps-pipeline",
+      "image": "reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud/health.json": "467277bec00a9883f13b946f6583bcfd2028d3b8bfd3656d5bf568d0b7a6fd00",
+        "reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud/k6.json": "74d7e02b08d469ba1e704d7854c9b820619524dcbb363085f4a663d0da749d60",
+        "reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud/meta.txt": "5d3d16a48a08b1e730530850c23370bf7c3c7f2b360e59d12f222b13d6479864",
+        "reports/2026-11-07-rps-pipeline-swoole-agent-depth48-cloud/spool-timeseries.csv": "59294a9432a6facec4006dcf4fa5b81d9a9f7bb66e868436f079eca0232370a6"
+      },
+      "derived": {
+        "achieved_rps": 697.4983208361066,
+        "http_failed_percent": 0,
+        "max_files": 32.0,
+        "last_files": 0.0,
+        "soft_setting": null,
+        "health_note": "Archived capture is not JSON; no soft threshold inferred"
+      },
+      "svg_sha256": "27df1f62350aa109ba4deaed2fd377092d5c2c2fa845a004500b2f627695841c"
+    },
+    {
+      "report": "reports/2026-11-07-soak-fpm-agent-depth48-cloud.md",
+      "kind": "soak",
+      "image": "reports/2026-11-07-soak-fpm-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-07-soak-fpm-agent-depth48-cloud/app-agent-stats.csv": "065369a3a9889be0d058745457de263140bb49a6a287af734fa03b9bd269b8d7",
+        "reports/2026-11-07-soak-fpm-agent-depth48-cloud/app-fpm-stats.csv": "5558a4b19cc4ab9c5e35aa797a28d72b1a03f18ee9d125eea461a9e1b2ce40d3"
+      },
+      "derived": {
+        "app-agent": {
+          "samples": 355,
+          "hours": 6.008611111111111,
+          "memory_first_mib": 2.792999267578125,
+          "memory_last_mib": 11.169999122619629
+        },
+        "app-fpm": {
+          "samples": 355,
+          "hours": 6.0088888888888885,
+          "memory_first_mib": 13.65999984741211,
+          "memory_last_mib": 23.15999984741211
+        }
+      },
+      "svg_sha256": "b32e123d176fe0cee4e7ef2f4b0ab61e06830c74010dbcb9ac40b9da690c65cf"
+    },
+    {
+      "report": "reports/2026-11-07-soak-swoole-agent-depth48-cloud.md",
+      "kind": "soak",
+      "image": "reports/2026-11-07-soak-swoole-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-07-soak-swoole-agent-depth48-cloud/app-agent-stats.csv": "942529cab5475e21470342c8c7a0fba6a2ed17d3c6bec6c9364c90441e52d379",
+        "reports/2026-11-07-soak-swoole-agent-depth48-cloud/app-swoole-stats.csv": "b8b8511815d1a122b4c0845196bb95dfef20fb04f8e142bbe6a1afa0932f297d"
+      },
+      "derived": {
+        "app-agent": {
+          "samples": 355,
+          "hours": 6.010555555555555,
+          "memory_first_mib": 10.539999961853027,
+          "memory_last_mib": 14.539999961853027
+        },
+        "app-swoole": {
+          "samples": 355,
+          "hours": 6.010555555555555,
+          "memory_first_mib": 21.089999198913574,
+          "memory_last_mib": 25.339999198913574
+        }
+      },
+      "svg_sha256": "a73a700e9e4af21935ddbc6f9a378e74afe2157226154920519903ce56fea10c"
+    },
+    {
+      "report": "reports/2026-11-08-soak-rr-agent-depth48-cloud.md",
+      "kind": "soak",
+      "image": "reports/2026-11-08-soak-rr-agent-depth48-cloud/results.svg",
+      "sources": {
+        "reports/2026-11-08-soak-rr-agent-depth48-cloud/app-agent-stats.csv": "1435aefcf625369a7d1a9d82266698863031f64d1cc50b1aa97fd861eb33af23",
+        "reports/2026-11-08-soak-rr-agent-depth48-cloud/app-rr-stats.csv": "8cf38a2ad197b485039ed6d3028a9e9e0105451e4f67435131c58f0d7a26f16d"
+      },
+      "derived": {
+        "app-agent": {
+          "samples": 355,
+          "hours": 6.01,
+          "memory_first_mib": 12.84999942779541,
+          "memory_last_mib": 17.679999351501465
+        },
+        "app-rr": {
+          "samples": 355,
+          "hours": 6.009722222222222,
+          "memory_first_mib": 68.65999984741211,
+          "memory_last_mib": 98.11999988555908
+        }
+      },
+      "svg_sha256": "9bd671e45126fdf54b43edba4ba3a43d5b7912c58d3a874eaba55651489c552c"
+    },
+    {
+      "report": "reports/2026-11-17-otel-callback-preflight.md",
+      "kind": "research",
+      "image": "reports/2026-11-17-otel-callback-preflight/results.svg",
+      "sources": {
+        "reports/2026-11-17-otel-callback-preflight/overhead.json": "b13ad1051c063eb391a47a5c46f836c8f12ad49544a1b3a1061ea9a2dc423ab0"
+      },
+      "derived": {
+        "matched_rounds": 7,
+        "settings": [
+          {
+            "depth": 48,
+            "hz": 100,
+            "total_cpu_ns_paired_percent": [
+              -2.18285950117193,
+              -0.2914780855703514,
+              2.7106897783988115,
+              -1.5347371125361886,
+              -14.362821595773623,
+              2.9193909333482093,
+              0.3183663640903278
+            ],
+            "total_cpu_ns_median_percent": -0.2914780855703514,
+            "work_wall_ns_paired_percent": [
+              -2.6820246841611772,
+              0.09944543827240526,
+              3.0963001743047114,
+              -1.118716775587414,
+              -12.585871143296789,
+              3.2743615376732427,
+              0.7843789272493185
+            ],
+            "work_wall_ns_median_percent": 0.09944543827240526
+          },
+          {
+            "depth": 48,
+            "hz": 1000,
+            "total_cpu_ns_paired_percent": [
+              7.693432448922866,
+              -6.228963571994561,
+              9.14134555481092,
+              42.04292520381516,
+              1.610806391301578,
+              15.761953075960422,
+              6.619521952599361
+            ],
+            "total_cpu_ns_median_percent": 7.693432448922866,
+            "work_wall_ns_paired_percent": [
+              10.292193971383078,
+              -3.0013249824972776,
+              11.042347555962074,
+              22.264389879012157,
+              3.0513457030486357,
+              19.464071527273052,
+              10.045117599639376
+            ],
+            "work_wall_ns_median_percent": 10.292193971383078
+          },
+          {
+            "depth": 256,
+            "hz": 100,
+            "total_cpu_ns_paired_percent": [
+              2.037045722897335,
+              -11.577410344411742,
+              -1.2695481562698396,
+              -4.752852782343275,
+              0.7153200517423519,
+              10.680899456612792,
+              -17.192479510084524
+            ],
+            "total_cpu_ns_median_percent": -1.2695481562698396,
+            "work_wall_ns_paired_percent": [
+              3.962639765987208,
+              -8.83553111573484,
+              0.4750395635510163,
+              -3.125142198855846,
+              3.65568287898137,
+              12.828737961607374,
+              -15.940057233773675
+            ],
+            "work_wall_ns_median_percent": 0.4750395635510163
+          },
+          {
+            "depth": 256,
+            "hz": 1000,
+            "total_cpu_ns_paired_percent": [
+              8.416104900174947,
+              16.014376585526602,
+              40.63573288687336,
+              -4.626702965842632,
+              10.215324033345908,
+              -0.09666667173305887,
+              5.9909207370301365
+            ],
+            "total_cpu_ns_median_percent": 8.416104900174947,
+            "work_wall_ns_paired_percent": [
+              23.71642968811425,
+              33.06878509379294,
+              59.606113979693106,
+              9.62470483585076,
+              26.85310080622052,
+              16.648091314372458,
+              21.97850398594694
+            ],
+            "work_wall_ns_median_percent": 23.71642968811425
+          }
+        ]
+      },
+      "svg_sha256": "486e17377c985150e8b10c21987607131ac5031b9b58344f638a8922dbfed4f8"
+    },
+    {
+      "report": "reports/2026-11-17-signal-weights.md",
+      "kind": "weights",
+      "image": "reports/2026-11-17-signal-weights/results.svg",
+      "sources": {
+        "reports/2026-11-17-signal-weights/cli-captures.jsonl": "8a67ce8a51e019da3940acca0551f2df54a43cd17647cf534078d7b0ce48fb75",
+        "reports/2026-11-17-signal-weights/fpm-captures.jsonl": "aa0078e2e878e01aa3f8b9dfe14534e5d03f6bb507f2e2754b027390fbb9b9c0",
+        "reports/2026-11-17-signal-weights/rr-captures.jsonl": "3f7fd602e7352ba97ec65ff163e7f7e09db44a24653fe7f9f084c41e847a6e0e",
+        "reports/2026-11-17-signal-weights/summary.json": "958260e6cc192f710d89aa5653c379bd6bfe4a90486a249f0f1c1c5ff6c34da3"
+      },
+      "derived": {
+        "stages": [
+          "Native",
+          "Profile",
+          "Spool",
+          "PHP pprof",
+          "Go pprof",
+          "Pyroscope"
+        ],
+        "runtime_values": {
+          "cli": [
+            300,
+            300,
+            300,
+            300.0,
+            300.0,
+            300.0
+          ],
+          "fpm": [
+            301,
+            301,
+            301,
+            301.0,
+            301.0,
+            301.0
+          ],
+          "rr": [
+            298,
+            298,
+            298,
+            298.0,
+            298.0,
+            298.0
+          ]
+        }
+      },
+      "svg_sha256": "3b34dfc7faee433da76f0a686635b6aa6e73e32cdf66fdd88d2e76a5d2166f80"
+    },
+    {
+      "report": "README candidate",
+      "kind": "overhead",
+      "image": "reports/overview/overhead.svg",
+      "sources": {
+        "reports/2026-11-06-overhead-depth48-cloud/baseline-fpm-stats.csv": "16595e2a334cd5973300f037c7188a81ff7fb5f6b67b605f8a965f576e07a60e",
+        "reports/2026-11-06-overhead-depth48-cloud/baseline-k6.json": "1d39e0d0ae84c07ca26b2b4fb3b87b14a8632e5f3e20cef0a565c4629c71fa41",
+        "reports/2026-11-06-overhead-depth48-cloud/on-fpm-stats.csv": "9fb314cbe48628278274a97d50e08793fceb9e8627850e40579010aa44a50948",
+        "reports/2026-11-06-overhead-depth48-cloud/on-k6.json": "e8cf50fb2527405d27924526dd4132db1cf38fbe8f127047fa573f6ee0d83d63",
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/baseline-fpm-stats.csv": "7695fc8040ba6d175437a2d676f608a4b3998eea63266b5b532a2cbcd61ab276",
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/baseline-k6.json": "36cad572fb0d3290ef2d80b5f48e3071d75b420e5765700563d72dcd2ca28af6",
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/on-fpm-stats.csv": "b90cb14bb974b36a38a256a024ed73fca3a045ffb62d3c23544673dc896c8e06",
+        "reports/2026-11-07-overhead-rr-agent-depth48-cloud/on-k6.json": "bc2ee4df9d70e2758fb16df712f5554ff6a54ff98279ed982d2de1df68130d2b",
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/baseline-fpm-stats.csv": "83f9d4b7607f709c8c3eab42b6672e8aaf516af8d58479cac679e3c9f01d8e19",
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/baseline-k6.json": "d103e8a67d5c3af6fa0feb0112c70b3e2e68c5b7dca4d734b52ce46309afc0e1",
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/on-fpm-stats.csv": "ec325b4f569cf4c3ecc5f51fc51b013a67ad19a56e77971c2f6b87453316f28a",
+        "reports/2026-11-07-overhead-swoole-agent-depth48-cloud/on-k6.json": "0296823aa6ad59ccbf99daa01ab3b0db1c421b6510099df0e947672183623916"
+      },
+      "derived": {
+        "FPM": {
+          "off": {
+            "med": 36.161514499999996,
+            "p(95)": 36.4165162,
+            "p(99)": 36.56652108
+          },
+          "on": {
+            "med": 36.640962,
+            "p(95)": 37.802752,
+            "p(99)": 38.229776
+          },
+          "cpu_samples": [
+            40,
+            40
+          ]
+        },
+        "RoadRunner": {
+          "off": {
+            "med": 36.603497000000004,
+            "p(95)": 36.866413,
+            "p(99)": 37.102427819999996
+          },
+          "on": {
+            "med": 36.7606065,
+            "p(95)": 37.092006950000005,
+            "p(99)": 37.3853758
+          },
+          "cpu_samples": [
+            40,
+            40
+          ]
+        },
+        "Swoole": {
+          "off": {
+            "med": 35.619895,
+            "p(95)": 35.76694615,
+            "p(99)": 35.84290692
+          },
+          "on": {
+            "med": 35.55875,
+            "p(95)": 35.7399865,
+            "p(99)": 35.86901415
+          },
+          "cpu_samples": [
+            40,
+            40
+          ]
+        }
+      },
+      "svg_sha256": "4168ac5e3451da0313098723aba764706ab492dd836922d8e934035c737506d3"
+    },
+    {
+      "report": "README candidate",
+      "kind": "soak-memory",
+      "image": "reports/overview/soak-memory.svg",
+      "sources": {
+        "reports/2026-11-07-soak-fpm-agent-depth48-cloud/app-agent-stats.csv": "065369a3a9889be0d058745457de263140bb49a6a287af734fa03b9bd269b8d7",
+        "reports/2026-11-07-soak-fpm-agent-depth48-cloud/app-fpm-stats.csv": "5558a4b19cc4ab9c5e35aa797a28d72b1a03f18ee9d125eea461a9e1b2ce40d3",
+        "reports/2026-11-07-soak-swoole-agent-depth48-cloud/app-agent-stats.csv": "942529cab5475e21470342c8c7a0fba6a2ed17d3c6bec6c9364c90441e52d379",
+        "reports/2026-11-07-soak-swoole-agent-depth48-cloud/app-swoole-stats.csv": "b8b8511815d1a122b4c0845196bb95dfef20fb04f8e142bbe6a1afa0932f297d",
+        "reports/2026-11-08-soak-rr-agent-depth48-cloud/app-agent-stats.csv": "1435aefcf625369a7d1a9d82266698863031f64d1cc50b1aa97fd861eb33af23",
+        "reports/2026-11-08-soak-rr-agent-depth48-cloud/app-rr-stats.csv": "8cf38a2ad197b485039ed6d3028a9e9e0105451e4f67435131c58f0d7a26f16d"
+      },
+      "derived": {
+        "FPM": {
+          "samples": {
+            "App container": 355,
+            "Agent container": 355
+          },
+          "hours": 6.009166666666666
+        },
+        "RoadRunner": {
+          "samples": {
+            "App container": 355,
+            "Agent container": 355
+          },
+          "hours": 6.010277777777778
+        },
+        "Swoole": {
+          "samples": {
+            "App container": 355,
+            "Agent container": 355
+          },
+          "hours": 6.011111111111111
+        }
+      },
+      "svg_sha256": "0acb94dfc16230a7f1d0f39346211e59769fa30b4f0c780ca5bd46fa9e3979ab"
+    }
+  ]
+}

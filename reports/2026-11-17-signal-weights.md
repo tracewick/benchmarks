@@ -84,3 +84,11 @@ correction. Historical evidence is retained. Their absolute signal/weight claims
 must not be reused as post-fix evidence. CPU/latency observations remain historical
 measurements of their pinned code; remeasure before asserting current overhead.
 This report does not invalidate every historical number or silently recalculate it.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-17-signal-weights/results.svg)
+
+Exact event conservation only; not function-share accuracy or overhead.
+<!-- /saved-results-plot -->

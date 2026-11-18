@@ -56,3 +56,11 @@ Stats samples: 40 per arm (`docker stats` on `app-fpm`).
 
 - Proved: modest relative overhead remains with deeper stacks / larger profiles on this stand.
 - Did **not** measure: real app, soak growth under depth-48, isolated generator host.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-06-overhead-depth48-cloud/results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected. Memory is container usage from saved docker stats, not per-process RSS or proof of leak freedom.
+<!-- /saved-results-plot -->

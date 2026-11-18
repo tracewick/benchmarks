@@ -55,3 +55,11 @@ Grafana: http://127.0.0.1:3000 → Explore / Drilldown → Profiles → service 
 - Proved: clone-style stand path works; k6 thresholds hold; profiles reach Pyroscope via SpoolSink + `tracewick-drain`.
 - Did **not** measure: baseline vs on overhead, soak / 72h RSS, chaos, multi-host isolation.
 - Host was a developer laptop sharing CPU with the IDE — treat numbers as a wiring sample, not a capacity claim.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](2026-11-03-smoke-sample/results.svg)
+
+Illustrative rounded laptop sample, not a capacity result; no raw k6 artifact retained.
+<!-- /saved-results-plot -->

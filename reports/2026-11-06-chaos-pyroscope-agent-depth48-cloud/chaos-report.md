@@ -14,3 +14,11 @@
 | HTTP fail rate | 0 |
 
 App requests should remain healthy while delivery slows and spool grows.
+
+<!-- saved-results-plot -->
+## Recorded results at a glance
+
+![Recorded results](results.svg)
+
+Historical saved measurements on the versions/configuration in this report; no current-version performance claim. Lines connect recorded samples; gaps over three typical intervals are not connected.
+<!-- /saved-results-plot -->
