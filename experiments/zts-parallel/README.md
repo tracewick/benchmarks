@@ -5,6 +5,10 @@ Opt-in experiment: [methodology](../../METHOD.md), [limitations](../../LIMITATIO
 This uses fixed-duration CLI work instead of k6 because it tests interpreter/thread isolation,
 not HTTP capacity or application overhead. Nothing runs on the occupied soak server.
 
+The tested per-runtime profiling/spool scenarios pass. JSON messages return only the harness's
+diagnostics through Future; the library writes its profiles inside the runtime and requires no
+JSON result-transfer protocol. The standalone array-result crash is outside that profiling path.
+
 ## Build and run
 
 Requirements: Docker with named build contexts, Git, Python 3, a local core checkout with

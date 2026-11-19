@@ -32,10 +32,11 @@ capacity, or 72h stability.
 ## Experimental ZTS compatibility
 
 The [PHP ZTS/ext-parallel experiment](reports/2026-11-19-zts-parallel.md) covers one pinned
-Linux/PHP/extension combination. Its profiling matrix uses JSON result messages, and a separate
-array-result control crashes without either Excimer or Tracewick loaded. Passing profile
-isolation checks does not establish general thread safety, long-term memory stability or
-support for arbitrary objects crossing runtimes. No NTS/ZTS overhead comparison was measured.
+Linux/PHP/extension combination; its per-runtime collection/spool scenarios pass. JSON returns
+the harness's diagnostics, not profiler output, and is not a library requirement. A separate
+Future array-result control crashes without either Excimer or Tracewick loaded; that API is
+outside Tracewick's profiling/spool path. Long-term stability, arbitrary objects crossing
+runtimes and other versions are untested. No NTS/ZTS overhead comparison was measured.
 
 ## Comparisons
 

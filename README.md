@@ -42,8 +42,9 @@ Pinned k6: `grafana/k6:1.8.2` (`make k6-version`). First `make up` compiles Exci
 | [reports/](reports/) | Checked-in reports + template |
 
 The [PHP ZTS/ext-parallel experiment](reports/2026-11-19-zts-parallel.md) records
-thread-local Excimer/Tracewick profiling checks and an independent parallel result-transfer
-crash. It is exploratory compatibility evidence, not a capacity or overhead result.
+passing thread-local Excimer/Tracewick collection/spool checks and a separate Future
+result-transfer crash outside the profiling path. It is exploratory compatibility evidence,
+not a capacity or overhead result.
 
 ## Recorded overhead and long-run behavior
 

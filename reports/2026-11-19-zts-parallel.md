@@ -3,10 +3,21 @@
 Methodology: [METHOD.md](../METHOD.md). Limitations: [LIMITATIONS.md](../LIMITATIONS.md).
 Reproduction: [experiment](../experiments/zts-parallel/README.md).
 
-**Verdict:** the 66-case profiling matrix passes when each interpreter creates its own profiler
-and returns JSON messages. A separate reduced array-result case segfaults 3/3 with only
-parallel loaded: neither Excimer nor Tracewick is present in that reproducer. This is useful
-compatibility evidence with a concrete runtime caveat, not an unconditional ZTS support claim.
+**Verdict for the tested Tracewick integration: passed.** With a separate profiler in each
+`parallel\Runtime`, all 66 profiling cases pass, including collection, stack/label isolation
+and writing profiles to the spool. No profiler incompatibility with parallel was observed
+in these scenarios.
+
+Tracewick collects and writes profiles inside each runtime; its delivery path does not return
+profile arrays through `Future`. The JSON strings in this experiment carry the **test harness's
+diagnostic results**, not profiler output. JSON is not a requirement of the library or spool path.
+An external reader can deliver the spool; this experiment did not rerun Go-agent/Pyroscope delivery.
+
+The separately reproduced PHP/parallel array-result crash concerns application task-result
+transfer outside that profiling path. Neither Excimer nor Tracewick is loaded in the reduced
+reproducer. It is not evidence that Tracewick fails with parallel and adds no blocker to our RC.
+Long-term stability and other PHP/extension versions remain untested; this short experiment
+does not establish an unconditional production support guarantee.
 
 ## Identity and pins
 
@@ -71,6 +82,11 @@ error. All four processes exit normally and return to one thread; no timeout or 
 was observed. These checks do not promise profile delivery on kill or prove long-run cancellation safety.
 
 ## Independent array-result crash
+
+This finding is separate from profiler collection and spool delivery. Returning arrays through
+`Future` was a way for the initial harness to retrieve diagnostics; Tracewick does not use it
+to export profiles. Applications that use that task-result API should assess the reproducer
+independently of whether profiling is enabled.
 
 The initial richer probe exited 139 even with profiling disabled. Reducing it exposed a
 reproducer using only PHP and parallel: a bootstrap-defined userland fixture returns an array
