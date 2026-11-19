@@ -10,6 +10,11 @@ selectable; RR uses exactly one worker so its diagnostics have a single owner.
 The existing RR memory supervisor stays enabled at 256 MiB. A process identity
 change invalidates continuity, including recycling within a running container.
 
+The process probe buffers each record before publishing it. A transient healthcheck
+that exits during collection is omitted. Missing or replaced service processes
+still fail the identity check. Read failures for processes that remain present
+abort collection with the PID and failed field in the error message.
+
 This is sustained-load/resource-growth evidence, not a maximum-RPS test. Calibrate
 RATE first on the actual host and hold it fixed afterwards. The short unprofiled
 baseline is a sanity comparison, not a separate full overhead campaign. Record
