@@ -1,0 +1,44 @@
+[
+  {
+    "wire": "array",
+    "repeat": 0,
+    "exit": 139,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "wire": "array",
+    "repeat": 1,
+    "exit": 139,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "wire": "array",
+    "repeat": 2,
+    "exit": 139,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "wire": "json",
+    "repeat": 0,
+    "exit": 0,
+    "stdout": "[{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "wire": "json",
+    "repeat": 1,
+    "exit": 0,
+    "stdout": "[{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]}]\n",
+    "stderr": ""
+  },
+  {
+    "wire": "json",
+    "repeat": 2,
+    "exit": 0,
+    "stdout": "[{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]},{\"tid\":\"unavailable\",\"items\":[]}]\n",
+    "stderr": ""
+  }
+]

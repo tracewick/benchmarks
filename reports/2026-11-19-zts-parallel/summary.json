@@ -1,0 +1,166 @@
+{
+  "core_ref": "edb24275b48b6145216e8f8af34304819adf64f1",
+  "core_src_sha256": "659c386ea0e455802e7c95f025518022f9df95d70fae5921934163971a8015e9",
+  "source_unchanged": true,
+  "image": "sha256:926dd4b694f2c234ef8bb0942984cb65fb8bbf33bff8f63ed5b173e4ae7d0ae8",
+  "matrix_cases": 66,
+  "matrix_passed": 66,
+  "spool_files": 928,
+  "spool_events": 42737,
+  "groups": [
+    {
+      "scenario": "concurrent",
+      "mode": "off",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "concurrent",
+      "mode": "off",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "concurrent",
+      "mode": "native",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "concurrent",
+      "mode": "native",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "concurrent",
+      "mode": "uow",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "concurrent",
+      "mode": "uow",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "concurrent",
+      "mode": "continuous",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "concurrent",
+      "mode": "continuous",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "parent-only",
+      "mode": "native",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "parent-only",
+      "mode": "native",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "parent-only",
+      "mode": "uow",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "parent-only",
+      "mode": "uow",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "idle-cpu",
+      "mode": "native",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "idle-cpu",
+      "mode": "native",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "idle-cpu",
+      "mode": "uow",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "idle-cpu",
+      "mode": "uow",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "reuse",
+      "mode": "uow",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "reuse",
+      "mode": "uow",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "churn",
+      "mode": "native",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "churn",
+      "mode": "uow",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "shutdown",
+      "mode": "uow",
+      "event": "wall",
+      "runs": 3,
+      "passed": 3
+    },
+    {
+      "scenario": "shutdown",
+      "mode": "uow",
+      "event": "cpu",
+      "runs": 3,
+      "passed": 3
+    }
+  ]
+}
