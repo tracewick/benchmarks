@@ -86,7 +86,7 @@ class Docker:
             raw = subprocess.run(['docker', 'exec', '-i', '-u', '0', cid, 'sh'],
                                  input=PROBE, text=True, capture_output=True, timeout=15)
             if raw.returncode:
-                raise RuntimeError(f'/proc probe failed: {raw.stderr.strip()}')
+                raise RuntimeError(f'/proc probe failed for {cid[:12]} (exit {raw.returncode}): {raw.stderr.strip()}')
             result['processes'] = parse_processes(raw.stdout)
         return result
 
