@@ -29,6 +29,15 @@ weights and remeasure overhead before presenting historical observations as
 current-version claims. This short probe does not establish sampling accuracy,
 capacity, or 72h stability.
 
+## Experimental ZTS compatibility
+
+The [PHP ZTS/ext-parallel experiment](reports/2026-11-19-zts-parallel.md) covers one pinned
+Linux/PHP/extension combination; its per-runtime collection/spool scenarios pass. JSON returns
+the harness's diagnostics, not profiler output, and is not a library requirement. A separate
+Future array-result control crashes without either Excimer or Tracewick loaded; that API is
+outside Tracewick's profiling/spool path. Long-term stability, arbitrary objects crossing
+runtimes and other versions are untested. No NTS/ZTS overhead comparison was measured.
+
 ## Comparisons
 
 - No marketing bake-off against Arc Lamp, Excimetry, or eBPF agents in v1.

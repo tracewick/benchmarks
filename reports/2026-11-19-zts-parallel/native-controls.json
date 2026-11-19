@@ -1,0 +1,58 @@
+[
+  {
+    "mode": "off",
+    "exit": 0,
+    "stdout": "{\"events\":0}\n",
+    "stderr": ""
+  },
+  {
+    "mode": "main",
+    "exit": 0,
+    "stdout": "{\"events\":200}\n",
+    "stderr": ""
+  },
+  {
+    "mode": "worker",
+    "exit": 0,
+    "stdout": "{\"events\":200}\n",
+    "stderr": ""
+  },
+  {
+    "mode": "worker-trace",
+    "exit": 0,
+    "stdout": "[{\"events\":200}]\n",
+    "stderr": ""
+  },
+  {
+    "mode": "concurrent-trace",
+    "exit": 0,
+    "stdout": "[{\"events\":200},{\"events\":200},{\"events\":200},{\"events\":201},{\"events\":200}]\n",
+    "stderr": ""
+  },
+  {
+    "mode": "concurrent",
+    "exit": 0,
+    "stdout": "[{\"events\":200},{\"events\":200},{\"events\":200},{\"events\":200},{\"events\":200}]\n",
+    "stderr": ""
+  },
+  [
+    {
+      "repeat": 0,
+      "exit": 139,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "repeat": 1,
+      "exit": 139,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "repeat": 2,
+      "exit": 139,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+]

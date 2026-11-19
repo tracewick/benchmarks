@@ -1,0 +1,30 @@
+[
+  {
+    "mode": "native",
+    "kind": "exception",
+    "exit": 0,
+    "stdout": "{\"mode\":\"native\",\"kind\":\"exception\",\"started\":\"profiling-started\",\"caught\":{\"class\":\"RuntimeException\",\"message\":\"expected-worker-exception\"},\"reused\":42,\"threads_after\":1}\n",
+    "stderr": ""
+  },
+  {
+    "mode": "uow",
+    "kind": "exception",
+    "exit": 0,
+    "stdout": "{\"mode\":\"uow\",\"kind\":\"exception\",\"started\":\"profiling-started\",\"caught\":{\"class\":\"RuntimeException\",\"message\":\"expected-worker-exception\"},\"reused\":42,\"threads_after\":1}\n",
+    "stderr": "Tracewick sample rate: 1 (100% of units of work).\n"
+  },
+  {
+    "mode": "native",
+    "kind": "kill",
+    "exit": 0,
+    "stdout": "{\"mode\":\"native\",\"kind\":\"kill\",\"started\":\"profiling-started\",\"caught\":{\"class\":\"parallel\\\\Future\\\\Error\\\\Killed\",\"message\":\"cannot retrieve value\"},\"reused\":null,\"threads_after\":1}\n",
+    "stderr": ""
+  },
+  {
+    "mode": "uow",
+    "kind": "kill",
+    "exit": 0,
+    "stdout": "{\"mode\":\"uow\",\"kind\":\"kill\",\"started\":\"profiling-started\",\"caught\":{\"class\":\"parallel\\\\Future\\\\Error\\\\Killed\",\"message\":\"cannot retrieve value\"},\"reused\":null,\"threads_after\":1}\n",
+    "stderr": "Tracewick sample rate: 1 (100% of units of work).\n"
+  }
+]
