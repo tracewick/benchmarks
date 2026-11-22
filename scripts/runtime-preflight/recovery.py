@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """Observe healthy traffic through explicit backend and reader failure epochs."""
 import json
-import os
 import subprocess
 import sys
 import time
-import urllib.error
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]

@@ -3,7 +3,6 @@
 import argparse
 import json
 import os
-import shutil
 import sys
 import time
 from collections import deque
@@ -11,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'scripts'))
-from soak import Soak, seconds
+from soak import Soak
 from soaklib import command, export_csv, summarize
 
 
