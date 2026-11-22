@@ -145,6 +145,10 @@ The separate [known-function share experiment](reports/2026-11-18-profile-shares
 checks wall-time proportions against independently measured function durations.
 Its [runbook](scripts/share-accuracy/README.md) defines the fixed matrix and limits.
 
+The [72-hour RR and Go-agent soak](reports/2026-11-22-soak-rr-agent-72h.md)
+records continuous depth-48 operation on the November fixes, with per-process
+resources, cgroup metrics, delivery evidence and the preceding observer failure.
+
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 
 - [overhead A/B](reports/2026-11-06-overhead-depth48-cloud.md)
