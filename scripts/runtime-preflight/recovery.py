@@ -25,6 +25,7 @@ class Recovery(Soak):
         self.backend_running = True
         self.app_guard = Continuity(self.interval)
         self.events = []
+        self.env['K6_JSON_OUTPUT'] = '1'
 
     def event(self, name, **details):
         record = {'event': name, 'ts': time.time(), 'monotonic': time.monotonic(), **details}
@@ -64,6 +65,7 @@ class Recovery(Soak):
             elif name == 'reader-inflight-kill':
                 command(['docker', 'pause', self.ids['pyroscope']])
                 self.paused = True
+                self.event('backend-pause-for-inflight')
                 deadline = time.monotonic() + 12
                 while True:
                     metrics = agent_metrics(self.agent_url)

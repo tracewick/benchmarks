@@ -61,6 +61,10 @@ load, telemetry failures and unexpected app/reader replacements fail the case.
 An intentionally restarted reader begins a new identity/counter epoch. App
 continuity remains mandatory across every injected fault. Epoch counters cannot
 be treated as a single uninterrupted counter.
+Granular k6 JSON samples are enabled for this short recovery run, so request
+latencies can be grouped by the recorded fault timestamps. The regular long-soak
+runner retains its interval-only default. K6_JSON_OUTPUT=1 opts into granular
+output for short experiments.
 
 ## Symfony
 
