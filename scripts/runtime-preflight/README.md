@@ -90,3 +90,23 @@ Sustained HTTP and Messenger cases use 0.1. Their intended application/handler
 exceptions are counted explicitly. They use a real FrameworkBundle and Messenger
 consume command with an in-memory transport. They establish integration behavior
 for this fixture. Broker transport durability is outside this experiment.
+
+## Fixed-work control
+
+The historical busyWork loop ends on a wall-clock deadline. Sampling CPU inside
+that loop can replace useful iterations while preserving its requested duration.
+Treat the first six arms as fixed-wall-budget observations.
+
+For a fixed-work CPU overhead estimate, additionally run fixed_overhead.py with
+a generated fixed worker. create-fixed-worker.py derives the RR worker adapter.
+fixed-work.php uses a fixed number of deterministic integer operations and returns
+a checksum. calibrate-fixed.php chooses the count once, without profiling, near
+25 ms on this host. Freeze that count for all arms. Health and every k6 work
+response verify the operation count and checksum.
+
+Use a fresh project and image tag after the original campaign has finished.
+The control repeats off/on, on/off, off/on with one-minute equal-state settling
+and five-minute measured windows. Keep depth 48, sample rate 0.1, 10 RPS, the same
+product references, PHP image and sleep duration. Preserve the calibration and
+all six arms. This is an additional synthetic workload, with its own source/image
+identity and repeat spread.

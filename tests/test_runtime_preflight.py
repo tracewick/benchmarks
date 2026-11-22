@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts/runtime-preflight'))
 from overhead import Overhead
+from fixed_overhead import FixedOverhead
 from recovery import Recovery
 from soaklib import Continuity
 from test_soak import sample
@@ -29,6 +30,28 @@ class PreflightTest(unittest.TestCase):
         with patch('soak.get_json', return_value={**health, 'profiling_enabled': True}):
             with self.assertRaisesRegex(ValueError, 'Wrong profiling state'):
                 runner.health(True)
+
+    def test_fixed_work_control_rejects_a_different_operation_count_or_checksum(self):
+        runner = FixedOverhead.__new__(FixedOverhead)
+        runner.enabled = False
+        runner.iterations = 1000
+        runner.checksum = 42
+        runner.runtime = 'rr'
+        runner.sample_rate = 0.1
+        runner.env = {'WORK_STACK_DEPTH': '48'}
+        runner.base_url = 'http://localhost'
+        health = {'ok': True, 'excimer': True, 'tracewick': True,
+                  'profiling_enabled': False, 'work_stack_depth': 48,
+                  'rr_num_workers': 1, 'sample_rate': 0.1,
+                  'work_mode': 'fixed-iterations', 'work_iterations': 1000,
+                  'work_expected_checksum': 42}
+        with patch('soak.get_json', return_value=health):
+            self.assertEqual(health, runner.health(False))
+        for change in ({'work_iterations': 999}, {'work_expected_checksum': 41},
+                       {'work_mode': 'wall-budget'}):
+            with patch('soak.get_json', return_value={**health, **change}):
+                with self.assertRaisesRegex(ValueError, 'Fixed workload'):
+                    runner.health(False)
 
     def test_recovery_injection_does_not_allow_application_worker_replacement(self):
         runner = Recovery.__new__(Recovery)
