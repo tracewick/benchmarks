@@ -154,7 +154,7 @@ pairs. Three repeats show visible variability and do not establish a universal s
 bound or statistical confidence interval. There is no predeclared performance-budget
 pass/fail threshold.
 
-![Paired PHP CPU measurements](2026-11-22-development-runtime/paired-overhead.png)
+![Paired PHP CPU measurements](2026-11-22-development-runtime/paired-overhead.svg)
 
 ## Failure recovery
 
@@ -197,7 +197,7 @@ App cgroup memory peaked at 26.00 MiB; shared mappings and cgroup charging diffe
 from summed process RSS. These short windows do not establish a long-term memory
 trend.
 
-![Request latency during recovery](2026-11-22-development-runtime/recovery-latencies.png)
+![Request latency during recovery](2026-11-22-development-runtime/recovery-latencies.svg)
 
 ## Symfony package metadata and runtime scope
 

@@ -10,8 +10,13 @@ ROOT = Path(__file__).resolve().parent
 def load(name):
     return json.loads((ROOT / name).read_text())
 
+def save_svg(fig, name):
+    path = ROOT / name
+    fig.savefig(path, metadata={'Date': None})
+    path.write_text(''.join(line.rstrip() + '\n' for line in path.read_text().splitlines()))
+
 plt.rcParams.update({'font.size': 10, 'axes.spines.top': False,
-                     'axes.spines.right': False, 'figure.facecolor': 'white'})
+                     'axes.spines.right': False, 'figure.facecolor': 'white', 'svg.hashsalt': 'tracewick-development-runtime'})
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.3), layout='constrained')
 for ax, filename, title in zip(axes, ('overhead-analysis.json', 'fixed-analysis.json'),
                               ('25 ms wall-budget work', 'Fixed operation count')):
@@ -33,6 +38,7 @@ for ax, filename, title in zip(axes, ('overhead-analysis.json', 'fixed-analysis.
     ax.legend(frameon=False, fontsize=9)
 fig.suptitle('Pinned development sources · one RR worker · 10 requests/s', fontsize=13)
 fig.savefig(ROOT / 'paired-overhead.png', dpi=170)
+save_svg(fig, 'paired-overhead.svg')
 plt.close(fig)
 
 recovery = load('recovery-analysis.json')
@@ -52,4 +58,5 @@ ax.set_ylim(0, max(v['p99_ms'] for v in windows.values()) * 1.2)
 ax.set_axisbelow(True)
 ax.legend(frameon=False)
 fig.savefig(ROOT / 'recovery-latencies.png', dpi=170)
+save_svg(fig, 'recovery-latencies.svg')
 plt.close(fig)
