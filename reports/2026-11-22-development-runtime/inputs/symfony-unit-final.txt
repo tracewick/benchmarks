@@ -1,0 +1,14 @@
+Generating autoload files
+Generated autoload files
+PHPUnit 11.5.58 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.4.27
+Configuration: /srv/bundle/phpunit.xml.dist
+Random Seed:   1795356413
+
+................................................................. 65 / 83 ( 78%)
+..................                                                83 / 83 (100%)
+
+Time: 00:00.859, Memory: 32.00 MB
+
+OK (83 tests, 240 assertions)

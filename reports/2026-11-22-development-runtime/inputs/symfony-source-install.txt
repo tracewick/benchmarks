@@ -1,0 +1,8 @@
+Loading composer repositories with package information
+Cannot create cache directory /var/www/.composer/cache/repo/https---repo.packagist.org/, or directory is not writable. Proceeding without cache. See also cache-read-only config if your filesystem is read-only.
+Updating dependencies
+Your requirements could not be resolved to an installable set of packages.
+
+  Problem 1
+    - Root composer.json requires tracewick/symfony-bundle dev-develop -> satisfiable by tracewick/symfony-bundle[dev-develop].
+    - tracewick/symfony-bundle dev-develop requires tracewick/tracewick ^0.2 -> satisfiable by tracewick/tracewick[v0.2.0] from composer repo (https://repo.packagist.org) but tracewick/tracewick[1.0.0-dev] from path repo (/srv/app/vendor/tracewick/tracewick) has higher repository priority. The packages from the higher priority repository do not match your constraint and are therefore not installable. That repository is canonical so the lower priority repo's packages are not installable. See https://getcomposer.org/repoprio for details and assistance.

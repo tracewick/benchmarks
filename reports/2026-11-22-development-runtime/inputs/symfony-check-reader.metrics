@@ -1,0 +1,37 @@
+# HELP spool_files Unclaimed spool files currently on disk.
+# TYPE spool_files gauge
+spool_files 0
+# HELP spool_bytes Total bytes of unclaimed spool files on disk.
+# TYPE spool_bytes gauge
+spool_bytes 0
+# HELP spool_oldest_age_seconds Age in seconds of the oldest unclaimed spool file.
+# TYPE spool_oldest_age_seconds gauge
+spool_oldest_age_seconds 0
+# HELP profiles_claimed_total Spool profiles claimed for delivery.
+# TYPE profiles_claimed_total counter
+profiles_claimed_total 52
+# HELP profiles_delivered_total Spool profiles acknowledged after Pyroscope 2xx.
+# TYPE profiles_delivered_total counter
+profiles_delivered_total 52
+# HELP profiles_retried_total Spool profiles released for retry after backend failure.
+# TYPE profiles_retried_total counter
+profiles_retried_total 0
+# HELP profiles_rejected_total Spool profiles moved to rejected/ or deleted as bad data.
+# TYPE profiles_rejected_total counter
+profiles_rejected_total 0
+# HELP upload_duration_seconds Pyroscope Push latency in seconds.
+# TYPE upload_duration_seconds summary
+upload_duration_seconds_sum 2.508866172
+upload_duration_seconds_count 5
+# HELP batch_files Files in the last claim batch.
+# TYPE batch_files gauge
+batch_files 52
+# HELP batch_bytes Bytes in the last claim batch.
+# TYPE batch_bytes gauge
+batch_bytes 92097
+# HELP inflight_uploads In-flight Pyroscope Push requests.
+# TYPE inflight_uploads gauge
+inflight_uploads 0
+# HELP aggregation_ratio Profiles per Push in the last drain pass (POST reduction).
+# TYPE aggregation_ratio gauge
+aggregation_ratio 10.4

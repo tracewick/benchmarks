@@ -20,6 +20,23 @@ Same workload, A/B comparison:
 
 Runs: **baseline** (Tracewick off / kill switch) vs **on** at a pinned `sampleRate` (default for golden runs: `0.1`).
 
+### Work held constant in overhead comparisons
+
+Declare whether each request performs a fixed amount of useful work or stops at
+an elapsed-time deadline. A busy loop that stops after 25 ms can perform fewer
+iterations when profiling consumes CPU inside that window. Its CPU/request delta
+describes that wall-budget workload and can understate the cost of completing the
+same useful work.
+
+For a fixed-work synthetic control, calibrate an operation count once without
+profiling and freeze it across all arms. Verify the count and deterministic result
+in every load response. Retain calibration inputs and all repeats. Give both arms
+equal settling and measurement durations; alternate pair order and publish the
+spread. CPU/request uses cumulative process counters and completed request counts
+from the same observation endpoints. Report generator latency quantiles over each
+full measurement separately. A short control does not extend a soak's duration
+or validate other workloads.
+
 ### B. Tracewick pipeline (spool → drain → Pyroscope)
 
 | Metric | Why |

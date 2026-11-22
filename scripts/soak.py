@@ -234,6 +234,8 @@ class Soak:
                 self.env.get('K6_IMAGE', 'grafana/k6:1.8.2'), 'run',
                 '--address=' + self.k6_url.removeprefix('http://'), '/scripts/soak.js',
                 '--summary-export=/out/' + phase + '-k6.json']
+        if self.env.get('K6_JSON_OUTPUT') == '1':
+            args.extend(['--out', 'json=/out/' + phase + '-samples.json'])
         started = time.monotonic()
         self.load = subprocess.Popen(args, stdout=output, stderr=subprocess.STDOUT)
         try:

@@ -3,6 +3,8 @@
 The figures visualize existing evidence. Generating them does not run benchmarks, contact the
 soak server, change measurements, or make old results evidence about a newer release.
 
+## Historical report figures
+
 Requires Python 3 and optional Matplotlib (3.10.8 used for the committed SVGs):
 
 ```bash
@@ -47,6 +49,25 @@ the median positive sample interval are left blank. CPU is Docker's container pe
 (100% corresponds to one CPU), memory is shown in MiB (2^20 bytes). Historical pre-fix plots
 carry historical labels and point to their original source/version context.
 
-The README selections are the recorded overhead A/B pairs and completed six-hour container
-memory observations. They are deliberately not labelled as current overhead or "no leaks".
-New measurements should replace or supplement these panels only after their evidence is reviewed.
+## README selections
+
+The README now embeds the November 22 development-source paired CPU figure and
+the completed November 19–22 RR/agent 72-hour memory overview. Their pins differ:
+the short development campaign uses core `edb2427` / agent `d464fac`, while the
+72-hour run uses core `55eb7bd` / agent `a15f0d3`. Neither is a released-RC claim.
+The original November 6–8 overview files and their provenance remain historical.
+
+Reproduce the development figure and its evidence hashes using its
+[report instructions](../reports/2026-11-22-development-runtime/README.md).
+Reproduce the README memory overview from the repository root:
+
+```bash
+python3 scripts/plot-readme.py
+```
+
+This streams every saved steady observation into 72 hourly arithmetic means.
+It plots PHP/RR/agent process RSS separately from app/reader cgroup memory.
+It does not plot a few selected endpoints or smooth the hourly means. The
+[overview provenance](../reports/overview/rr-agent-72h-memory.json) records source
+SHA256 values, counts, derived means, the output hash and Matplotlib version.
+The original report retains interval-level figures and the full compressed data.

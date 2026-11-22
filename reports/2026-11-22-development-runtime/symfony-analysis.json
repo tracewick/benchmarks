@@ -1,0 +1,122 @@
+{
+  "http": {
+    "status": "passed",
+    "mode": "http",
+    "pid": 1,
+    "elapsed_seconds": 1200.176589012146,
+    "php": "8.4.27",
+    "excimer": "1.2.7",
+    "http": 5997,
+    "intentional_http_errors": 194,
+    "messages_handled": 0,
+    "intentional_message_failures": 0,
+    "profiler_id": 2612,
+    "diagnostics": {
+      "collectedProfiles": 581,
+      "droppedProfiles": 0,
+      "deliveredProfiles": 581,
+      "rejectedProfiles": 0,
+      "failedProfiles": 0,
+      "skippedProfiles": 0,
+      "emptyProfiles": 0,
+      "swallowedErrors": 0,
+      "inactiveSampler": null,
+      "samplerFailures": 0
+    },
+    "peak_php_memory_bytes": 20971520,
+    "delivered_in_reader": 581.0,
+    "final_spool": {
+      "pending_files": 0,
+      "pending_bytes": 0,
+      "oldest_age_seconds": 0,
+      "rejected_files": 0
+    },
+    "querier_busy_work_inclusive_ns": 9700000000,
+    "sample_count": 79,
+    "max_gap_seconds": 15.238286442996468,
+    "resources": {
+      "app": {
+        "rss_first_mib": 32.3984375,
+        "rss_minutes_2_3_mean_mib": 44.5859375,
+        "rss_last_minute_mean_mib": 44.58984375,
+        "rss_last_mib": 44.58984375,
+        "rss_peak_mib": 44.58984375,
+        "cgroup_memory_peak_mib": 28.609375,
+        "cpu_seconds": 152.32,
+        "fds_peak": 5,
+        "os_threads_peak": 2
+      },
+      "reader": {
+        "rss_first_mib": 7.76953125,
+        "rss_minutes_2_3_mean_mib": 11.2119140625,
+        "rss_last_minute_mean_mib": 13.03125,
+        "rss_last_mib": 13.03125,
+        "rss_peak_mib": 13.453125,
+        "cgroup_memory_peak_mib": 7.74609375,
+        "cpu_seconds": 0.99,
+        "fds_peak": 8,
+        "os_threads_peak": 8
+      }
+    }
+  },
+  "messenger": {
+    "status": "passed",
+    "mode": "messenger",
+    "pid": 1,
+    "elapsed_seconds": 1203.474030971527,
+    "php": "8.4.27",
+    "excimer": "1.2.7",
+    "http": 0,
+    "intentional_http_errors": 0,
+    "messages_handled": 5806,
+    "intentional_message_failures": 194,
+    "profiler_id": 2612,
+    "diagnostics": {
+      "collectedProfiles": 597,
+      "droppedProfiles": 0,
+      "deliveredProfiles": 597,
+      "rejectedProfiles": 0,
+      "failedProfiles": 0,
+      "skippedProfiles": 0,
+      "emptyProfiles": 0,
+      "swallowedErrors": 0,
+      "inactiveSampler": null,
+      "samplerFailures": 0
+    },
+    "peak_php_memory_bytes": 52428800,
+    "delivered_in_reader": 597.0,
+    "final_spool": {
+      "pending_files": 0,
+      "pending_bytes": 0,
+      "oldest_age_seconds": 0,
+      "rejected_files": 0
+    },
+    "querier_busy_work_inclusive_ns": 11940000000,
+    "sample_count": 79,
+    "max_gap_seconds": 15.220496841007844,
+    "resources": {
+      "app": {
+        "rss_first_mib": 32.0546875,
+        "rss_minutes_2_3_mean_mib": 52.3232421875,
+        "rss_last_minute_mean_mib": 72.6435546875,
+        "rss_last_mib": 73.109375,
+        "rss_peak_mib": 73.109375,
+        "cgroup_memory_peak_mib": 57.19921875,
+        "cpu_seconds": 150.42,
+        "fds_peak": 6,
+        "os_threads_peak": 2
+      },
+      "reader": {
+        "rss_first_mib": 13.03125,
+        "rss_minutes_2_3_mean_mib": 13.43017578125,
+        "rss_last_minute_mean_mib": 13.73046875,
+        "rss_last_mib": 13.73046875,
+        "rss_peak_mib": 13.9375,
+        "cgroup_memory_peak_mib": 8.140625,
+        "cpu_seconds": 1.04,
+        "fds_peak": 8,
+        "os_threads_peak": 8
+      }
+    }
+  }
+}

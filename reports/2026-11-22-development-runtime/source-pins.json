@@ -1,0 +1,13 @@
+{
+  "scope": "Pinned development sources; no published RC tested",
+  "core": "edb24275b48b6145216e8f8af34304819adf64f1",
+  "agent": "d464fac4a69a57b36dd171841012e69f3f5536ed",
+  "symfony_bundle": "7928d3e69e480603442088ae2d4786d9a7ebccf1",
+  "benchmarks_original_campaign": "7bf6893eb21a9d663048b0d4df632e0f35ea8f63",
+  "benchmarks_fixed_control": "31a154e8f436d2bf1959026c5e684d4c168ba633",
+  "excimer": "23f541b9d970db0524a1b2506b4df727e5e59998",
+  "symfony_runtime_source_comparison": "Byte-identical src/ against pinned checkout; hashes in inputs",
+  "unit_tests": 83,
+  "unit_assertions": 240,
+  "unit_skipped": 0
+}
