@@ -1,0 +1,592 @@
+{
+  "scope": "Hourly arithmetic means of every saved steady observation; process RSS and cgroup usage are separate.",
+  "matplotlib": "3.11.2",
+  "source_report": "reports/2026-11-22-soak-rr-agent-72h.md",
+  "sources": {
+    "reports/2026-11-22-soak-rr-agent-72h/telemetry.jsonl.gz": "751116960b1972e9ceef2d6c864ce39bb75572403ba11a99dd205c2e62ceab1c",
+    "reports/2026-11-22-soak-rr-agent-72h/phases.jsonl": "a4743d29e246c28cac4b53aa67595bfad78cf276e8672a25fa6d035596f804de",
+    "reports/2026-11-22-soak-rr-agent-72h/identity.json": "b23bc7a4f88f01c1fc7a81af26474b1b1393908f259761ba0a657d59c8db6ada"
+  },
+  "image": "reports/overview/rr-agent-72h-memory.svg",
+  "image_sha256": "e258b4043a7e7906003da5f8159c1cfe58ed2db5cf63747347fd703b57f0ff39",
+  "observations_per_hour": [
+    236,
+    235,
+    234,
+    234,
+    234,
+    234,
+    233,
+    233,
+    233,
+    233,
+    232,
+    232,
+    231,
+    232,
+    231,
+    230,
+    231,
+    230,
+    230,
+    230,
+    229,
+    229,
+    228,
+    228,
+    228,
+    228,
+    227,
+    228,
+    227,
+    226,
+    226,
+    226,
+    226,
+    225,
+    225,
+    224,
+    224,
+    223,
+    224,
+    223,
+    223,
+    222,
+    223,
+    222,
+    222,
+    221,
+    220,
+    221,
+    220,
+    220,
+    220,
+    219,
+    219,
+    218,
+    219,
+    218,
+    218,
+    217,
+    217,
+    217,
+    216,
+    216,
+    217,
+    216,
+    218,
+    217,
+    217,
+    218,
+    216,
+    216,
+    216,
+    215
+  ],
+  "hourly_means_mib": [
+    {
+      "PHP worker": 28.307981329449152,
+      "RoadRunner": 48.13274629237288,
+      "Go agent": 13.64161811440678,
+      "App cgroup": 25.69173728813559,
+      "Reader cgroup": 7.8636619438559325
+    },
+    {
+      "PHP worker": 28.30859375,
+      "RoadRunner": 48.31755319148936,
+      "Go agent": 13.810887632978723,
+      "App cgroup": 26.516439494680853,
+      "Reader cgroup": 8.43764960106383
+    },
+    {
+      "PHP worker": 28.30859375,
+      "RoadRunner": 48.3701422275641,
+      "Go agent": 13.869090544871796,
+      "App cgroup": 27.24949919871795,
+      "Reader cgroup": 8.969350961538462
+    },
+    {
+      "PHP worker": 28.30859375,
+      "RoadRunner": 48.4108406784188,
+      "Go agent": 13.87984107905983,
+      "App cgroup": 27.998530982905983,
+      "Reader cgroup": 9.361461672008547
+    },
+    {
+      "PHP worker": 28.30859375,
+      "RoadRunner": 48.42568108974359,
+      "Go agent": 13.867638221153847,
+      "App cgroup": 28.716780181623932,
+      "Reader cgroup": 9.800747863247864
+    },
+    {
+      "PHP worker": 28.310864049145298,
+      "RoadRunner": 48.431073050213676,
+      "Go agent": 13.88528311965812,
+      "App cgroup": 29.420088808760685,
+      "Reader cgroup": 10.302133413461538
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.44422277360515,
+      "Go agent": 13.872015826180258,
+      "App cgroup": 30.120372854077253,
+      "Reader cgroup": 10.801887741416309
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.459462178111586,
+      "Go agent": 13.916795198497853,
+      "App cgroup": 30.812969420600858,
+      "Reader cgroup": 11.303564243562231
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.46678849248927,
+      "Go agent": 13.908379157725323,
+      "App cgroup": 31.465849651287552,
+      "Reader cgroup": 11.80488868025751
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.47815517703863,
+      "Go agent": 13.911497451716738,
+      "App cgroup": 32.2023035139485,
+      "Reader cgroup": 12.264954399141631
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.48046875,
+      "Go agent": 13.924400592672415,
+      "App cgroup": 32.90246161099138,
+      "Reader cgroup": 12.752896012931034
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.480754983836206,
+      "Go agent": 13.902394261853448,
+      "App cgroup": 33.613331761853445,
+      "Reader cgroup": 13.218042834051724
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.48768939393939,
+      "Go agent": 13.991122159090908,
+      "App cgroup": 34.32687364718615,
+      "Reader cgroup": 13.739786255411255
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.495807516163794,
+      "Go agent": 14.007660964439655,
+      "App cgroup": 35.01724137931034,
+      "Reader cgroup": 14.215096309267242
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.50546198593074,
+      "Go agent": 14.020731872294371,
+      "App cgroup": 35.71482683982684,
+      "Reader cgroup": 14.688988095238095
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.51159986413043,
+      "Go agent": 14.033984375,
+      "App cgroup": 36.37987432065217,
+      "Reader cgroup": 15.097078804347825
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.55730857683983,
+      "Go agent": 14.031672754329005,
+      "App cgroup": 37.04731466450217,
+      "Reader cgroup": 15.598011363636363
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.58203125,
+      "Go agent": 14.035037364130435,
+      "App cgroup": 37.785954483695654,
+      "Reader cgroup": 16.097690217391303
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.58216711956522,
+      "Go agent": 14.011005434782609,
+      "App cgroup": 38.423522418478264,
+      "Reader cgroup": 16.550118885869566
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.5859375,
+      "Go agent": 14.01460597826087,
+      "App cgroup": 39.12746263586956,
+      "Reader cgroup": 17.01117527173913
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.55226528384279,
+      "Go agent": 14.00051173580786,
+      "App cgroup": 41.15700054585153,
+      "Reader cgroup": 17.441900927947597
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.033501637554586,
+      "Go agent": 13.973901473799126,
+      "App cgroup": 56.6786128548035,
+      "Reader cgroup": 17.92890283842795
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.04793722587719,
+      "Go agent": 14.005019873903509,
+      "App cgroup": 57.33263089364035,
+      "Reader cgroup": 18.40858004385965
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.05379660087719,
+      "Go agent": 14.006630345394736,
+      "App cgroup": 58.088815789473685,
+      "Reader cgroup": 18.88819216008772
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.10704495614035,
+      "Go agent": 14.002244380482455,
+      "App cgroup": 58.72693941885965,
+      "Reader cgroup": 19.33129454495614
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.1936677631579,
+      "Go agent": 14.011341831140351,
+      "App cgroup": 59.41404536732456,
+      "Reader cgroup": 19.829769736842106
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.22828331497797,
+      "Go agent": 13.958201404185022,
+      "App cgroup": 60.10343818832599,
+      "Reader cgroup": 20.208493942731277
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.244568941885966,
+      "Go agent": 13.96631716008772,
+      "App cgroup": 60.83687979714912,
+      "Reader cgroup": 20.678745202850877
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.25345883810573,
+      "Go agent": 13.998261976872246,
+      "App cgroup": 61.527705121145374,
+      "Reader cgroup": 21.185280148678412
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.258814988938056,
+      "Go agent": 13.99459001659292,
+      "App cgroup": 62.181519634955755,
+      "Reader cgroup": 21.65628456858407
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.26171875,
+      "Go agent": 14.029469717920353,
+      "App cgroup": 62.84646363384956,
+      "Reader cgroup": 22.15554134402655
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.2865735619469,
+      "Go agent": 14.035087112831858,
+      "App cgroup": 63.57822870575221,
+      "Reader cgroup": 22.653570934734514
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.2893044800885,
+      "Go agent": 14.038284706858407,
+      "App cgroup": 64.32010508849558,
+      "Reader cgroup": 23.111345409292035
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.29296875,
+      "Go agent": 14.066475694444444,
+      "App cgroup": 64.97616319444444,
+      "Reader cgroup": 23.609166666666667
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.29586805555556,
+      "Go agent": 14.034739583333334,
+      "App cgroup": 65.65171875,
+      "Reader cgroup": 24.01581597222222
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.300449916294646,
+      "Go agent": 14.041678292410714,
+      "App cgroup": 66.34912109375,
+      "Reader cgroup": 24.478062220982142
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.359793526785715,
+      "Go agent": 14.046037946428571,
+      "App cgroup": 67.85147530691964,
+      "Reader cgroup": 24.9849853515625
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.3671875,
+      "Go agent": 14.054197029147982,
+      "App cgroup": 68.62116381726457,
+      "Reader cgroup": 25.42098164237668
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.368216378348215,
+      "Go agent": 14.056902204241071,
+      "App cgroup": 69.33675711495536,
+      "Reader cgroup": 25.886788504464285
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.383145319506724,
+      "Go agent": 14.030724495515695,
+      "App cgroup": 70.00436168721973,
+      "Reader cgroup": 26.34208590246637
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.40122267376682,
+      "Go agent": 14.056649383408072,
+      "App cgroup": 70.70261701233184,
+      "Reader cgroup": 26.832469170403588
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41015625,
+      "Go agent": 14.041068412162161,
+      "App cgroup": 71.44052646396396,
+      "Reader cgroup": 27.274246903153152
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41015625,
+      "Go agent": 14.06866591928251,
+      "App cgroup": 72.0925063060538,
+      "Reader cgroup": 27.803548906950674
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.411933417792795,
+      "Go agent": 14.070171734234235,
+      "App cgroup": 72.79196579391892,
+      "Reader cgroup": 28.29156109234234
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41696579391892,
+      "Go agent": 14.09790259009009,
+      "App cgroup": 73.509765625,
+      "Reader cgroup": 28.81612471846847
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41796875,
+      "Go agent": 14.088023190045249,
+      "App cgroup": 74.22235576923077,
+      "Reader cgroup": 29.267693014705884
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41796875,
+      "Go agent": 14.064968039772728,
+      "App cgroup": 74.92453835227273,
+      "Reader cgroup": 29.72224786931818
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41796875,
+      "Go agent": 14.11303379524887,
+      "App cgroup": 75.61041784502262,
+      "Reader cgroup": 30.206995899321267
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41796875,
+      "Go agent": 14.09453125,
+      "App cgroup": 76.27473366477273,
+      "Reader cgroup": 30.68094815340909
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.41832386363637,
+      "Go agent": 14.117986505681818,
+      "App cgroup": 76.99156605113636,
+      "Reader cgroup": 31.195383522727273
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.425,
+      "Go agent": 14.093217329545455,
+      "App cgroup": 77.7128018465909,
+      "Reader cgroup": 31.62001065340909
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.484375,
+      "Go agent": 14.116081621004566,
+      "App cgroup": 78.41169021118722,
+      "Reader cgroup": 32.11126569634703
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.484375,
+      "Go agent": 14.114048230593607,
+      "App cgroup": 79.10873287671232,
+      "Reader cgroup": 32.581870719178085
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.486704415137616,
+      "Go agent": 14.118352207568808,
+      "App cgroup": 79.80020785550458,
+      "Reader cgroup": 33.06291212729358
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.48828125,
+      "Go agent": 14.14142765410959,
+      "App cgroup": 80.51887128995433,
+      "Reader cgroup": 33.576573202054796
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.48828125,
+      "Go agent": 14.145857224770642,
+      "App cgroup": 81.18061926605505,
+      "Reader cgroup": 34.05748279816514
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.48828125,
+      "Go agent": 14.133206708715596,
+      "App cgroup": 81.90702049885321,
+      "Reader cgroup": 34.5123996559633
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.975806451612904,
+      "Go agent": 14.105540754608295,
+      "App cgroup": 83.0816892281106,
+      "Reader cgroup": 34.952710973502306
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 49.953125,
+      "Go agent": 14.100338421658986,
+      "App cgroup": 84.72863263248848,
+      "Reader cgroup": 35.377970190092164
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 49.953125,
+      "Go agent": 14.100824452764977,
+      "App cgroup": 85.3933611751152,
+      "Reader cgroup": 35.811887960829495
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 49.953902633101855,
+      "Go agent": 14.117711950231481,
+      "App cgroup": 86.07660590277777,
+      "Reader cgroup": 36.275571469907405
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 49.96048538773148,
+      "Go agent": 14.104618778935185,
+      "App cgroup": 86.81217447916667,
+      "Reader cgroup": 36.752097800925924
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 49.83057315668203,
+      "Go agent": 14.117853542626728,
+      "App cgroup": 87.35816892281106,
+      "Reader cgroup": 37.3029053859447
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 49.83984375,
+      "Go agent": 14.10447410300926,
+      "App cgroup": 88.08772786458333,
+      "Reader cgroup": 37.74084924768518
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 49.136772505733944,
+      "Go agent": 14.099251003440367,
+      "App cgroup": 88.07038417431193,
+      "Reader cgroup": 38.217424025229356
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.88900489631337,
+      "Go agent": 14.12201180875576,
+      "App cgroup": 88.47870463709677,
+      "Reader cgroup": 38.70393505184332
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.8096918202765,
+      "Go agent": 14.097188220046084,
+      "App cgroup": 89.06336405529954,
+      "Reader cgroup": 39.12901425691244
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.82681694380734,
+      "Go agent": 14.115682339449542,
+      "App cgroup": 89.75446172591744,
+      "Reader cgroup": 39.60396358944954
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.84375,
+      "Go agent": 14.109935619212964,
+      "App cgroup": 90.49963831018519,
+      "Reader cgroup": 40.07376663773148
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.84375,
+      "Go agent": 14.131510416666666,
+      "App cgroup": 91.18655960648148,
+      "Reader cgroup": 40.562753182870374
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.84375,
+      "Go agent": 14.113154658564815,
+      "App cgroup": 91.87339048032408,
+      "Reader cgroup": 40.968569155092595
+    },
+    {
+      "PHP worker": 28.31640625,
+      "RoadRunner": 48.855087209302326,
+      "Go agent": 14.105995639534884,
+      "App cgroup": 92.57509084302326,
+      "Reader cgroup": 41.434193313953486
+    }
+  ]
+}

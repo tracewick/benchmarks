@@ -48,31 +48,38 @@ not a capacity or overhead result.
 
 ## Recorded overhead and long-run behavior
 
-**Historical measurements on core/agent 0.1.0, not current-version performance claims.**
-These figures show the saved November 6–8 runs and their recorded configurations.
+### Development-source overhead · November 22
 
-![Historical overhead A/B: latency and container CPU](reports/overview/overhead.svg)
+![Repeated development-source off/on CPU measurements](reports/2026-11-22-development-runtime/paired-overhead.svg)
 
-Each runtime has its own off/on pair at 20 requests/s, depth 48 and sample rate 0.1.
-Worker configurations differ; this is not a cross-runtime ranking. Sources:
-[FPM](reports/2026-11-06-overhead-depth48-cloud.md),
-[RoadRunner](reports/2026-11-07-overhead-rr-agent-depth48-cloud.md),
-[Swoole](reports/2026-11-07-overhead-swoole-agent-depth48-cloud.md).
+The latest [development runtime preflight](reports/2026-11-22-development-runtime.md)
+uses three off/on pairs on pinned core `edb2427` and agent `d464fac`: one RR worker,
+10 requests/s, depth 48 and sample rate 0.1. The **right panel holds the operation
+count and checksum constant**; paired PHP CPU deltas have a **+0.462% median** and
+**+0.363% to +1.929% range**. P99 increases are **0.769–1.933 ms**. The left panel
+retains the separate timed-work observations. These measurements do not update
+FPM/Swoole results or establish a universal overhead bound. No published RC is tested.
 
-![Historical six-hour container memory observations](reports/overview/soak-memory.svg)
+### Completed 72-hour observation · November 19–22
 
-All saved observations from completed six-hour depth-48 soaks are shown, including startup.
-Changes between **first-hour and last-hour average** app-container usage were FPM **+3.6 MiB**,
-RoadRunner **+3.4 MiB**, and Swoole **+1.9 MiB**.
-RoadRunner is the November 8 rerun **after reusing one profiler per worker**; the earlier
-per-request-construction run (~+1 GiB / 6h) is not included or retained in these artifacts.
-These are **container memory usage**, not PHP process RSS. The small increases do not establish
-a process leak, prove leak freedom, or replace the separate 72-hour test. Sources:
-[FPM](reports/2026-11-07-soak-fpm-agent-depth48-cloud.md),
-[RoadRunner](reports/2026-11-08-soak-rr-agent-depth48-cloud.md),
-[Swoole](reports/2026-11-07-soak-swoole-agent-depth48-cloud.md).
+![Completed 72-hour RR and Go-agent memory observations](reports/overview/rr-agent-72h-memory.svg)
 
-Each report also has its own figure. See [plot reproduction and provenance](docs/report-plots.md).
+The [completed RR and Go-agent soak](reports/2026-11-22-soak-rr-agent-72h.md)
+uses earlier core `55eb7bd` and agent `a15f0d3` pins, one worker, depth 48,
+sample rate 0.1 and 10 requests/s. The chart shows **hourly means of all 16,166
+saved steady observations**. Process RSS and cgroup memory are separate panels.
+PHP's first/last-hour mean RSS is **28.308 / 28.316 MiB**; the agent's is
+**13.642 / 14.107 MiB**. App/reader cgroup memory grew substantially; the report
+includes anonymous/file memory and a later slab snapshot. The result does not
+prove general leak freedom or transfer 72-hour coverage to the newer develop pins.
+
+The earlier [FPM/RR/Swoole A/B overview](reports/overview/overhead.svg) and
+[six-hour container-memory overview](reports/overview/soak-memory.svg) remain
+historical core/agent 0.1.0 evidence from November 6–8. Their workload, host and
+worker configurations differ from these newer experiments; they are not a
+cross-runtime ranking or current-version performance claims.
+
+See [plot reproduction and provenance](docs/report-plots.md) for both generations.
 
 ## Layout
 
