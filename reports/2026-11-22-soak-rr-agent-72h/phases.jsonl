@@ -1,0 +1,6 @@
+{"phase": "baseline", "ts": 1795077428.940411, "monotonic": 152800.947038325}
+{"phase": "warmup", "ts": 1795077738.328171, "monotonic": 153110.334798405}
+{"phase": "preflight-drain", "ts": 1795078044.6929562, "monotonic": 153416.699583142}
+{"phase": "steady", "ts": 1795078044.9496124, "monotonic": 153416.956238724}
+{"phase": "drain", "ts": 1795337248.1024046, "monotonic": 412620.109031009}
+{"phase": "cooldown", "ts": 1795337248.3945332, "monotonic": 412620.401159442}

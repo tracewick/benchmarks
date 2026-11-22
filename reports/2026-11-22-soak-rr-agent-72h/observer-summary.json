@@ -1,0 +1,12 @@
+{
+  "observer_samples": 17334,
+  "observer_rss_median_mib": 27.6875,
+  "observer_rss_max_sampled_mib": 292.66796875,
+  "observer_cpu_pct_mean": 0.06555555555555556,
+  "observer_cpu_pct_max_sampled": 14.93,
+  "runner_including_postprocessing_peak_rss_mib": 500.9609375,
+  "host_vmstat_samples": 17333,
+  "host_cpu_idle_pct_mean": 80.89361333871805,
+  "host_iowait_pct_mean": 0.0001730802515432989,
+  "host_steal_pct_max": 0
+}

@@ -1,0 +1,185 @@
+{
+  "parameters": {
+    "TRACEWICK_VERSION": "dev-develop#55eb7bdb91cd4269a86bb0dd8ce22a243e5486b4",
+    "AGENT_VERSION": null,
+    "AGENT_REF": "a15f0d310ba6d5942e67b37d3c3c55dc1b3b8100",
+    "WORK_STACK_DEPTH": "48",
+    "RR_NUM_WORKERS": "1",
+    "PHP_FPM_MAX_CHILDREN": "1",
+    "SWOOLE_WORKER_NUM": "1",
+    "EXCIMER_VERSION": "1.2.7",
+    "EXCIMER_REF": "23f541b9d970db0524a1b2506b4df727e5e59998",
+    "WORK_BUSY_MS": "25",
+    "WORK_SLEEP_MS": "10"
+  },
+  "rate": 10,
+  "sample_rate": 0.1,
+  "durations": {
+    "baseline": "5m",
+    "warmup": "5m",
+    "steady": "72h",
+    "cooldown": "2m"
+  },
+  "stats_interval": 15.0,
+  "cpu_count": 2,
+  "clock_ticks": 100,
+  "meminfo": "MemTotal:        4002452 kB\nMemFree:          583048 kB\nMemAvailable:    3265884 kB\nBuffers:          131100 kB\nCached:          2586220 kB\nSwapCached:            0 kB\nActive:           541148 kB\nInactive:        2402448 kB\nActive(anon):     217628 kB\nInactive(anon):    20192 kB\nActive(file):     323520 kB\nInactive(file):  2382256 kB\nUnevictable:       12712 kB\nMlocked:            9640 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:               352 kB\nWriteback:             0 kB\nAnonPages:        238932 kB\nMapped:           197800 kB\nShmem:              4128 kB\nKReclaimable:     266188 kB\nSlab:             353696 kB\nSReclaimable:     266188 kB\nSUnreclaim:        87508 kB\nKernelStack:        2980 kB\nPageTables:         5756 kB\nSecPageTables:         0 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:     2001224 kB\nCommitted_AS:     963452 kB\nVmallocTotal:   34359738367 kB\nVmallocUsed:       14268 kB\nVmallocChunk:          0 kB\nPercpu:             6272 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:         0 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:     69632 kB\nFilePmdMapped:         0 kB\nCmaTotal:              0 kB\nCmaFree:               0 kB\nUnaccepted:            0 kB\nBalloon:               0 kB\nGPUActive:             0 kB\nGPUReclaim:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\nDirectMap4k:      122732 kB\nDirectMap2M:     3022848 kB\nDirectMap1G:     3145728 kB\n",
+  "repo_sha": "2fabb7d04d109fc9e89a636f0be5da60329e243c",
+  "git_status": "",
+  "harness_sha256": {
+    "scripts/soak.py": "47efcc4a5adc032b6d87a0d0fc6eb77f4274f72b587213116a91b15135682fc0",
+    "scripts/soaklib.py": "4d6043714902eda0f82fe888926184f9f145650f5ffacf0081247016aca5f427",
+    "scripts/soak_probe.sh": "3822c58d85e95488308ec5d3c2d8d3a844286a7bed88553bd75745b17faa9101",
+    "scripts/soak_spool.php": "5180a58183c1e978fe7ccd946f5c52298088bc3f94c0aad9c5d0b4106e07fc19",
+    "generators/k6/soak.js": "38b72674023521f81f35614609e0bf8c61456b7040681169cdca29f65260e5be",
+    "compose.yaml": "b9f312b126a8b3d001d46f23e424c7a0884d2d6516307811d563f278da210343"
+  },
+  "docker": {
+    "Driver": "overlayfs",
+    "CgroupVersion": "2",
+    "Architecture": "x86_64",
+    "NCPU": 2,
+    "MemTotal": 4098510848,
+    "ServerVersion": "29.1.3"
+  },
+  "runtimes": [
+    {
+      "php": "8.4.27",
+      "excimer": "1.2.7",
+      "version": "dev-develop",
+      "reference": "55eb7bdb91cd4269a86bb0dd8ce22a243e5486b4",
+      "agent_version": "dev-a15f0d310ba6d5942e67b37d3c3c55dc1b3b8100",
+      "agent_reference": "a15f0d310ba6d5942e67b37d3c3c55dc1b3b8100",
+      "containers": {
+        "app": {
+          "id": "cbe08fb1f45982ecfed5bcff149a34c424ec1fd74c45546acffca85758306e3c",
+          "image_id": "sha256:a4e0c86436f03e5b1e2d5be100c6f4c9fb448eeb0c6b827dd821c43922ba0fa0",
+          "image": "tracewick-benchmarks-rr:tracewick-soak-r2",
+          "command": null,
+          "started_at": "2026-11-19T08:37:06.735921252Z",
+          "limits": {
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CpuQuota": 0,
+            "CpuPeriod": 0,
+            "RestartPolicy": {
+              "Name": "no",
+              "MaximumRetryCount": 0
+            }
+          }
+        },
+        "reader": {
+          "id": "fdd132a91de0fa2fd68de69d79c18f0151e604dda99a2b94923b7543a554313b",
+          "image_id": "sha256:6abfd3020e7c55937a2deffce82373248b702444c4c5b4af9aff0ff1ee111869",
+          "image": "tracewick-benchmarks-agent:tracewick-soak-r2",
+          "command": [
+            "run",
+            "--reader-id=bench-agent",
+            "--sleep=2s",
+            "--metrics-listen=0.0.0.0:9090"
+          ],
+          "started_at": "2026-11-19T08:37:08.377764752Z",
+          "limits": {
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CpuQuota": 0,
+            "CpuPeriod": 0,
+            "RestartPolicy": {
+              "Name": "unless-stopped",
+              "MaximumRetryCount": 0
+            }
+          }
+        },
+        "pyroscope": {
+          "id": "2568762a43504168e4cc39c54eee2828ae1f9a1a991355de398a12c7f802fd92",
+          "image_id": "sha256:ef9b48976386aa2781e84664dfdba7cc33a1b6793c0cc9d130812173a926ca1f",
+          "image": "grafana/pyroscope@sha256:ef9b48976386aa2781e84664dfdba7cc33a1b6793c0cc9d130812173a926ca1f",
+          "command": [
+            "-config.file=/etc/pyroscope/config.yaml"
+          ],
+          "started_at": "2026-11-19T08:36:04.121562628Z",
+          "limits": {
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CpuQuota": 0,
+            "CpuPeriod": 0,
+            "RestartPolicy": {
+              "Name": "no",
+              "MaximumRetryCount": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "php": "8.4.27",
+      "excimer": "1.2.7",
+      "version": "dev-develop",
+      "reference": "55eb7bdb91cd4269a86bb0dd8ce22a243e5486b4",
+      "agent_version": "dev-a15f0d310ba6d5942e67b37d3c3c55dc1b3b8100",
+      "agent_reference": "a15f0d310ba6d5942e67b37d3c3c55dc1b3b8100",
+      "containers": {
+        "app": {
+          "id": "964817f2c7904e14dc6caa2c46d7143f170beb76f391f3b547076e63cbfda0f6",
+          "image_id": "sha256:a4e0c86436f03e5b1e2d5be100c6f4c9fb448eeb0c6b827dd821c43922ba0fa0",
+          "image": "tracewick-benchmarks-rr:tracewick-soak-r2",
+          "command": null,
+          "started_at": "2026-11-19T08:42:16.76657033Z",
+          "limits": {
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CpuQuota": 0,
+            "CpuPeriod": 0,
+            "RestartPolicy": {
+              "Name": "no",
+              "MaximumRetryCount": 0
+            }
+          }
+        },
+        "reader": {
+          "id": "fdd132a91de0fa2fd68de69d79c18f0151e604dda99a2b94923b7543a554313b",
+          "image_id": "sha256:6abfd3020e7c55937a2deffce82373248b702444c4c5b4af9aff0ff1ee111869",
+          "image": "tracewick-benchmarks-agent:tracewick-soak-r2",
+          "command": [
+            "run",
+            "--reader-id=bench-agent",
+            "--sleep=2s",
+            "--metrics-listen=0.0.0.0:9090"
+          ],
+          "started_at": "2026-11-19T08:37:08.377764752Z",
+          "limits": {
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CpuQuota": 0,
+            "CpuPeriod": 0,
+            "RestartPolicy": {
+              "Name": "unless-stopped",
+              "MaximumRetryCount": 0
+            }
+          }
+        },
+        "pyroscope": {
+          "id": "2568762a43504168e4cc39c54eee2828ae1f9a1a991355de398a12c7f802fd92",
+          "image_id": "sha256:ef9b48976386aa2781e84664dfdba7cc33a1b6793c0cc9d130812173a926ca1f",
+          "image": "grafana/pyroscope@sha256:ef9b48976386aa2781e84664dfdba7cc33a1b6793c0cc9d130812173a926ca1f",
+          "command": [
+            "-config.file=/etc/pyroscope/config.yaml"
+          ],
+          "started_at": "2026-11-19T08:36:04.121562628Z",
+          "limits": {
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CpuQuota": 0,
+            "CpuPeriod": 0,
+            "RestartPolicy": {
+              "Name": "no",
+              "MaximumRetryCount": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "host_description": "Ubuntu 26.04.1, Linux 7.0.0-43-generic, x86_64, 2 vCPU, 3.8 GiB RAM",
+  "privacy_note": "Original uname hostname omitted. The original identity.json remains in the verified local archive."
+}
