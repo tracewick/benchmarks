@@ -1,0 +1,120 @@
+{
+  "status": "passed",
+  "drain": {
+    "pending_files": 0,
+    "pending_bytes": 0,
+    "oldest_age_seconds": 0,
+    "rejected_files": 0
+  },
+  "actions": [
+    "backend-start",
+    "backend-stop",
+    "reader-inflight-kill",
+    "reader-recover",
+    "reader-start",
+    "reader-stop"
+  ],
+  "reader_epochs": 3,
+  "max_pending": 338,
+  "max_pending_age_seconds": 601,
+  "fault_window_latencies": {
+    "healthy": {
+      "requests": 3157,
+      "p50_ms": 36.972576,
+      "p95_ms": 37.4186052,
+      "p99_ms": 38.64079312,
+      "max_ms": 44.090542
+    },
+    "backend_down": {
+      "requests": 2911,
+      "p50_ms": 36.996299,
+      "p95_ms": 37.410214499999995,
+      "p99_ms": 38.322176999999996,
+      "max_ms": 44.942758
+    },
+    "backend_recovery": {
+      "requests": 3065,
+      "p50_ms": 37.004601,
+      "p95_ms": 37.423204399999996,
+      "p99_ms": 38.35998248,
+      "max_ms": 45.821975
+    },
+    "reader_stopped": {
+      "requests": 612,
+      "p50_ms": 37.0527035,
+      "p95_ms": 37.43235515,
+      "p99_ms": 39.138281060000004,
+      "max_ms": 42.159684
+    },
+    "reader_recovery": {
+      "requests": 2297,
+      "p50_ms": 37.00764,
+      "p95_ms": 37.5133308,
+      "p99_ms": 38.54159968,
+      "max_ms": 44.149324
+    },
+    "inflight_kill_and_pause": {
+      "requests": 616,
+      "p50_ms": 37.0355945,
+      "p95_ms": 37.46689,
+      "p99_ms": 38.18138685,
+      "max_ms": 42.852547
+    },
+    "orphan_recovery": {
+      "requests": 8343,
+      "p50_ms": 37.002831,
+      "p95_ms": 37.4449445,
+      "p99_ms": 38.607297079999995,
+      "max_ms": 49.369111
+    }
+  },
+  "fault_window_boundaries_utc": {
+    "healthy": "2026-11-22T12:12:50.459594+00:00",
+    "backend_down": "2026-11-22T12:18:07.024492+00:00",
+    "backend_recovery": "2026-11-22T12:22:58.047866+00:00",
+    "reader_stopped": "2026-11-22T12:28:04.610646+00:00",
+    "reader_recovery": "2026-11-22T12:29:05.784922+00:00",
+    "inflight_kill_and_pause": "2026-11-22T12:32:55.479025+00:00",
+    "orphan_recovery": "2026-11-22T12:33:57.044058+00:00"
+  },
+  "observed_reader_epochs": {
+    "0": {
+      "profiles_delivered_total": 940.0,
+      "profiles_retried_total": 67.0,
+      "profiles_rejected_total": 0.0
+    },
+    "1": {
+      "profiles_delivered_total": 320.0,
+      "profiles_retried_total": 0.0,
+      "profiles_rejected_total": 0.0
+    },
+    "2": {
+      "profiles_delivered_total": 878.0,
+      "profiles_retried_total": 0.0,
+      "profiles_rejected_total": 0.0
+    }
+  },
+  "app_resources": {
+    "rss_first_mib": 27.9375,
+    "rss_last_mib": 28.484375,
+    "rss_peak_mib": 28.484375,
+    "cgroup_memory_peak_mib": 26.0
+  },
+  "orphaned_claims": [
+    ".01795350772542151912-edd8750e846c1617-b8def71ad38ada10.spool.claimed-bench-agent-1795350774"
+  ],
+  "old_claim_no_longer_observed_after_seconds": 614.5806367397308,
+  "old_claim_no_longer_observed_utc": "2026-11-22T12:43:08.580637+00:00",
+  "last_snapshot_diagnostics": {
+    "collectedProfiles": 2138,
+    "droppedProfiles": 0,
+    "deliveredProfiles": 2138,
+    "rejectedProfiles": 0,
+    "failedProfiles": 0,
+    "skippedProfiles": 0,
+    "emptyProfiles": 0,
+    "swallowedErrors": 0,
+    "inactiveSampler": null,
+    "samplerFailures": 0
+  }
+}

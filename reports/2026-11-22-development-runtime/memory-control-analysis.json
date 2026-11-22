@@ -1,0 +1,31 @@
+{
+  "before": {
+    "php_used_bytes": 49594784,
+    "php_reserved_bytes": 52428800,
+    "rss_bytes": 77553664
+  },
+  "after_transport_reset": {
+    "php_used_bytes": 17069648,
+    "php_reserved_bytes": 52428800,
+    "rss_bytes": 77553664
+  },
+  "after_cycle_collection": {
+    "php_used_bytes": 17070024,
+    "php_reserved_bytes": 52428800,
+    "rss_bytes": 77553664
+  },
+  "collected_cycles": 0,
+  "after": {
+    "php_used_bytes": 17070400,
+    "php_reserved_bytes": 33554432,
+    "rss_bytes": 58802176
+  },
+  "gc_mem_caches_freed_bytes": 29556736,
+  "note": "Separate 6000-message replay without artificial sleep. Transport reset, cycle collection and allocator-cache release happen after all messages. This is not an overhead comparison.",
+  "elapsed_seconds": 151.883474111557,
+  "work_units": 6000,
+  "writer_and_reader_profiles": 582,
+  "direct_transport_reset_php_used_drop_mib": 31.018386840820312,
+  "transport_reset_and_gc_php_used_drop_mib": 31.018028259277344,
+  "rss_drop_after_reset_gc_and_cache_release_mib": 17.8828125
+}

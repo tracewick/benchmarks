@@ -149,6 +149,12 @@ The [72-hour RR and Go-agent soak](reports/2026-11-22-soak-rr-agent-72h.md)
 records continuous depth-48 operation on the November fixes, with per-process
 resources, cgroup metrics, delivery evidence and the preceding observer failure.
 
+The [development runtime preflight](reports/2026-11-22-development-runtime.md)
+records current develop sources, repeated fixed-operation CPU measurements,
+backend/reader recovery and real Symfony HTTP/CLI/Messenger checks. It separates
+runtime results from the unresolved source-1.0 package constraint and from any
+future published-RC installation check.
+
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 
 - [overhead A/B](reports/2026-11-06-overhead-depth48-cloud.md)
