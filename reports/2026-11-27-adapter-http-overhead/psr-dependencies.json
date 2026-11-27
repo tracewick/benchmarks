@@ -1,0 +1,128 @@
+{
+  "frankenphp": {
+    "nyholm/psr7": {
+      "reference": "26c1581611614447a5ff753a450390a23f3e323e",
+      "version": "1.8.3"
+    },
+    "nyholm/psr7-server": {
+      "reference": "4335801d851f554ca43fa6e7d2602141538854dc",
+      "version": "1.1.0"
+    },
+    "psr/http-factory": {
+      "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+      "version": "1.1.0"
+    },
+    "psr/http-message": {
+      "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+      "version": "2.0"
+    },
+    "psr/http-server-handler": {
+      "reference": "84c4fb66179be4caaf8e97bd239203245302e7d4",
+      "version": "1.0.2"
+    },
+    "psr/http-server-middleware": {
+      "reference": "c1481f747daaa6a0782775cd6a8c26a1bf4a3829",
+      "version": "1.0.2"
+    },
+    "psr/log": {
+      "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+      "version": "3.0.2"
+    },
+    "tracewick/tracewick": {
+      "reference": "110a65061c2ee61c4f44e09767cd7ee2e53b2a76",
+      "version": "v1.0.0-rc.1"
+    }
+  },
+  "roadrunner": {
+    "google/protobuf": {
+      "reference": "020bc8e831611869ac387ddd38fbbadd78d15195",
+      "version": "v5.36.2"
+    },
+    "nyholm/psr7": {
+      "reference": "26c1581611614447a5ff753a450390a23f3e323e",
+      "version": "1.8.3"
+    },
+    "psr/http-factory": {
+      "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+      "version": "1.1.0"
+    },
+    "psr/http-message": {
+      "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+      "version": "2.0"
+    },
+    "psr/http-server-handler": {
+      "reference": "84c4fb66179be4caaf8e97bd239203245302e7d4",
+      "version": "1.0.2"
+    },
+    "psr/http-server-middleware": {
+      "reference": "c1481f747daaa6a0782775cd6a8c26a1bf4a3829",
+      "version": "1.0.2"
+    },
+    "psr/log": {
+      "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+      "version": "3.0.2"
+    },
+    "roadrunner-php/roadrunner-api-dto": {
+      "reference": "81d8247894cd3f75a4e0fba2b619f9d7efa03d27",
+      "version": "v1.18.0"
+    },
+    "roadrunner/goridge": {
+      "reference": "887bd3a6f89a0b95252db608856d33d7a1284406",
+      "version": "4.6.0"
+    },
+    "roadrunner/roadrunner": {
+      "reference": "ed89c2ec991f64b072297fcbee5ad7f058779199",
+      "version": "v3.0.1"
+    },
+    "spiral/roadrunner": {
+      "reference": "321b817fab1056e404533ca1ddd200e77d1525fd",
+      "version": "v2025.1.15"
+    },
+    "spiral/roadrunner-http": {
+      "reference": "a44a5f7d54d4ee8a14fe99cd22dcd128db270c88",
+      "version": "v3.6.0"
+    },
+    "spiral/roadrunner-worker": {
+      "reference": "35fcf09b55de68954e03dc727b710b963db9517d",
+      "version": "v3.8.2"
+    },
+    "symfony/polyfill-php83": {
+      "reference": "80ccff923a8d61f73ebe9da0aa94e25232f004ce",
+      "version": "v1.43.0"
+    },
+    "tracewick/tracewick": {
+      "reference": "110a65061c2ee61c4f44e09767cd7ee2e53b2a76",
+      "version": "v1.0.0-rc.1"
+    }
+  },
+  "swoole": {
+    "nyholm/psr7": {
+      "reference": "26c1581611614447a5ff753a450390a23f3e323e",
+      "version": "1.8.3"
+    },
+    "psr/http-factory": {
+      "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+      "version": "1.1.0"
+    },
+    "psr/http-message": {
+      "reference": "402d35bcb92c70c026d1a6a9883f06b2ead23d71",
+      "version": "2.0"
+    },
+    "psr/http-server-handler": {
+      "reference": "84c4fb66179be4caaf8e97bd239203245302e7d4",
+      "version": "1.0.2"
+    },
+    "psr/http-server-middleware": {
+      "reference": "c1481f747daaa6a0782775cd6a8c26a1bf4a3829",
+      "version": "1.0.2"
+    },
+    "psr/log": {
+      "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+      "version": "3.0.2"
+    },
+    "tracewick/tracewick": {
+      "reference": "110a65061c2ee61c4f44e09767cd7ee2e53b2a76",
+      "version": "v1.0.0-rc.1"
+    }
+  }
+}

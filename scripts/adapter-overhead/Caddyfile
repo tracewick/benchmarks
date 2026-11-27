@@ -1,0 +1,18 @@
+{
+	admin off
+	auto_https off
+	frankenphp {
+		num_threads 2
+		worker {
+			file /probe/adapter-overhead/index.php
+			num 1
+		}
+	}
+}
+
+http://:18150 {
+	bind 127.0.0.1
+	root * /probe/adapter-overhead
+	respond /__ready 204
+	php_server
+}

@@ -1,0 +1,11 @@
+{
+    "name": "tracewick/benchmark-laravel-http",
+    "license": "Apache-2.0",
+    "require": {
+        "laravel/framework": "13.44.1",
+        "tracewick/tracewick": "1.0.0-rc.1"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

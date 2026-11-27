@@ -1,0 +1,12 @@
+{
+    "name": "tracewick/benchmark-symfony-http",
+    "license": "Apache-2.0",
+    "require": {
+        "symfony/console": "8.1.12",
+        "symfony/framework-bundle": "8.1.12",
+        "tracewick/tracewick": "1.0.0-rc.1"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
