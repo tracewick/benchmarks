@@ -1,0 +1,209 @@
+[
+    {
+        "mode": "history",
+        "eligible": true,
+        "limit": 512,
+        "total": 461,
+        "pass": true,
+        "seen": {
+            "emptyWork": {
+                "empty": true
+            },
+            "remoteWork": {
+                "empty": true
+            },
+            "parentWork": {
+                "linked": true,
+                "empty": true
+            },
+            "childWork": {
+                "linked": true
+            },
+            "unsampledWork": {
+                "linked": true,
+                "empty": true
+            }
+        },
+        "wrong": 0,
+        "coalesced_weight": 38,
+        "overflow": 0
+    },
+    {
+        "mode": "history",
+        "eligible": false,
+        "limit": 512,
+        "total": 507,
+        "pass": true,
+        "seen": {
+            "emptyWork": {
+                "empty": true
+            },
+            "remoteWork": {
+                "empty": true
+            },
+            "parentWork": {
+                "empty": true
+            },
+            "childWork": {
+                "empty": true
+            },
+            "fiberWork": {
+                "empty": true
+            },
+            "unsampledWork": {
+                "empty": true
+            }
+        },
+        "wrong": 0,
+        "coalesced_weight": 118,
+        "overflow": 0
+    },
+    {
+        "mode": "history",
+        "eligible": true,
+        "limit": 4,
+        "total": 459,
+        "pass": true,
+        "seen": {
+            "emptyWork": {
+                "empty": true
+            },
+            "remoteWork": {
+                "empty": true
+            },
+            "parentWork": {
+                "linked": true,
+                "empty": true
+            },
+            "childWork": {
+                "linked": true,
+                "empty": true
+            },
+            "unsampledWork": {
+                "linked": true,
+                "empty": true
+            }
+        },
+        "wrong": 0,
+        "coalesced_weight": 30,
+        "overflow": 5
+    },
+    {
+        "mode": "deferred",
+        "eligible": true,
+        "limit": 512,
+        "total": 462,
+        "pass": true,
+        "seen": {
+            "emptyWork": {
+                "empty": true
+            },
+            "remoteWork": {
+                "empty": true
+            },
+            "parentWork": {
+                "linked": true,
+                "empty": true
+            },
+            "childWork": {
+                "linked": true,
+                "empty": true
+            },
+            "unsampledWork": {
+                "linked": true
+            }
+        },
+        "wrong": 0,
+        "coalesced_weight": 38,
+        "overflow": 0
+    },
+    {
+        "mode": "deferred",
+        "eligible": false,
+        "limit": 512,
+        "total": 511,
+        "pass": true,
+        "seen": {
+            "emptyWork": {
+                "empty": true
+            },
+            "remoteWork": {
+                "empty": true
+            },
+            "parentWork": {
+                "empty": true
+            },
+            "childWork": {
+                "empty": true
+            },
+            "fiberWork": {
+                "empty": true
+            },
+            "unsampledWork": {
+                "empty": true
+            }
+        },
+        "wrong": 0,
+        "coalesced_weight": 40,
+        "overflow": 0
+    },
+    {
+        "mode": "deferred",
+        "eligible": true,
+        "limit": 4,
+        "total": 461,
+        "pass": true,
+        "seen": {
+            "emptyWork": {
+                "empty": true
+            },
+            "remoteWork": {
+                "empty": true
+            },
+            "parentWork": {
+                "empty": true,
+                "linked": true
+            },
+            "childWork": {
+                "empty": true
+            },
+            "unsampledWork": {
+                "empty": true
+            }
+        },
+        "wrong": 0,
+        "coalesced_weight": 65,
+        "overflow": 400
+    },
+    {
+        "mode": "late",
+        "eligible": true,
+        "limit": 512,
+        "total": 459,
+        "pass": true,
+        "seen": {
+            "emptyWork": {
+                "linked": true,
+                "empty": true
+            },
+            "remoteWork": {
+                "linked": true,
+                "empty": true
+            },
+            "parentWork": {
+                "linked": true,
+                "empty": true
+            },
+            "childWork": {
+                "linked": true,
+                "empty": true
+            },
+            "unsampledWork": {
+                "empty": true
+            }
+        },
+        "wrong": 144,
+        "coalesced_weight": 36,
+        "overflow": 0
+    }
+]
