@@ -162,6 +162,10 @@ backend/reader recovery and real Symfony HTTP/CLI/Messenger checks. It separates
 runtime results from the unresolved source-1.0 package constraint and from any
 future published-RC installation check.
 
+The [HTTP adapter overhead report](reports/2026-11-27-adapter-http-overhead.md)
+records repeated fixed-work runs for PSR-15, Symfony and Laravel, including
+process RSS, CPU per request, latency and spool checks.
+
 Local run scratch: `reports/_local/`. **Canonical** cloud goldens (cite these — `WORK_STACK_DEPTH=48` on the 8 vCPU stand, except soak):
 
 - [overhead A/B](reports/2026-11-06-overhead-depth48-cloud.md)

@@ -1,0 +1,11 @@
+version: '3'
+server:
+  command: php /probe/adapter-overhead/rr.php
+  relay: pipes
+http:
+  address: 127.0.0.1:18150
+  pool:
+    num_workers: 1
+logs:
+  mode: production
+  level: warn

@@ -1,0 +1,49 @@
+{
+  "host": {
+    "kernel": "6.18.57",
+    "architecture": "x86_64",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "task_cgroup_cpu_max": "200000 100000",
+    "task_cgroup_memory_max_bytes": 8589934592
+  },
+  "docker_server": "29.9.2",
+  "images": {
+    "tracewick-cloud-php:8.5": {
+      "id": "sha256:3399094804d15cdb2152d76929632f77c110b41675467665b0993a92f404ce16",
+      "repo_digests": []
+    },
+    "tracewick-frankenphp-smoke:1.14.0": {
+      "id": "sha256:6ae71799eb23a09ba7be0b23d263294611acfac1346eb1a160bbc72b8a1c8d5b",
+      "repo_digests": []
+    },
+    "tracewick-swoole-smoke:6.3.0": {
+      "id": "sha256:47dcbb59262b18912dfe2880179161cc81c00d9559cb0c929d5761f108b2fa78",
+      "repo_digests": []
+    },
+    "grafana/k6:1.8.2": {
+      "id": "sha256:e72f1fc74b4f03f089c8df51e5fda8294e5e0e98bc99463cbf3b8838bc481101",
+      "repo_digests": [
+        "grafana/k6@sha256:00fdcebafbc86cb0137d429529b1caa401a02e09025f02fc74866fa6e2b004d8"
+      ]
+    }
+  },
+  "roadrunner": {
+    "version": "2025.1.15",
+    "binary_sha256": "c67dd4dc6d14c0120a7f8a2edcb035eddc693db880d349f3be33a38728b89efb",
+    "sockets_module_sha256": "d7af54e789913a5d514d7209294953efc84dde45ca95fb23a37589038c8f7d06"
+  },
+  "workload": {
+    "iterations": 2600000,
+    "depth": 24,
+    "checksum": 1396360769,
+    "fixed_work_source": "scripts/runtime-preflight/fixed-work.php",
+    "fixed_work_sha256": "edbd0c72fed51d3b60f315201fa5b7ddace169ebc94818ea4519797708b2ab27"
+  },
+  "source": {
+    "psr-15": "bb4dd1629231cdf167247399c72c751d40e06dfd",
+    "laravel": "bb93ad08efcfb732b95745b3d491aa2f622987c2",
+    "symfony-bundle": "1bb2f2678bed6cba75a2635b95faa2fdb7a04db4",
+    "tracewick": "110a65061c2ee61c4f44e09767cd7ee2e53b2a76",
+    "benchmarks_base": "a5495a5d6d73c7a7f6bd4c5f6c592165464d3c61"
+  }
+}
